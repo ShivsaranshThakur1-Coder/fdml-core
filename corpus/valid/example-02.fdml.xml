@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Valid FDML with sections</title>
+    <author email="alice@example.com">Alice</author>
+  </meta>
+  <body>
+    <section id="s-intro">Intro</section>
+    <section id="s-details">Details</section>
+  </body>
+</fdml>
