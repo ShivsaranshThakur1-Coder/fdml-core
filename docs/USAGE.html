@@ -8,23 +8,20 @@
   <body>
     <div class="wrap">
       <h1 id="cli">FDML — Usage</h1>
-      <p class="muted">Validate, render, index, lint.</p>
       <pre><code>./bin/fdml validate &lt;path&gt; [--json] [--json-out file]
 ./bin/fdml validate-sch &lt;path&gt; [--json]
 ./bin/fdml validate-all &lt;path&gt; [--json]
-./bin/fdml render corpus/valid/example-03.fdml.xml --out out/example-03.html
-./bin/fdml index corpus/valid --out out/index.json
-./bin/fdml lint corpus/valid [--json] [--strict]</code></pre>
-
-      <h2>Sequences</h2>
-      <pre><code>&lt;sequence name="Teaching Set"&gt;
-  &lt;use figure="f-basic" repeat="2"/&gt;
-  &lt;use figure="f-turn"  repeat="2"/&gt;
-&lt;/sequence&gt;</code></pre>
+./bin/fdml render &lt;fdml-file&gt; [--out out.html]
+./bin/fdml export-pdf &lt;fdml-file&gt; [--out out.pdf]
+./bin/fdml index &lt;path&gt; --out out/index.json
+./bin/fdml lint &lt;path&gt; [--json] [--strict]
+./bin/fdml init &lt;output-file&gt; [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM]
+./bin/fdml doctor &lt;path&gt; [--json] [--strict]</code></pre>
 
       <div class="nav">
         <a class="cta" href="index.html">Home</a>
         <a class="cta" href="examples/index.html">Examples</a>
+        <a class="cta" href="pdfs/">PDFs</a>
       </div>
     </div>
   </body>
