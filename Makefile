@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Targets: help, build, validate, validate-sch, validate-all, render, index, lint, lint-strict, test, docs, ci"
+	@echo "Targets: help, build, validate, validate-sch, validate-all, render, index, lint, lint-strict, init-demo, doctor, test, docs, ci"
 
 build:
 	mvn -q -DskipTests package
@@ -27,6 +27,13 @@ lint: build
 
 lint-strict: build
 	java -jar target/fdml-core.jar lint corpus/valid --strict
+
+init-demo: build
+	java -jar target/fdml-core.jar init corpus/valid/example-08-init.fdml.xml --title "Demo Init" --dance "Demo" --meter 3/4 --tempo 96 --figure-id f-demo --figure-name "Demo Figure" --formation circle
+	@echo "Scaffolded corpus/valid/example-08-init.fdml.xml"
+
+doctor: build
+	java -jar target/fdml-core.jar doctor corpus
 
 test:
 	mvn -q test
