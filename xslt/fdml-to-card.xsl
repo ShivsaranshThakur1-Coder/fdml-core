@@ -5,19 +5,29 @@
 
   <xsl:template match="/">
     <html>
-      <head><title>FDML Render</title><link rel="stylesheet" href="../css/print.css"/></head>
-      <body><h1>FDML Render (placeholder)</h1><xsl:apply-templates select="fdml"/></body>
+      <head>
+        <title>
+          <xsl:value-of select="normalize-space(/fdml/meta/title)"/>
+        </title>
+        <link rel="stylesheet" href="../site.css"/>
+        <link rel="stylesheet" href="../css/print.css"/>
+      </head>
+      <body>
+        <div class="wrap">
+          <div class="nav"><a href="index.html">← Examples</a></div>
+          <xsl:apply-templates select="fdml"/>
+        </div>
+      </body>
     </html>
   </xsl:template>
 
   <xsl:template match="fdml">
     <div class="fdml">
       <div class="meta">
-        <xsl:if test="meta/title"><div class="title"><xsl:value-of select="normalize-space(meta/title)"/></div></xsl:if>
-        <xsl:if test="meta/dance/@name"><div class="dance">Dance: <xsl:value-of select="meta/dance/@name"/></div></xsl:if>
-        <xsl:if test="meta/meter/@value"><div class="meter">Meter: <xsl:value-of select="meta/meter/@value"/></div></xsl:if>
-        <xsl:if test="meta/tempo/@bpm"><div class="tempo">Tempo: <xsl:value-of select="meta/tempo/@bpm"/> bpm</div></xsl:if>
-        <xsl:if test="meta/author"><div class="author"><xsl:value-of select="normalize-space(meta/author)"/></div></xsl:if>
+        <div class="title"><xsl:value-of select="normalize-space(meta/title)"/></div>
+        <xsl:if test="meta/dance/@name"><div class="muted">Dance: <xsl:value-of select="meta/dance/@name"/></div></xsl:if>
+        <xsl:if test="meta/meter/@value"><div class="muted">Meter: <xsl:value-of select="meta/meter/@value"/></div></xsl:if>
+        <xsl:if test="meta/tempo/@bpm"><div class="muted">Tempo: <xsl:value-of select="meta/tempo/@bpm"/> bpm</div></xsl:if>
       </div>
 
       <xsl:if test="body/sequence">
@@ -26,12 +36,11 @@
         </xsl:for-each>
       </xsl:if>
 
-      <xsl:choose>
-        <xsl:when test="body/figure">
-          <xsl:for-each select="body/figure"><xsl:call-template name="figureCard"/></xsl:for-each>
-        </xsl:when>
-        <xsl:otherwise><div class="body"><xsl:apply-templates select="body/*"/></div></xsl:otherwise>
-      </xsl:choose>
+      <xsl:for-each select="body/figure">
+        <xsl:call-template name="figureCard"/>
+      </xsl:for-each>
+
+      <xsl:apply-templates select="body/section"/>
     </div>
   </xsl:template>
 
@@ -81,7 +90,10 @@
         <xsl:text>Figure</xsl:text>
         <xsl:if test="@name"><xsl:text>: </xsl:text><xsl:value-of select="@name"/></xsl:if>
         <xsl:if test="@formation"><xsl:text> (</xsl:text><xsl:value-of select="@formation"/><xsl:text>)</xsl:text></xsl:if>
-        <span class="beats"> — Total: <xsl:value-of select="$beats"/> beats<xsl:if test="$bars"> (~<xsl:value-of select="format-number($bars,'0.##')"/> bars @ <xsl:value-of select="$meterVal"/>)</xsl:if></span>
+        <span class="beats">
+          <xsl:text> — Total: </xsl:text><xsl:value-of select="$beats"/><xsl:text> beats</xsl:text>
+          <xsl:if test="$bars"><xsl:text> (~</xsl:text><xsl:value-of select="format-number($bars,'0.##')"/><xsl:text> bars @ </xsl:text><xsl:value-of select="$meterVal"/><xsl:text>)</xsl:text></xsl:if>
+        </span>
       </h2>
       <table class="steps">
         <thead><tr><th>#</th><th>Who</th><th>Action</th><th>Beats</th><th>Count</th><th>Foot</th><th>Direction</th><th>Facing</th><th>Notes</th></tr></thead>
@@ -104,6 +116,11 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="section"><div class="section"><xsl:value-of select="normalize-space(.)"/></div></xsl:template>
-  <xsl:template match="@*|node()"><xsl:apply-templates select="@*|node()"/></xsl:template>
+  <xsl:template match="section">
+    <div class="section"><xsl:value-of select="normalize-space(.)"/></div>
+  </xsl:template>
+
+  <xsl:template match="@*|node()">
+    <xsl:apply-templates select="@*|node()"/>
+  </xsl:template>
 </xsl:stylesheet>
