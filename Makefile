@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Targets: help, build, validate, validate-sch, validate-all, render, index, lint, lint-strict, init-demo, doctor, test, docs, ci"
+	@echo "Targets: help, build, validate, validate-sch, validate-all, render, export-pdf, index, lint, lint-strict, init-demo, doctor, pdfs, docs, test, ci"
 
 build:
 	mvn -q -DskipTests package
@@ -18,6 +18,9 @@ validate-all: build
 render: build
 	java -jar target/fdml-core.jar render corpus/valid/example-01.fdml.xml --out out/example-01.html
 
+export-pdf: build
+	java -jar target/fdml-core.jar export-pdf corpus/valid/example-01.fdml.xml --out out/example-01.pdf
+
 index: build
 	java -jar target/fdml-core.jar index corpus/valid --out out/index.json
 	@echo "Index written to out/index.json"
@@ -30,17 +33,19 @@ lint-strict: build
 
 init-demo: build
 	java -jar target/fdml-core.jar init corpus/valid/example-08-init.fdml.xml --title "Demo Init" --dance "Demo" --meter 3/4 --tempo 96 --figure-id f-demo --figure-name "Demo Figure" --formation circle
-	@echo "Scaffolded corpus/valid/example-08-init.fdml.xml"
 
 doctor: build
 	java -jar target/fdml-core.jar doctor corpus
 
-test:
-	mvn -q test
+pdfs: build
+	./scripts/gen_examples.sh
 
 docs: build
 	./scripts/gen_examples.sh
-	@echo "Docs generated in docs/examples/ (open docs/examples/index.html)"
+	@echo "Docs generated in docs/examples/ and PDFs in docs/pdfs/"
+
+test:
+	mvn -q test
 
 ci: build
 	java -jar target/fdml-core.jar validate corpus/valid

@@ -90,6 +90,21 @@ public class Main {
           System.exit(EXIT_OK);
         }
 
+        case "export-pdf": {
+          List<String> rest = new ArrayList<>();
+          Path out = Paths.get("out/export.pdf");
+          for (int i = 1; i < args.length; i++) {
+            if ("--out".equals(args[i]) && i + 1 < args.length) out = Paths.get(args[++i]);
+            else rest.add(args[i]);
+          }
+          if (rest.isEmpty()) { System.err.println("export-pdf: provide <fdml-file> [--out out.pdf]"); System.exit(EXIT_IO_ERR); }
+          Path in  = Paths.get(rest.get(0));
+          Path xsl = Paths.get("xslt/fdml-to-card.xsl");
+          Path examplesDir = Paths.get("docs/examples");
+          PdfExporter.export(in, xsl, examplesDir, out);
+          System.exit(EXIT_OK);
+        }
+
         case "index": {
           List<String> rest = new ArrayList<>();
           Path out = Paths.get("out/index.json");
@@ -138,15 +153,8 @@ public class Main {
           System.exit(EXIT_OK);
         }
 
-        case "init": {
-          Init.run(args);
-          System.exit(EXIT_OK);
-        }
-
-        case "doctor": {
-          int code = Doctor.run(args);
-          System.exit(code);
-        }
+        case "init": { Init.run(args); System.exit(EXIT_OK); }
+        case "doctor": { int code = Doctor.run(args); System.exit(code); }
 
         default: { usage(); System.exit(EXIT_IO_ERR); }
       }
@@ -156,28 +164,18 @@ public class Main {
     }
   }
 
-  private static boolean hasFlag(String[] args, String flag) {
-    for (String a : args) if (flag.equals(a)) return true;
-    return false;
-  }
-  private static String flagValue(String[] args, String flag) {
-    for (int i = 0; i < args.length - 1; i++) if (flag.equals(args[i])) return args[i+1];
-    return null;
-  }
+  private static boolean hasFlag(String[] args, String flag) { for (String a : args) if (flag.equals(a)) return true; return false; }
+  private static String flagValue(String[] args, String flag) { for (int i=0;i<args.length-1;i++) if(flag.equals(args[i])) return args[i+1]; return null; }
   private static List<Path> collectNonFlagPaths(String[] args, int from) {
     List<Path> t = new ArrayList<>();
     for (int i = from; i < args.length; i++) {
       String a = args[i];
-      if (a.startsWith("--")) {
-        if ("--out".equals(a) || "--json-out".equals(a)) i++;
-        continue;
-      }
+      if (a.startsWith("--")) { if ("--out".equals(a) || "--json-out".equals(a)) i++; continue; }
       t.add(Paths.get(a));
     }
     return t;
   }
 
-  // --- existing JSON helpers moved to Main for brevity (kept same) ---
   private static boolean allOk(java.util.List<FdmlValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
   private static boolean allOkSch(java.util.List<SchematronValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
   private static String esc(String s){ if(s==null)return null; return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r",""); }
@@ -229,7 +227,8 @@ public class Main {
         sb.append("}"); if(j<r.warnings.size()-1) sb.append(",");
       }
       sb.append("]}"); if(i<rs.size()-1) sb.append(",");
-    } sb.append("]}"); return sb.toString();
+    }
+    sb.append("]}"); return sb.toString();
   }
 
   private static void usage() {
@@ -239,6 +238,7 @@ public class Main {
     System.out.println("  validate-sch <path> [...] [--json] [--json-out file]");
     System.out.println("  validate-all <path> [...] [--json] [--json-out file]");
     System.out.println("  render <fdml-file> [--out out.html]");
+    System.out.println("  export-pdf <fdml-file> [--out out.pdf]");
     System.out.println("  index  <path> [...] [--out out.json]");
     System.out.println("  lint   <path> [...] [--json] [--json-out file] [--strict]");
     System.out.println("  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM]");

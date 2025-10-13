@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.fdml</groupId>
   <artifactId>fdml-core</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,6 +22,11 @@
       <version>5.10.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.openhtmltopdf</groupId>
+      <artifactId>openhtmltopdf-pdfbox</artifactId>
+      <version>1.0.10</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -30,9 +35,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
-        <configuration>
-          <release>17</release>
-        </configuration>
+        <configuration><release>17</release></configuration>
       </plugin>
 
       <plugin>
@@ -46,7 +49,6 @@
             <configuration>
               <finalName>fdml-core</finalName>
               <filters>
-                <!-- Strip signatures so the fat jar is runnable -->
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>

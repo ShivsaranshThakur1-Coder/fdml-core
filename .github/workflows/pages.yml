@@ -24,7 +24,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build & generate examples
+      - name: Build & generate examples + PDFs
         run: |
           mvn -q -DskipTests package
           ./scripts/gen_examples.sh
