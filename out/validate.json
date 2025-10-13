@@ -1,1 +1,0 @@
-{"command":"validate-all","xsd":[{"file":"corpus/valid/example-01.fdml.xml","ok":true},{"file":"corpus/valid/example-02.fdml.xml","ok":true}],"schematron":[{"file":"corpus/valid/example-01.fdml.xml","ok":true,"failures":0,"messages":[]},{"file":"corpus/valid/example-02.fdml.xml","ok":true,"failures":0,"messages":[]}]}
