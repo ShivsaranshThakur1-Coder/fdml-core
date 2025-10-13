@@ -2,6 +2,8 @@
 <fdml version="1.0">
   <meta>
     <title>Example Valid FDML</title>
+    <meter value="3/4"/>
+    <tempo bpm="90"/>
   </meta>
   <body>
     <section id="s-one">A simple body.</section>
