@@ -114,4 +114,14 @@ class Linter {
     try { return Integer.parseInt(meter.substring(0, idx).trim()); }
     catch (NumberFormatException e) { return null; }
   }
+
+  private static XdmValue eval(XPathCompiler xpc, String expr, XdmNode node) {
+    try { return xpc.evaluate(expr, node); }
+    catch (SaxonApiException e) { return XdmEmptySequence.getInstance(); }
+  }
+
+  private static XdmValue eval(XPathCompiler xpc, XdmNode node, String expr) {
+    try { return xpc.evaluate(expr, node); }
+    catch (SaxonApiException e) { return XdmEmptySequence.getInstance(); }
+  }
 }
