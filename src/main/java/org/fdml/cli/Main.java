@@ -99,7 +99,7 @@ public class Main {
           }
           if (rest.isEmpty()) { System.err.println("export-pdf: provide <fdml-file> [--out out.pdf]"); System.exit(EXIT_IO_ERR); }
           Path in  = Paths.get(rest.get(0));
-          Path xsl = Paths.get("xslt/fdml-to-card.xsl");
+          Path xsl = Paths.get("xslt/fdml-to-xhtml.xsl");
           Path examplesDir = Paths.get("docs/examples");
           PdfExporter.export(in, xsl, examplesDir, out);
           System.exit(EXIT_OK);
@@ -164,8 +164,14 @@ public class Main {
     }
   }
 
-  private static boolean hasFlag(String[] args, String flag) { for (String a : args) if (flag.equals(a)) return true; return false; }
-  private static String flagValue(String[] args, String flag) { for (int i=0;i<args.length-1;i++) if(flag.equals(args[i])) return args[i+1]; return null; }
+  private static boolean hasFlag(String[] args, String flag) {
+    for (String a : args) if (flag.equals(a)) return true;
+    return false;
+  }
+  private static String flagValue(String[] args, String flag) {
+    for (int i = 0; i < args.length - 1; i++) if (flag.equals(args[i])) return args[i+1];
+    return null;
+  }
   private static List<Path> collectNonFlagPaths(String[] args, int from) {
     List<Path> t = new ArrayList<>();
     for (int i = from; i < args.length; i++) {
@@ -176,59 +182,106 @@ public class Main {
     return t;
   }
 
-  private static boolean allOk(java.util.List<FdmlValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
-  private static boolean allOkSch(java.util.List<SchematronValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
-  private static String esc(String s){ if(s==null)return null; return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r",""); }
-  private static String toJsonValidate(java.util.List<FdmlValidator.Result> rs){
-    StringBuilder sb=new StringBuilder(); sb.append("{\"command\":\"validate\",\"results\":[");
-    for(int i=0;i<rs.size();i++){ var r=rs.get(i);
-      sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok);
-      if(!r.ok && r.message!=null) sb.append(",\"error\":\"").append(esc(r.message)).append("\"");
-      if(r.line!=null) sb.append(",\"line\":").append(r.line);
-      if(r.column!=null) sb.append(",\"column\":").append(r.column);
-      sb.append("}"); if(i<rs.size()-1) sb.append(",");
-    } sb.append("]}"); return sb.toString();
+  // ---- helpers restored ----
+  private static boolean allOk(java.util.List<FdmlValidator.Result> xs) {
+    for (var r : xs) if (!r.ok) return false; return true;
   }
-  private static String toJsonValidateSch(java.util.List<SchematronValidator.Result> rs){
-    StringBuilder sb=new StringBuilder(); sb.append("{\"command\":\"validate-sch\",\"results\":[");
-    for(int i=0;i<rs.size();i++){ var r=rs.get(i);
+  private static boolean allOkSch(java.util.List<SchematronValidator.Result> xs) {
+    for (var r : xs) if (!r.ok) return false; return true;
+  }
+  private static String esc(String s) {
+    if (s == null) return null;
+    return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
+  }
+  private static String toJsonValidate(java.util.List<FdmlValidator.Result> rs) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"command\":\"validate\",\"results\":[");
+    for (int i=0;i<rs.size();i++) {
+      var r = rs.get(i);
+      sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok);
+      if (!r.ok) {
+        if (r.message != null) sb.append(",\"error\":\"").append(esc(r.message)).append("\"");
+        if (r.line != null) sb.append(",\"line\":").append(r.line);
+        if (r.column != null) sb.append(",\"column\":").append(r.column);
+      }
+      sb.append("}");
+      if (i < rs.size()-1) sb.append(",");
+    }
+    sb.append("]}");
+    return sb.toString();
+  }
+  private static String toJsonValidateSch(java.util.List<SchematronValidator.Result> rs) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"command\":\"validate-sch\",\"results\":[");
+    for (int i=0;i<rs.size();i++) {
+      var r = rs.get(i);
       sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok)
         .append(",\"failures\":").append(r.failures).append(",\"messages\":[");
-      for(int j=0;j<r.messages.size();j++){ sb.append("\"").append(esc(r.messages.get(j))).append("\""); if(j<r.messages.size()-1) sb.append(","); }
-      sb.append("]}"); if(i<rs.size()-1) sb.append(",");
-    } sb.append("]}"); return sb.toString();
-  }
-  private static String toJsonValidateAll(java.util.List<FdmlValidator.Result> r1, java.util.List<SchematronValidator.Result> r2){
-    StringBuilder sb=new StringBuilder();
-    sb.append("{\"command\":\"validate-all\",\"xsd\":"); StringBuilder sb1=new StringBuilder(); sb1.append("[");
-    for(int i=0;i<r1.size();i++){ var r=r1.get(i); sb1.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok);
-      if(!r.ok && r.message!=null) sb1.append(",\"error\":\"").append(esc(r.message)).append("\"");
-      if(r.line!=null) sb1.append(",\"line\":").append(r.line);
-      if(r.column!=null) sb1.append(",\"column\":").append(r.column);
-      sb1.append("}"); if(i<r1.size()-1) sb1.append(",");
-    } sb1.append("]"); sb.append(sb1).append(",\"schematron\":"); StringBuilder sb2=new StringBuilder(); sb2.append("[");
-    for(int i=0;i<r2.size();i++){ var r=r2.get(i);
-      sb2.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok)
-        .append(",\"failures\":").append(r.failures).append(",\"messages\":[");
-      for(int j=0;j<r.messages.size();j++){ sb2.append("\"").append(esc(r.messages.get(j))).append("\""); if(j<r.messages.size()-1) sb2.append(","); }
-      sb2.append("]}"); if(i<r2.size()-1) sb2.append(",");
-    } sb2.append("]"); sb.append(sb2).append("}"); return sb.toString();
-  }
-  private static String toJsonLint(java.util.List<Linter.FileResult> rs){
-    StringBuilder sb=new StringBuilder(); sb.append("{\"command\":\"lint\",\"results\":[");
-    for(int i=0;i<rs.size();i++){ var r=rs.get(i);
-      sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok()).append(",\"warnings\":[");
-      for(int j=0;j<r.warnings.size();j++){ var w=r.warnings.get(j);
-        sb.append("{\"code\":\"").append(esc(w.code)).append("\",\"beats\":").append(w.beats);
-        if(w.figureId!=null) sb.append(",\"figure\":\"").append(esc(w.figureId)).append("\"");
-        if(w.meter!=null) sb.append(",\"meter\":\"").append(esc(w.meter)).append("\"");
-        if(w.bars!=null) sb.append(",\"bars\":\"").append(esc(w.bars)).append("\"");
-        if(w.message!=null) sb.append(",\"message\":\"").append(esc(w.message)).append("\"");
-        sb.append("}"); if(j<r.warnings.size()-1) sb.append(",");
+      for (int j=0;j<r.messages.size();j++) {
+        sb.append("\"").append(esc(r.messages.get(j))).append("\"");
+        if (j<r.messages.size()-1) sb.append(",");
       }
-      sb.append("]}"); if(i<rs.size()-1) sb.append(",");
+      sb.append("]}");
+      if (i < rs.size()-1) sb.append(",");
     }
-    sb.append("]}"); return sb.toString();
+    sb.append("]}");
+    return sb.toString();
+  }
+  private static String toJsonValidateAll(java.util.List<FdmlValidator.Result> r1,
+                                          java.util.List<SchematronValidator.Result> r2) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"command\":\"validate-all\",\"xsd\":");
+    StringBuilder sb1 = new StringBuilder(); sb1.append("[");
+    for (int i=0;i<r1.size();i++) {
+      var r = r1.get(i);
+      sb1.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok);
+      if (!r.ok) {
+        if (r.message != null) sb1.append(",\"error\":\"").append(esc(r.message)).append("\"");
+        if (r.line != null) sb1.append(",\"line\":").append(r.line);
+        if (r.column != null) sb1.append(",\"column\":").append(r.column);
+      }
+      sb1.append("}");
+      if (i < r1.size()-1) sb1.append(",");
+    }
+    sb1.append("]");
+    sb.append(sb1).append(",\"schematron\":");
+    StringBuilder sb2 = new StringBuilder(); sb2.append("[");
+    for (int i=0;i<r2.size();i++) {
+      var r = r2.get(i);
+      sb2.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok)
+         .append(",\"failures\":").append(r.failures).append(",\"messages\":[");
+      for (int j=0;j<r.messages.size();j++) {
+        sb2.append("\"").append(esc(r.messages.get(j))).append("\"");
+        if (j<r.messages.size()-1) sb2.append(",");
+      }
+      sb2.append("]}");
+      if (i < r2.size()-1) sb2.append(",");
+    }
+    sb2.append("]");
+    sb.append(sb2).append("}");
+    return sb.toString();
+  }
+  private static String toJsonLint(java.util.List<Linter.FileResult> rs) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"command\":\"lint\",\"results\":[");
+    for (int i=0;i<rs.size();i++) {
+      var r = rs.get(i);
+      sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok()).append(",\"warnings\":[");
+      for (int j=0;j<r.warnings.size();j++) {
+        var w = r.warnings.get(j);
+        sb.append("{\"code\":\"").append(esc(w.code)).append("\"");
+        if (w.figureId != null) sb.append(",\"figure\":\"").append(esc(w.figureId)).append("\"");
+        if (w.meter != null) sb.append(",\"meter\":\"").append(esc(w.meter)).append("\"");
+        if (w.bars != null) sb.append(",\"bars\":\"").append(esc(w.bars)).append("\"");
+        if (w.message != null) sb.append(",\"message\":\"").append(esc(w.message)).append("\"");
+        sb.append(",\"beats\":").append(w.beats).append("}");
+        if (j<r.warnings.size()-1) sb.append(",");
+      }
+      sb.append("]}");
+      if (i<rs.size()-1) sb.append(",");
+    }
+    sb.append("]}");
+    return sb.toString();
   }
 
   private static void usage() {
