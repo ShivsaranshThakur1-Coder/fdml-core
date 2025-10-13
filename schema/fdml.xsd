@@ -1,12 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="idFigure">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="f-[a-z0-9-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="foot">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="L"/>
+      <xs:enumeration value="R"/>
+      <xs:enumeration value="B"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="who">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="lead"/>
+      <xs:enumeration value="follow"/>
+      <xs:enumeration value="both"/>
+      <xs:enumeration value="all"/>
+      <xs:enumeration value="gents"/>
+      <xs:enumeration value="ladies"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="direction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Fwd"/>
+      <xs:enumeration value="Back"/>
+      <xs:enumeration value="Left"/>
+      <xs:enumeration value="Right"/>
+      <xs:enumeration value="CW"/>
+      <xs:enumeration value="CCW"/>
+      <xs:enumeration value="In"/>
+      <xs:enumeration value="Out"/>
+      <xs:enumeration value="DiagL"/>
+      <xs:enumeration value="DiagR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="facing">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="N"/>
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="S"/>
+      <xs:enumeration value="W"/>
+      <xs:enumeration value="Partner"/>
+      <xs:enumeration value="Inside"/>
+      <xs:enumeration value="Outside"/>
+      <xs:enumeration value="Up"/>
+      <xs:enumeration value="Down"/>
+      <xs:enumeration value="Across"/>
+      <xs:enumeration value="Along"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="formation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="circle"/>
+      <xs:enumeration value="line"/>
+      <xs:enumeration value="couple"/>
+      <xs:enumeration value="set"/>
+      <xs:enumeration value="square"/>
+      <xs:enumeration value="improper"/>
+      <xs:enumeration value="longways"/>
+      <xs:enumeration value="ring"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="countSpan">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d+(-\d+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="stepType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="who" type="who" use="required"/>
+        <xs:attribute name="action" type="xs:string" use="required"/>
+        <xs:attribute name="beats" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="count" type="countSpan" use="optional"/>
+        <xs:attribute name="startFoot" type="foot" use="required"/>
+        <xs:attribute name="endFoot" type="foot" use="optional"/>
+        <xs:attribute name="direction" type="direction" use="optional"/>
+        <xs:attribute name="facing" type="facing" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="figureType">
+    <xs:sequence>
+      <xs:element name="step" type="stepType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="idFigure" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="formation" type="formation" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="metaType">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="dance" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="meter" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="tempo" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="bpm" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="author" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="email" type="xs:string" use="optional"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="bodyType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="section" type="xs:string"/>
+      <xs:element name="figure" type="figureType"/>
+    </xs:choice>
+  </xs:complexType>
+
   <xs:element name="fdml">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="meta" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="body" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="meta" type="metaType"/>
+        <xs:element name="body" type="bodyType"/>
       </xs:sequence>
       <xs:attribute name="version" type="xs:string" use="required" fixed="1.0"/>
     </xs:complexType>
   </xs:element>
+
 </xs:schema>

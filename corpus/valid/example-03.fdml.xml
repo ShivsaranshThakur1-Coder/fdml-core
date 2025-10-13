@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Circle Waltz — Basic</title>
+    <dance name="Circle Waltz"/>
+    <meter value="3/4"/>
+    <tempo bpm="90"/>
+    <author email="alice@example.com">Alice</author>
+  </meta>
+  <body>
+    <figure id="f-basic" name="Basic Step" formation="circle">
+      <step who="both" action="Step L" beats="1" count="1" startFoot="L" endFoot="L" facing="Partner">Weight to L</step>
+      <step who="both" action="Close R" beats="1" count="2" startFoot="R" endFoot="B" facing="Partner">Close R to L</step>
+      <step who="both" action="Step L" beats="1" count="3" startFoot="L" endFoot="L" facing="Partner">Weight to L</step>
+    </figure>
+    <figure id="f-turn" name="Quarter Turn CW" formation="circle">
+      <step who="both" action="Step R" beats="1" count="1" startFoot="R" endFoot="R" facing="Partner" direction="CW">Initiate turn</step>
+      <step who="both" action="Close L" beats="1" count="2" startFoot="L" endFoot="B" facing="Partner" direction="CW">Close L to R</step>
+      <step who="both" action="Step R" beats="1" count="3" startFoot="R" endFoot="R" facing="Partner" direction="CW">Complete quarter</step>
+    </figure>
+  </body>
+</fdml>

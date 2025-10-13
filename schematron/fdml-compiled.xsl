@@ -12,7 +12,6 @@
   </xsl:template>
 
   <xsl:template match="fdml">
-    <!-- Required elements -->
     <xsl:if test="not(meta)">
       <svrl:failed-assert><svrl:text>fdml must contain meta</svrl:text></svrl:failed-assert>
     </xsl:if>
@@ -20,7 +19,6 @@
       <svrl:failed-assert><svrl:text>fdml must contain body</svrl:text></svrl:failed-assert>
     </xsl:if>
 
-    <!-- Title present, non-empty, ≤120 -->
     <xsl:if test="not(normalize-space(meta/title))">
       <svrl:failed-assert><svrl:text>meta/title must be present and non-empty</svrl:text></svrl:failed-assert>
     </xsl:if>
@@ -28,31 +26,44 @@
       <svrl:failed-assert><svrl:text>meta/title must be ≤ 120 characters</svrl:text></svrl:failed-assert>
     </xsl:if>
 
-    <!-- Email rule (trim first, then regex with a literal dot \.) -->
     <xsl:variable name="email" select="normalize-space(meta/author/@email)"/>
     <xsl:if test="meta/author/@email and not(matches($email, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'))">
       <svrl:failed-assert><svrl:text>meta/author/@email is not a valid email</svrl:text></svrl:failed-assert>
     </xsl:if>
 
-    <!-- At least one section -->
-    <xsl:if test="body and not(body/section)">
-      <svrl:failed-assert><svrl:text>body must contain at least one &lt;section&gt;</svrl:text></svrl:failed-assert>
+    <xsl:if test="body and not(body/section or body/figure)">
+      <svrl:failed-assert><svrl:text>body must contain at least one &lt;section&gt; or &lt;figure&gt;</svrl:text></svrl:failed-assert>
     </xsl:if>
 
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="body"/>
   </xsl:template>
 
-  <xsl:template match="section">
-    <xsl:if test="not(@id)">
-      <svrl:failed-assert><svrl:text>section must have @id</svrl:text></svrl:failed-assert>
-    </xsl:if>
-    <xsl:if test="@id and not(matches(@id, '^s-[a-z0-9-]+$'))">
-      <svrl:failed-assert><svrl:text>section/@id must match pattern 's-[a-z0-9-]+'</svrl:text></svrl:failed-assert>
-    </xsl:if>
-    <xsl:if test="@id and count(//section[@id=current()/@id]) &gt; 1">
-      <svrl:failed-assert><svrl:text>section/@id values must be unique across the document</svrl:text></svrl:failed-assert>
-    </xsl:if>
-    <xsl:apply-templates/>
+  <xsl:template match="body">
+    <xsl:for-each select="figure">
+      <xsl:if test="not(@id)">
+        <svrl:failed-assert><svrl:text>figure must have @id</svrl:text></svrl:failed-assert>
+      </xsl:if>
+      <xsl:if test="@id and not(matches(@id, '^f-[a-z0-9-]+$'))">
+        <svrl:failed-assert><svrl:text>figure/@id must match pattern 'f-[a-z0-9-]+'</svrl:text></svrl:failed-assert>
+      </xsl:if>
+      <xsl:if test="@id and count(//figure[@id=current()/@id]) &gt; 1">
+        <svrl:failed-assert><svrl:text>figure/@id values must be unique across the document</svrl:text></svrl:failed-assert>
+      </xsl:if>
+      <xsl:if test="not(step)">
+        <svrl:failed-assert><svrl:text>figure must contain at least one step</svrl:text></svrl:failed-assert>
+      </xsl:if>
+      <xsl:for-each select="step">
+        <xsl:if test="not(@beats) or number(@beats) &lt; 1">
+          <svrl:failed-assert><svrl:text>step/@beats must be ≥ 1</svrl:text></svrl:failed-assert>
+        </xsl:if>
+        <xsl:if test="not(@who)">
+          <svrl:failed-assert><svrl:text>step/@who is required</svrl:text></svrl:failed-assert>
+        </xsl:if>
+        <xsl:if test="not(@startFoot)">
+          <svrl:failed-assert><svrl:text>step/@startFoot is required</svrl:text></svrl:failed-assert>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="@*|node()">

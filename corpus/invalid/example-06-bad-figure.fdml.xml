@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta><title>Bad Figure</title></meta>
+  <body>
+    <figure name="Missing ID and no steps"/>
+  </body>
+</fdml>
