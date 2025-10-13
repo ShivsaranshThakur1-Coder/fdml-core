@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Targets: help, build, validate, validate-sch, validate-all, render, test, ci"
+	@echo "Targets: help, build, validate, validate-sch, validate-all, render, test, docs, ci"
 
 build:
 	mvn -q -DskipTests package
@@ -21,12 +21,18 @@ render: build
 test:
 	mvn -q test
 
+docs: build
+	./scripts/gen_examples.sh
+	@echo "Docs generated in docs/examples/ (open docs/examples/index.html)"
+
 ci: build
 	@echo "✓ XSD: valid corpus should pass"
 	java -jar target/fdml-core.jar validate corpus/valid
 	@echo "✓ Schematron: valid corpus should pass"
 	java -jar target/fdml-core.jar validate-sch corpus/valid
 	@echo "✓ XSD: invalid corpus should fail (expected non-zero)"
-	@if java -jar target/fdml-core.jar validate corpus/invalid; then echo "Expected invalid corpus to fail, but it passed"; exit 1; else echo "Invalid corpus correctly failed"; fi
+	@if java -jar target/fdml-core.jar validate corpus/invalid; then echo "Expected invalid corpus to fail XSD, but it passed"; exit 1; else echo "Invalid corpus correctly failed XSD (at least one file)"; fi
+	@echo "✓ Schematron: invalid corpus should fail (expected non-zero)"
+	@if java -jar target/fdml-core.jar validate-sch corpus/invalid; then echo "Expected invalid corpus to fail Schematron, but it passed"; exit 1; else echo "Invalid corpus correctly failed Schematron"; fi
 	@echo "✓ Tests"
 	mvn -q test
