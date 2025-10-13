@@ -7,7 +7,7 @@
     <tempo bpm="112"/>
   </meta>
   <body>
-    <figure id="f-forward" name="Forward & Back" formation="longways">
+    <figure id="f-forward" name="Forward &amp; Back" formation="longways">
       <step who="both" action="Forward" beats="2" count="1-2" startFoot="L" facing="Partner"/>
       <step who="both" action="Back"    beats="2" count="3-4" startFoot="R" facing="Partner"/>
     </figure>
