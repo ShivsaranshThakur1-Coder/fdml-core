@@ -18,7 +18,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build shaded jar (skip tests)
+      - name: Build shaded jar
         run: mvn -q -DskipTests package
         shell: bash
 
@@ -34,26 +34,20 @@ jobs:
         run: |
           set +e
           java -jar target/fdml-core.jar validate corpus/invalid
-          status=$?
-          if [ $status -eq 0 ]; then
-            echo "Expected invalid corpus to fail XSD, but it passed"
-            exit 1
-          else
-            echo "Invalid corpus correctly failed XSD"
-          fi
+          s=$?
+          if [ $s -eq 0 ]; then echo "Expected invalid corpus to fail XSD, but it passed"; exit 1; else echo "Invalid corpus correctly failed XSD"; fi
         shell: bash
 
       - name: Schematron — invalid corpus should fail
         run: |
           set +e
           java -jar target/fdml-core.jar validate-sch corpus/invalid
-          status=$?
-          if [ $status -eq 0 ]; then
-            echo "Expected invalid corpus to fail Schematron, but it passed"
-            exit 1
-          else
-            echo "Invalid corpus correctly failed Schematron"
-          fi
+          s=$?
+          if [ $s -eq 0 ]; then echo "Expected invalid corpus to fail Schematron, but it passed"; exit 1; else echo "Invalid corpus correctly failed Schematron"; fi
+        shell: bash
+
+      - name: Doctor — valid corpus strict gate
+        run: java -jar target/fdml-core.jar doctor corpus/valid --strict
         shell: bash
 
       - name: Run tests
