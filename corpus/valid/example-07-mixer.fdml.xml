@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Circle Mixer — Intro</title>
+    <dance name="Mixer"/>
+    <meter value="4/4"/>
+    <tempo bpm="116"/>
+  </meta>
+  <body>
+    <figure id="f-walk" name="Walk the Circle" formation="circle">
+      <step who="all" action="Walk CW" beats="2" count="1-2" startFoot="R" direction="CW"/>
+      <step who="all" action="Walk CCW" beats="2" count="3-4" startFoot="L" direction="CCW"/>
+    </figure>
+    <sequence name="Intro">
+      <use figure="f-walk" repeat="2"/>
+    </sequence>
+  </body>
+</fdml>

@@ -1,27 +1,41 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>FDML — Documentation & Examples</title>
-    <link rel="stylesheet" href="css/print.css"/>
-    <style>
-      .nav{display:flex;gap:1rem;margin:1rem 0}
-      a{color:#0366d6;text-decoration:none}
-      a:hover{text-decoration:underline}
-      .wrap{max-width:900px;margin:2rem auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-      h1{margin-bottom:.25rem}
-      .muted{opacity:.8}
-    </style>
+    <meta charset="utf-8" />
+    <title>FDML — Folk Dance Markup Language</title>
+    <link rel="stylesheet" href="site.css" />
   </head>
   <body>
     <div class="wrap">
-      <h1>FDML</h1>
-      <div class="muted">Folk Dance Markup Language — docs & live examples</div>
-      <div class="nav">
-        <a href="USAGE.md">Usage (Markdown)</a>
-        <a href="examples/index.html">Examples</a>
+      <div class="hero">
+        <div>
+          <h1>FDML</h1>
+          <div class="muted">Folk Dance Markup Language — schema, validator, and live examples</div>
+          <div class="nav">
+            <a class="cta" href="USAGE.html">Usage</a>
+            <a class="cta" href="examples/index.html">Examples</a>
+            <a href="https://github.com/`whoami`/fdml-core">Repo</a>
+          </div>
+        </div>
       </div>
-      <p>Use the navigation above to see the CLI usage and rendered examples.</p>
+
+      <div class="grid" style="margin-top:24px">
+        <div class="card">
+          <h3>Validate</h3>
+          <p>Check FDML files with XSD + Schematron.</p>
+          <a class="cta" href="USAGE.html#cli">CLI</a>
+        </div>
+        <div class="card">
+          <h3>Render</h3>
+          <p>Turn FDML into clean, printable figure cards.</p>
+          <a class="cta" href="examples/index.html">See examples</a>
+        </div>
+        <div class="card">
+          <h3>Sequences</h3>
+          <p>Reuse figures with <code>&lt;sequence&gt;</code> and per-use subtotals.</p>
+          <a class="cta" href="examples/example-04.fdml.html">Sequence demo</a>
+        </div>
+      </div>
     </div>
   </body>
 </html>

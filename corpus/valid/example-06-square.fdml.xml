@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Square — Right & Left Thru</title>
+    <dance name="Square"/>
+    <meter value="2/4"/>
+    <tempo bpm="120"/>
+  </meta>
+  <body>
+    <figure id="f-ral" name="Right & Left Thru" formation="square">
+      <step who="both" action="Square thru R-hands" beats="1" count="1" startFoot="R"/>
+      <step who="both" action="Pull by L"          beats="1" count="2" startFoot="L"/>
+    </figure>
+    <sequence name="Module">
+      <use figure="f-ral" repeat="2"/>
+    </sequence>
+  </body>
+</fdml>
