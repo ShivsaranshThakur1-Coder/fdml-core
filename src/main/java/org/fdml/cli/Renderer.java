@@ -14,7 +14,6 @@ class Renderer {
       XsltTransformer t = exec.load();
       t.setSource(new StreamSource(xmlPath.toFile()));
       Serializer s = proc.newSerializer(new File(outPath.toString()));
-      s.setOutputProperty(Serializer.Property.METHOD, "html");
       s.setOutputProperty(Serializer.Property.INDENT, "yes");
       t.setDestination(s);
       t.transform();
