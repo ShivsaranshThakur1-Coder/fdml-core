@@ -11,10 +11,51 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Java
+
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build + validate + tests
-        run: make ci
+
+      - name: Build shaded jar (skip tests)
+        run: mvn -q -DskipTests package
+        shell: bash
+
+      - name: XSD — valid corpus should pass
+        run: java -jar target/fdml-core.jar validate corpus/valid
+        shell: bash
+
+      - name: Schematron — valid corpus should pass
+        run: java -jar target/fdml-core.jar validate-sch corpus/valid
+        shell: bash
+
+      - name: XSD — invalid corpus should fail
+        run: |
+          set +e
+          java -jar target/fdml-core.jar validate corpus/invalid
+          status=$?
+          if [ $status -eq 0 ]; then
+            echo "Expected invalid corpus to fail XSD, but it passed"
+            exit 1
+          else
+            echo "Invalid corpus correctly failed XSD"
+          fi
+        shell: bash
+
+      - name: Schematron — invalid corpus should fail
+        run: |
+          set +e
+          java -jar target/fdml-core.jar validate-sch corpus/invalid
+          status=$?
+          if [ $status -eq 0 ]; then
+            echo "Expected invalid corpus to fail Schematron, but it passed"
+            exit 1
+          else
+            echo "Invalid corpus correctly failed Schematron"
+          fi
+        shell: bash
+
+      - name: Run tests
+        run: mvn -q test
+        shell: bash
