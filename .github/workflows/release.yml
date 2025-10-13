@@ -5,11 +5,12 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Set up Java
@@ -17,9 +18,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build shaded jar
-        run: mvn -q -DskipTests package
-      - name: Create GitHub Release (attach jar)
+      - name: Build shaded jar and PDFs
+        run: |
+          mvn -q -DskipTests package
+          ./scripts/gen_examples.sh
+          cd docs && zip -r ../fdml-pdfs.zip pdfs
+      - name: Create GitHub Release (attach artifacts)
         uses: softprops/action-gh-release@v2
         with:
-          files: target/fdml-core.jar
+          files: |
+            target/fdml-core.jar
+            fdml-pdfs.zip
