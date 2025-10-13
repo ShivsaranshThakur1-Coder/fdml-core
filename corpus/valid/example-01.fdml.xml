@@ -4,6 +4,6 @@
     <title>Example Valid FDML</title>
   </meta>
   <body>
-    <section>A simple body.</section>
+    <section id="s-one">A simple body.</section>
   </body>
 </fdml>
