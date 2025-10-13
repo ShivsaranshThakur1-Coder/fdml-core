@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+JAR="$DIR/target/fdml-core.jar"
+if [[ ! -f "$JAR" ]]; then
+  echo "Building fdml-core.jar..."
+  (cd "$DIR" && mvn -q -DskipTests package)
+fi
+exec java -jar "$JAR" "$@"

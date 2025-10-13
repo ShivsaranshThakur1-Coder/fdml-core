@@ -19,3 +19,9 @@ Implementation of the FDML project: schema + validation (XSD + Schematron), tran
 ## Licenses
 - Code: MIT (`LICENSE`)
 - Docs & corpus: CC BY 4.0 (`LICENSE-DATA`)
+
+## Quick CLI
+
+Build once:
+```bash
+mvn -q -DskipTests package
