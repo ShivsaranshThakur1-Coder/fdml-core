@@ -2,10 +2,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial
 .fdml { display: grid; gap: 1rem; }
 .meta .title { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.25rem; }
 .figure-card { border: 1px solid #ddd; padding: 1rem; border-radius: 8px; }
-.figure-card h2 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
-.figure-card h2 .beats { font-weight: 400; font-size: .95rem; opacity: .8; }
+.figure-card h2 { margin: 0 0 0.5rem 0; font-size: 1.1rem; display: flex; gap: .5rem; align-items: baseline; }
+.figure-card h2 .beats { font-weight: 400; font-size: .95rem; opacity: .85; }
 .steps { width: 100%; border-collapse: collapse; font-size: .95rem; }
 .steps th, .steps td { border: 1px solid #eee; padding: .35rem .5rem; text-align: left; }
+.dir { vertical-align: middle; margin-left: .15rem; }
+.dir path, .dir line { stroke: currentColor; fill: currentColor; stroke-width: 2; }
+.dir-uni { margin-left: .15rem; }
 @media print {
   body { margin: 0.5in; }
   .figure-card { page-break-inside: avoid; }

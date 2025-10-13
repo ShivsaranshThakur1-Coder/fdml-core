@@ -39,12 +39,20 @@
 
   <xsl:template name="figureCard">
     <xsl:variable name="beats" select="sum(step/@beats)"/>
+    <xsl:variable name="meterVal" select="/fdml/meta/meter/@value"/>
+    <xsl:variable name="beatsPerBar" select="number(substring-before($meterVal, '/'))"/>
+    <xsl:variable name="bars" select="if (number($beatsPerBar)=number($beatsPerBar) and $beatsPerBar &gt; 0) then ($beats div $beatsPerBar) else ()"/>
     <div class="figure-card">
       <h2>
         <xsl:text>Figure</xsl:text>
         <xsl:if test="@name"><xsl:text>: </xsl:text><xsl:value-of select="@name"/></xsl:if>
         <xsl:if test="@formation"><xsl:text> (</xsl:text><xsl:value-of select="@formation"/><xsl:text>)</xsl:text></xsl:if>
-        <span class="beats"> — Total: <xsl:value-of select="$beats"/> beats</span>
+        <span class="beats">
+          <xsl:text> — Total: </xsl:text><xsl:value-of select="$beats"/><xsl:text> beats</xsl:text>
+          <xsl:if test="$bars">
+            <xsl:text> (~</xsl:text><xsl:value-of select="format-number($bars,'0.##')"/><xsl:text> bars @ </xsl:text><xsl:value-of select="$meterVal"/><xsl:text>)</xsl:text>
+          </xsl:if>
+        </span>
       </h2>
       <table class="steps">
         <thead>
@@ -60,8 +68,17 @@
               <td><xsl:value-of select="@action"/></td>
               <td><xsl:value-of select="@beats"/></td>
               <td><xsl:value-of select="@count"/></td>
-              <td><xsl:value-of select="@startFoot"/><xsl:if test="@endFoot"><xsl:text>→</xsl:text><xsl:value-of select="@endFoot"/></xsl:if></td>
-              <td><xsl:value-of select="@direction"/></td>
+              <td>
+                <xsl:value-of select="@startFoot"/>
+                <xsl:if test="@endFoot"><xsl:text>→</xsl:text><xsl:value-of select="@endFoot"/></xsl:if>
+              </td>
+              <td>
+                <xsl:value-of select="@direction"/>
+                <xsl:text> </xsl:text>
+                <xsl:call-template name="dirIcon">
+                  <xsl:with-param name="d" select="@direction"/>
+                </xsl:call-template>
+              </td>
               <td><xsl:value-of select="@facing"/></td>
               <td><xsl:value-of select="normalize-space(.)"/></td>
             </tr>
@@ -69,6 +86,58 @@
         </tbody>
       </table>
     </div>
+  </xsl:template>
+
+  <xsl:template name="dirIcon">
+    <xsl:param name="d"/>
+    <xsl:variable name="D" select="normalize-space($d)"/>
+    <xsl:choose>
+      <xsl:when test="$D='Left'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="20" y1="12" x2="4" y2="12" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='Right'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="4" y1="12" x2="20" y2="12" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='Fwd'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="12" y1="20" x2="12" y2="4" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='Back'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="12" y1="4" x2="12" y2="20" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='DiagL'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="18" y1="18" x2="6" y2="6" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='DiagR'">
+        <svg class="dir" width="18" height="18" viewBox="0 0 24 24">
+          <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z"/></marker></defs>
+          <line x1="6" y1="18" x2="18" y2="6" marker-end="url(#arrow)"/>
+        </svg>
+      </xsl:when>
+      <xsl:when test="$D='CW'">
+        <span class="dir-uni">↻</span>
+      </xsl:when>
+      <xsl:when test="$D='CCW'">
+        <span class="dir-uni">↺</span>
+      </xsl:when>
+      <xsl:otherwise>
+        <span class="dir-uni"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="section">
