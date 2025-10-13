@@ -1,6 +1,7 @@
 package org.fdml.cli;
 
 import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Main {
@@ -16,13 +17,16 @@ public class Main {
       switch (cmd) {
         case "validate": {
           boolean json = hasFlag(args, "--json");
+          String jsonOut = flagValue(args, "--json-out");
           List<Path> targets = collectNonFlagPaths(args, 1);
           if (targets.isEmpty()) { System.err.println("validate: provide at least one file or directory"); System.exit(EXIT_IO_ERR); }
           Path schemaPath = Paths.get("schema/fdml.xsd");
           FdmlValidator v = new FdmlValidator(schemaPath);
-          if (json) {
-            List<FdmlValidator.Result> r = v.validateCollect(targets);
-            printJsonValidate(r);
+          if (json || jsonOut != null) {
+            var r = v.validateCollect(targets);
+            String payload = toJsonValidate(r);
+            System.out.println(payload);
+            if (jsonOut != null) Files.writeString(Paths.get(jsonOut), payload, StandardCharsets.UTF_8);
             System.exit(allOk(r) ? EXIT_OK : EXIT_VALIDATION_ERR);
           } else {
             boolean ok = v.validatePaths(targets);
@@ -32,13 +36,16 @@ public class Main {
 
         case "validate-sch": {
           boolean json = hasFlag(args, "--json");
+          String jsonOut = flagValue(args, "--json-out");
           List<Path> targets = collectNonFlagPaths(args, 1);
           if (targets.isEmpty()) { System.err.println("validate-sch: provide at least one file or directory"); System.exit(EXIT_IO_ERR); }
           Path schXsl = Paths.get("schematron/fdml-compiled.xsl");
           SchematronValidator sch = new SchematronValidator(schXsl);
-          if (json) {
-            List<SchematronValidator.Result> r = sch.validateCollect(targets);
-            printJsonValidateSch(r);
+          if (json || jsonOut != null) {
+            var r = sch.validateCollect(targets);
+            String payload = toJsonValidateSch(r);
+            System.out.println(payload);
+            if (jsonOut != null) Files.writeString(Paths.get(jsonOut), payload, StandardCharsets.UTF_8);
             System.exit(allOkSch(r) ? EXIT_OK : EXIT_VALIDATION_ERR);
           } else {
             boolean ok = sch.validatePaths(targets);
@@ -48,16 +55,19 @@ public class Main {
 
         case "validate-all": {
           boolean json = hasFlag(args, "--json");
+          String jsonOut = flagValue(args, "--json-out");
           List<Path> targets = collectNonFlagPaths(args, 1);
           if (targets.isEmpty()) { System.err.println("validate-all: provide at least one file or directory"); System.exit(EXIT_IO_ERR); }
           Path schemaPath = Paths.get("schema/fdml.xsd");
           FdmlValidator v = new FdmlValidator(schemaPath);
           Path schXsl = Paths.get("schematron/fdml-compiled.xsl");
           SchematronValidator sch = new SchematronValidator(schXsl);
-          if (json) {
-            List<FdmlValidator.Result> r1 = v.validateCollect(targets);
-            List<SchematronValidator.Result> r2 = sch.validateCollect(targets);
-            printJsonValidateAll(r1, r2);
+          if (json || jsonOut != null) {
+            var r1 = v.validateCollect(targets);
+            var r2 = sch.validateCollect(targets);
+            String payload = toJsonValidateAll(r1, r2);
+            System.out.println(payload);
+            if (jsonOut != null) Files.writeString(Paths.get(jsonOut), payload, StandardCharsets.UTF_8);
             System.exit(allOk(r1) && allOkSch(r2) ? EXIT_OK : EXIT_VALIDATION_ERR);
           } else {
             boolean ok1 = v.validatePaths(targets);
@@ -80,6 +90,23 @@ public class Main {
           System.exit(EXIT_OK);
         }
 
+        case "index": {
+          List<String> rest = new ArrayList<>();
+          Path out = Paths.get("out/index.json");
+          for (int i = 1; i < args.length; i++) {
+            if ("--out".equals(args[i]) && i + 1 < args.length) out = Paths.get(args[++i]);
+            else rest.add(args[i]);
+          }
+          if (rest.isEmpty()) { System.err.println("index: provide <file-or-dir> [more...] [--out path]"); System.exit(EXIT_IO_ERR); }
+          List<Path> targets = new ArrayList<>();
+          for (String r : rest) targets.add(Paths.get(r));
+          String payload = Indexer.buildIndex(targets);
+          System.out.println(payload);
+          Files.createDirectories(out.getParent());
+          Files.writeString(out, payload, StandardCharsets.UTF_8);
+          System.exit(EXIT_OK);
+        }
+
         default: { usage(); System.exit(EXIT_IO_ERR); }
       }
     } catch (Exception e) {
@@ -94,31 +121,31 @@ public class Main {
     return false;
   }
 
+  private static String flagValue(String[] args, String flag) {
+    for (int i = 0; i < args.length - 1; i++) if (flag.equals(args[i])) return args[i+1];
+    return null;
+  }
+
+  // FIX: only skip a value for flags that have one; don't skip after --json
   private static List<Path> collectNonFlagPaths(String[] args, int from) {
     List<Path> t = new ArrayList<>();
     for (int i = from; i < args.length; i++) {
       String a = args[i];
-      if (a.startsWith("--")) continue;
+      if (a.startsWith("--")) {
+        if ("--out".equals(a) || "--json-out".equals(a)) i++; // skip exactly one value
+        continue;
+      }
       t.add(Paths.get(a));
     }
     return t;
   }
 
-  private static boolean allOk(List<FdmlValidator.Result> xs) {
-    for (FdmlValidator.Result r : xs) if (!r.ok) return false;
-    return true;
-  }
-  private static boolean allOkSch(List<SchematronValidator.Result> xs) {
-    for (SchematronValidator.Result r : xs) if (!r.ok) return false;
-    return true;
-  }
+  private static boolean allOk(List<FdmlValidator.Result> xs) { for (var r : xs) if (!r.ok) return false; return true; }
+  private static boolean allOkSch(List<SchematronValidator.Result> xs) { for (var r : xs) if (!r.ok) return false; return true; }
 
-  private static String esc(String s) {
-    if (s == null) return null;
-    return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n","\\n").replace("\r","");
-  }
+  private static String esc(String s) { if (s == null) return null; return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n","\\n").replace("\r",""); }
 
-  private static void printJsonValidate(List<FdmlValidator.Result> rs) {
+  private static String toJsonValidate(List<FdmlValidator.Result> rs) {
     StringBuilder sb = new StringBuilder();
     sb.append("{\"command\":\"validate\",\"results\":[");
     for (int i=0;i<rs.size();i++) {
@@ -133,10 +160,10 @@ public class Main {
       if (i < rs.size()-1) sb.append(",");
     }
     sb.append("]}");
-    System.out.println(sb.toString());
+    return sb.toString();
   }
 
-  private static void printJsonValidateSch(List<SchematronValidator.Result> rs) {
+  private static String toJsonValidateSch(List<SchematronValidator.Result> rs) {
     StringBuilder sb = new StringBuilder();
     sb.append("{\"command\":\"validate-sch\",\"results\":[");
     for (int i=0;i<rs.size();i++) {
@@ -151,13 +178,12 @@ public class Main {
       if (i < rs.size()-1) sb.append(",");
     }
     sb.append("]}");
-    System.out.println(sb.toString());
+    return sb.toString();
   }
 
-  private static void printJsonValidateAll(List<FdmlValidator.Result> r1, List<SchematronValidator.Result> r2) {
+  private static String toJsonValidateAll(List<FdmlValidator.Result> r1, List<SchematronValidator.Result> r2) {
     StringBuilder sb = new StringBuilder();
     sb.append("{\"command\":\"validate-all\",\"xsd\":");
-    // reuse
     StringBuilder sb1 = new StringBuilder();
     sb1.append("[");
     for (int i=0;i<r1.size();i++) {
@@ -188,15 +214,16 @@ public class Main {
     }
     sb2.append("]");
     sb.append(sb2).append("}");
-    System.out.println(sb.toString());
+    return sb.toString();
   }
 
   private static void usage() {
     System.out.println("FDML CLI");
     System.out.println("Usage:");
-    System.out.println("  validate <file-or-dir> [more...] [--json]      # XSD");
-    System.out.println("  validate-sch <file-or-dir> [more...] [--json]  # Schematron");
-    System.out.println("  validate-all <file-or-dir> [...] [--json]      # XSD + Schematron");
-    System.out.println("  render <fdml-file> [--out out.html]            # XSLT → HTML");
+    System.out.println("  validate <file-or-dir> [more...] [--json] [--json-out path]  # XSD");
+    System.out.println("  validate-sch <file-or-dir> [more...] [--json] [--json-out path]  # Schematron");
+    System.out.println("  validate-all <file-or-dir> [...] [--json] [--json-out path]   # XSD + Schematron");
+    System.out.println("  render <fdml-file> [--out out.html]                           # XSLT → HTML");
+    System.out.println("  index  <file-or-dir> [more...] [--out out.json]               # Build JSON index");
   }
 }
