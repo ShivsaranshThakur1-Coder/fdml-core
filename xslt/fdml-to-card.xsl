@@ -24,7 +24,6 @@
         <xsl:if test="meta/tempo/@bpm"><div class="tempo">Tempo: <xsl:value-of select="meta/tempo/@bpm"/> bpm</div></xsl:if>
         <xsl:if test="meta/author"><div class="author"><xsl:value-of select="normalize-space(meta/author)"/></div></xsl:if>
       </div>
-
       <xsl:choose>
         <xsl:when test="body/figure">
           <xsl:for-each select="body/figure">
@@ -39,11 +38,13 @@
   </xsl:template>
 
   <xsl:template name="figureCard">
+    <xsl:variable name="beats" select="sum(step/@beats)"/>
     <div class="figure-card">
       <h2>
         <xsl:text>Figure</xsl:text>
         <xsl:if test="@name"><xsl:text>: </xsl:text><xsl:value-of select="@name"/></xsl:if>
         <xsl:if test="@formation"><xsl:text> (</xsl:text><xsl:value-of select="@formation"/><xsl:text>)</xsl:text></xsl:if>
+        <span class="beats"> — Total: <xsl:value-of select="$beats"/> beats</span>
       </h2>
       <table class="steps">
         <thead>
@@ -59,10 +60,7 @@
               <td><xsl:value-of select="@action"/></td>
               <td><xsl:value-of select="@beats"/></td>
               <td><xsl:value-of select="@count"/></td>
-              <td>
-                <xsl:value-of select="@startFoot"/>
-                <xsl:if test="@endFoot"><xsl:text>→</xsl:text><xsl:value-of select="@endFoot"/></xsl:if>
-              </td>
+              <td><xsl:value-of select="@startFoot"/><xsl:if test="@endFoot"><xsl:text>→</xsl:text><xsl:value-of select="@endFoot"/></xsl:if></td>
               <td><xsl:value-of select="@direction"/></td>
               <td><xsl:value-of select="@facing"/></td>
               <td><xsl:value-of select="normalize-space(.)"/></td>
