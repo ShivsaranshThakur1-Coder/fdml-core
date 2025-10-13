@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
+  <xs:simpleType name="idSection">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="s-[a-z0-9-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="idFigure">
     <xs:restriction base="xs:string">
       <xs:pattern value="f-[a-z0-9-]+"/>
@@ -76,6 +82,14 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:complexType name="sectionType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="idSection" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
   <xs:complexType name="stepType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
@@ -104,19 +118,13 @@
     <xs:sequence>
       <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
       <xs:element name="dance" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:attribute name="name" type="xs:string" use="required"/>
-        </xs:complexType>
+        <xs:complexType><xs:attribute name="name" type="xs:string" use="required"/></xs:complexType>
       </xs:element>
       <xs:element name="meter" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:attribute name="value" type="xs:string" use="required"/>
-        </xs:complexType>
+        <xs:complexType><xs:attribute name="value" type="xs:string" use="required"/></xs:complexType>
       </xs:element>
       <xs:element name="tempo" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:attribute name="bpm" type="xs:positiveInteger" use="required"/>
-        </xs:complexType>
+        <xs:complexType><xs:attribute name="bpm" type="xs:positiveInteger" use="required"/></xs:complexType>
       </xs:element>
       <xs:element name="author" minOccurs="0" maxOccurs="1">
         <xs:complexType>
@@ -132,7 +140,7 @@
 
   <xs:complexType name="bodyType">
     <xs:choice minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="section" type="xs:string"/>
+      <xs:element name="section" type="sectionType"/>
       <xs:element name="figure" type="figureType"/>
     </xs:choice>
   </xs:complexType>
