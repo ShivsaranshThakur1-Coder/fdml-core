@@ -21,3 +21,15 @@
 ./bin/fdml validate-all corpus/valid --json
 ./bin/fdml render corpus/valid/example-01.fdml.xml --out out/example-01.html
 ~~~
+
+## Sequences
+FDML supports assembling routines via `<sequence>`:
+```xml
+<body>
+  <figure id="f-basic">…</figure>
+  <figure id="f-turn">…</figure>
+  <sequence name="Teaching Set">
+    <use figure="f-basic" repeat="2"/>
+    <use figure="f-turn" repeat="2"/>
+  </sequence>
+</body>
