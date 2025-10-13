@@ -16,5 +16,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: CI placeholder
-        run: make ci
+      - name: Build + validate corpus
+        run: |
+          mvn -q -DskipTests package
+          java -jar target/fdml-core.jar validate corpus/valid corpus/invalid

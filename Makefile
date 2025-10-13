@@ -1,16 +1,24 @@
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Targets: help, ci, validate, build, test"
-
-ci:
-	@echo "CI placeholder - validate/build/test will be wired in next steps"
-
-validate:
-	@echo "TODO: XSD + Schematron validation"
+	@echo "Targets: help, build, validate, validate-sch, validate-all, render, test, ci"
 
 build:
-	@echo "TODO: Java CLI build"
+	mvn -q -DskipTests package
+
+validate: build
+	java -jar target/fdml-core.jar validate corpus/valid
+
+validate-sch: build
+	java -jar target/fdml-core.jar validate-sch corpus/valid
+
+validate-all: build
+	java -jar target/fdml-core.jar validate-all corpus/valid
+
+render: build
+	java -jar target/fdml-core.jar render corpus/valid/example-01.fdml.xml --out out/example-01.html
 
 test:
-	@echo "TODO: unit/snapshot/e2e/perf"
+	mvn -q test
+
+ci: validate
