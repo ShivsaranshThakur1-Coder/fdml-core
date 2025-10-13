@@ -21,4 +21,12 @@ render: build
 test:
 	mvn -q test
 
-ci: validate
+ci: build
+	@echo "✓ XSD: valid corpus should pass"
+	java -jar target/fdml-core.jar validate corpus/valid
+	@echo "✓ Schematron: valid corpus should pass"
+	java -jar target/fdml-core.jar validate-sch corpus/valid
+	@echo "✓ XSD: invalid corpus should fail (expected non-zero)"
+	@if java -jar target/fdml-core.jar validate corpus/invalid; then echo "Expected invalid corpus to fail, but it passed"; exit 1; else echo "Invalid corpus correctly failed"; fi
+	@echo "✓ Tests"
+	mvn -q test

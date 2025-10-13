@@ -6,6 +6,16 @@ import java.nio.file.*;
 import java.util.*;
 
 class SchematronValidator {
+  static class Result {
+    final Path file;
+    final boolean ok;
+    final int failures;
+    final List<String> messages;
+    Result(Path file, boolean ok, int failures, List<String> messages) {
+      this.file = file; this.ok = ok; this.failures = failures; this.messages = messages;
+    }
+  }
+
   private final Processor proc;
   private final XsltExecutable compiledSchematron;
 
@@ -19,29 +29,29 @@ class SchematronValidator {
     }
   }
 
-  boolean validatePaths(List<Path> paths) {
-    List<Path> files = new ArrayList<>();
-    for (Path p : paths) files.addAll(expand(p));
-    boolean allOk = true;
-    for (Path f : files) {
-      boolean ok = validateFile(f);
-      allOk = allOk && ok;
-    }
-    System.out.printf("Schematron checked %d file(s).%n", files.size());
-    return allOk;
-  }
-
-  private List<Path> expand(Path p) {
-    List<Path> out = new ArrayList<>();
-    try {
-      if (Files.isDirectory(p)) {
-        Files.walk(p).filter(Files::isRegularFile).forEach(out::add);
-      } else out.add(p);
-    } catch (Exception e) { throw new RuntimeException(e); }
+  List<Result> validateCollect(List<Path> inputs) {
+    List<Path> files = expandAll(inputs);
+    List<Result> out = new ArrayList<>();
+    for (Path f : files) out.add(validateFile(f));
     return out;
   }
 
-  private boolean validateFile(Path xml) {
+  boolean validatePaths(List<Path> inputs) {
+    List<Result> results = validateCollect(inputs);
+    boolean allOk = true;
+    for (Result r : results) {
+      if (r.ok) System.out.println("SCH OK  : " + r.file);
+      else {
+        System.out.println("SCH FAIL: " + r.file + " (" + r.failures + " failure(s))");
+        if (!r.messages.isEmpty()) System.out.println("  \u2192 " + String.join(" | ", r.messages));
+      }
+      allOk &= r.ok;
+    }
+    System.out.printf("Schematron checked %d file(s).%n", results.size());
+    return allOk;
+  }
+
+  private Result validateFile(Path xml) {
     try {
       XsltTransformer t = compiledSchematron.load();
       XdmDestination dest = new XdmDestination();
@@ -53,20 +63,27 @@ class SchematronValidator {
       xpc.declareNamespace("svrl","http://purl.oclc.org/dsdl/svrl");
 
       XdmNode svrl = dest.getXdmNode();
-      XdmValue failures = xpc.evaluate("//svrl:failed-assert", svrl);
+      XdmValue failed = xpc.evaluate("//svrl:failed-assert", svrl);
+      int count = failed.size();
 
-      if (failures.size() == 0) {
-        System.out.println("SCH OK  : " + xml);
-        return true;
-      } else {
-        System.out.println("SCH FAIL: " + xml + " (" + failures.size() + " failure(s))");
-        XdmValue msgs = xpc.evaluate("string-join(//svrl:failed-assert/svrl:text, ' | ')", svrl);
-        System.out.println("  → " + msgs.toString());
-        return false;
-      }
+      List<String> msgs = new ArrayList<>();
+      XdmValue texts = xpc.evaluate("//svrl:failed-assert/svrl:text/string()", svrl);
+      for (XdmItem i : texts) msgs.add(i.getStringValue());
+
+      return new Result(xml, count == 0, count, msgs);
     } catch (Exception e) {
-      System.out.println("SCH ERR : " + xml + " : " + e.getMessage());
-      return false;
+      return new Result(xml, false, 1, List.of("Schematron error: " + e.getMessage()));
     }
+  }
+
+  private List<Path> expandAll(List<Path> inputs) {
+    List<Path> out = new ArrayList<>();
+    for (Path p : inputs) {
+      try {
+        if (Files.isDirectory(p)) Files.walk(p).filter(Files::isRegularFile).forEach(out::add);
+        else out.add(p);
+      } catch (Exception e) { throw new RuntimeException(e); }
+    }
+    return out;
   }
 }
