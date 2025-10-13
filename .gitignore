@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Java/Maven/Gradle (future steps)
+target/
+.build/
+.gradle/
