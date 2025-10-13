@@ -2,9 +2,9 @@
 <fdml version="1.0">
   <meta>
     <title>Valid FDML with sections</title>
-    <author email="alice@example.com">Alice</author>
     <meter value="4/4"/>
     <tempo bpm="112"/>
+    <author email="alice@example.com">Alice</author>
   </meta>
   <body>
     <section id="s-intro">Intro</section>
