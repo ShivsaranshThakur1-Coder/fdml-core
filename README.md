@@ -25,3 +25,10 @@ Implementation of the FDML project: schema + validation (XSD + Schematron), tran
 Build once:
 ```bash
 mvn -q -DskipTests package
+## Install (Homebrew)
+
+~~~bash
+brew tap ShivsaranshThakur1-Coder/fdml
+brew install fdml
+~~~
+
