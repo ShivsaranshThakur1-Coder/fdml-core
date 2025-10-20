@@ -15,25 +15,31 @@ jobs:
       - name: Validate valid corpus (should pass)
         shell: bash
         run: |
-          mapfile -t files < <(find corpus/valid -type f -name '*.xml' | sort)
-          echo "Valid files: ${#files[@]}"
-          for f in "${files[@]}"; do
+          tmp=$(mktemp)
+          find corpus/valid -type f -name '*.xml' | sort > "$tmp"
+          count=$(wc -l < "$tmp" | tr -d ' ')
+          echo "Valid files: $count"
+          while IFS= read -r f; do
             echo "::group::valid $f"
             fdml validate "$f"
             echo "::endgroup::"
-          done
+          done < "$tmp"
+          rm -f "$tmp"
       - name: Validate invalid corpus (should fail)
         shell: bash
         run: |
-          mapfile -t files < <(find corpus/invalid -type f -name '*.xml' | sort)
-          echo "Invalid files: ${#files[@]}"
+          tmp=$(mktemp)
+          find corpus/invalid -type f -name '*.xml' | sort > "$tmp"
+          count=$(wc -l < "$tmp" | tr -d ' ')
+          echo "Invalid files: $count"
           failures=0
-          for f in "${files[@]}"; do
+          while IFS= read -r f; do
             echo "::group::invalid $f"
             if fdml validate "$f"; then
               echo "EXPECTED FAILURE but got success: $f"
               failures=$((failures+1))
             fi
             echo "::endgroup::"
-          done
+          done < "$tmp"
+          rm -f "$tmp"
           test $failures -eq 0
