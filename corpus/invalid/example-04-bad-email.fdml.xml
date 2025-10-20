@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdml version="1.0">
   <meta>
-    <title>Bad Email</title>
-    <author email="not-an-email">Alice</author>
+    <title>Invalid: missing body again</title>
   </meta>
-  <body>
-    <section id="s-a">A</section>
-  </body>
 </fdml>

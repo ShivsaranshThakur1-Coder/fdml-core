@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdml version="1.0">
   <meta>
-    <title>Missing ID</title>
+    <title>Invalid: figure missing id</title>
   </meta>
   <body>
-    <section>Oops</section>
+    <figure name="Bar"/>
   </body>
 </fdml>

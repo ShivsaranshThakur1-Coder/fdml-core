@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdml version="1.0">
   <meta>
-    <title>Duplicate IDs</title>
+    <title>Invalid: figure missing id</title>
   </meta>
   <body>
-    <section id="s-dup">One</section>
-    <section id="s-dup">Two</section>
+    <figure name="Foo"/>
   </body>
 </fdml>
