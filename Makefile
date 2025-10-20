@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: ci validate-valid validate-invalid
+.PHONY: ci validate-valid validate-invalid json
 
 ci: validate-valid validate-invalid
 
@@ -21,3 +21,11 @@ validate-invalid:
 			failures=$$((failures+1)); \
 		fi; \
 	done < $$tmp; rm -f $$tmp; test $$failures -eq 0
+
+json:
+	@set -e; out=out/json; mkdir -p $$out; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+	while IFS= read -r f; do \
+		base=$$(basename "$$f"); stem=$${base%.xml}; \
+		echo "JSON   $$out/$$stem.json"; \
+		fdml validate "$$f" --json --json-out "$$out/$$stem.json"; \
+	done < $$tmp; rm -f $$tmp
