@@ -13,3 +13,9 @@ jobs:
       - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
       - run: brew install fdml libxslt
       - run: make html
+      - name: Archive HTML
+        run: tar -czf out-html.tgz -C out/html .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: html-cards
+          path: out-html.tgz
