@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdml version="1.0">
-  <meta><title>Bad Use Ref</title></meta>
-  <body>
-    <figure id="f-ok"><step who="both" action="X" beats="1" startFoot="L"/></figure>
-    <sequence><use figure="f-missing"/></sequence>
-  </body>
+  <meta>
+    <title>Invalid: missing body</title>
+  </meta>
 </fdml>
