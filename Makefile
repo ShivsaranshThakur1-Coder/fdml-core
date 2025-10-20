@@ -1,55 +1,23 @@
-.DEFAULT_GOAL := help
+SHELL := /bin/bash
 
-help:
-	@echo "Targets: help, build, validate, validate-sch, validate-all, render, export-pdf, index, lint, lint-strict, init-demo, doctor, pdfs, docs, test, ci"
+.PHONY: ci validate-valid validate-invalid
 
-build:
-	mvn -q -DskipTests package
+ci: validate-valid validate-invalid
 
-validate: build
-	java -jar target/fdml-core.jar validate corpus/valid
+validate-valid:
+	@set -e; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+	while IFS= read -r f; do \
+		echo "VALID  $$f"; \
+		fdml validate "$$f"; \
+	done < $$tmp; rm -f $$tmp
 
-validate-sch: build
-	java -jar target/fdml-core.jar validate-sch corpus/valid
-
-validate-all: build
-	java -jar target/fdml-core.jar validate-all corpus/valid
-
-render: build
-	java -jar target/fdml-core.jar render corpus/valid/example-01.fdml.xml --out out/example-01.html
-
-export-pdf: build
-	java -jar target/fdml-core.jar export-pdf corpus/valid/example-01.fdml.xml --out out/example-01.pdf
-
-index: build
-	java -jar target/fdml-core.jar index corpus/valid --out out/index.json
-	@echo "Index written to out/index.json"
-
-lint: build
-	java -jar target/fdml-core.jar lint corpus/valid
-
-lint-strict: build
-	java -jar target/fdml-core.jar lint corpus/valid --strict
-
-init-demo: build
-	java -jar target/fdml-core.jar init corpus/valid/example-08-init.fdml.xml --title "Demo Init" --dance "Demo" --meter 3/4 --tempo 96 --figure-id f-demo --figure-name "Demo Figure" --formation circle
-
-doctor: build
-	java -jar target/fdml-core.jar doctor corpus
-
-pdfs: build
-	./scripts/gen_examples.sh
-
-docs: build
-	./scripts/gen_examples.sh
-	@echo "Docs generated in docs/examples/ and PDFs in docs/pdfs/"
-
-test:
-	mvn -q test
-
-ci: build
-	java -jar target/fdml-core.jar validate corpus/valid
-	java -jar target/fdml-core.jar validate-sch corpus/valid
-	set +e; java -jar target/fdml-core.jar validate corpus/invalid; s=$$?; if [ $$s -eq 0 ]; then echo "Expected invalid corpus to fail XSD, but it passed"; exit 1; else echo "Invalid corpus correctly failed XSD"; fi
-	set +e; java -jar target/fdml-core.jar validate-sch corpus/invalid; s=$$?; if [ $$s -eq 0 ]; then echo "Expected invalid corpus to fail Schematron, but it passed"; exit 1; else echo "Invalid corpus correctly failed Schematron"; fi
-	mvn -q test
+validate-invalid:
+	@set -e; tmp=$$(mktemp); find corpus/invalid -type f -name '*.xml' | sort > $$tmp; \
+	failures=0; \
+	while IFS= read -r f; do \
+		echo "INVALID $$f"; \
+		if fdml validate "$$f"; then \
+			echo "EXPECTED FAILURE but got success: $$f"; \
+			failures=$$((failures+1)); \
+		fi; \
+	done < $$tmp; rm -f $$tmp; test $$failures -eq 0

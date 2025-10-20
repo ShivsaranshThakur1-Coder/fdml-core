@@ -42,3 +42,9 @@ fdml validate song.fdml.xml
 fdml validate corpus/valid/*.xml
 fdml validate song.fdml.xml --json --json-out result.json
 ```
+
+## Local CI
+
+```bash
+make ci
+```
