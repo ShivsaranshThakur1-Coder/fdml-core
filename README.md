@@ -48,3 +48,10 @@ fdml validate song.fdml.xml --json --json-out result.json
 ```bash
 make ci
 ```
+
+## Render
+
+```bash
+make html
+open out/html/example-01.fdml.html
+```

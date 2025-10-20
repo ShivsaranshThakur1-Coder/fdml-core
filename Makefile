@@ -29,3 +29,10 @@ json:
 		echo "JSON   $$out/$$stem.json"; \
 		fdml validate "$$f" --json --json-out "$$out/$$stem.json"; \
 	done < $$tmp; rm -f $$tmp
+html:
+	@set -e; out=out/html; mkdir -p $$out; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+	while IFS= read -r f; do \
+		base=$$(basename "$$f"); stem=$${base%.xml}; \
+		echo "HTML  $$out/$$stem.html"; \
+		xsltproc xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
+	done < $$tmp; rm -f $$tmp
