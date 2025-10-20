@@ -2,6 +2,7 @@ name: fdml-validate
 on:
   push:
   pull_request:
+  workflow_dispatch:
 jobs:
   validate:
     runs-on: macos-latest
@@ -12,9 +13,10 @@ jobs:
       - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
       - run: brew install fdml
       - name: Validate valid corpus (should pass)
+        shell: bash
         run: |
           shopt -s nullglob
-          files=(corpus/valid/**/*.xml corpus/valid/*.xml)
+          mapfile -t files < <(find corpus/valid -type f -name '*.xml')
           echo "Valid files: ${#files[@]}"
           for f in "${files[@]}"; do
             echo "::group::valid $f"
@@ -22,9 +24,10 @@ jobs:
             echo "::endgroup::"
           done
       - name: Validate invalid corpus (should fail)
+        shell: bash
         run: |
           shopt -s nullglob
-          files=(corpus/invalid/**/*.xml corpus/invalid/*.xml)
+          mapfile -t files < <(find corpus/invalid -type f -name '*.xml')
           echo "Invalid files: ${#files[@]}"
           failures=0
           for f in "${files[@]}"; do

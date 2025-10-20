@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>   </title>
+  </meta>
+  <body>
+    <section id="s-one">Has section but empty title</section>
+  </body>
+</fdml>
