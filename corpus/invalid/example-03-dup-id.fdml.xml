@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdml version="1.0">
   <meta>
-    <title>Invalid: figure missing id</title>
+    <title>Invalid (no body)</title>
   </meta>
-  <body>
-    <figure name="Foo"/>
-  </body>
 </fdml>
