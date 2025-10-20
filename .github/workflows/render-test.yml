@@ -1,0 +1,15 @@
+name: render-test
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+jobs:
+  render:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
+      - run: brew update-reset
+      - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
+      - run: brew install fdml libxslt
+      - run: make html
