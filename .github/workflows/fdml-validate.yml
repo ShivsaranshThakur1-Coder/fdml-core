@@ -1,0 +1,38 @@
+name: fdml-validate
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
+      - run: brew update-reset
+      - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
+      - run: brew install fdml
+      - name: Validate valid corpus (should pass)
+        run: |
+          shopt -s nullglob
+          files=(corpus/valid/**/*.xml corpus/valid/*.xml)
+          echo "Valid files: ${#files[@]}"
+          for f in "${files[@]}"; do
+            echo "::group::valid $f"
+            fdml validate "$f"
+            echo "::endgroup::"
+          done
+      - name: Validate invalid corpus (should fail)
+        run: |
+          shopt -s nullglob
+          files=(corpus/invalid/**/*.xml corpus/invalid/*.xml)
+          echo "Invalid files: ${#files[@]}"
+          failures=0
+          for f in "${files[@]}"; do
+            echo "::group::invalid $f"
+            if fdml validate "$f"; then
+              echo "EXPECTED FAILURE but got success: $f"
+              failures=$((failures+1))
+            fi
+            echo "::endgroup::"
+          done
+          test $failures -eq 0
