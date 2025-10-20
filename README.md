@@ -1,3 +1,5 @@
+[![render-test](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml)
+
 [![fdml-validate](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml)
 
 # FDML Core
