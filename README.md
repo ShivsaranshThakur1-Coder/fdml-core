@@ -1,3 +1,5 @@
+[![fdml-validate](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml)
+
 # FDML Core
 
 Implementation of the FDML project: schema + validation (XSD + Schematron), transforms (XSLT), sample corpus, and test/CI scaffolding.
@@ -32,3 +34,11 @@ brew tap ShivsaranshThakur1-Coder/fdml
 brew install fdml
 ~~~
 
+## Quick Start
+
+```bash
+fdml init song.fdml.xml --title "My Dance" --meter 3/4 --tempo 96 --figure-id f-1 --figure-name Intro
+fdml validate song.fdml.xml
+fdml validate corpus/valid/*.xml
+fdml validate song.fdml.xml --json --json-out result.json
+```
