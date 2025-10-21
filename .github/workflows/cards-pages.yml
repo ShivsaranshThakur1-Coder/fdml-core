@@ -1,11 +1,14 @@
 name: cards-pages
 on:
   workflow_dispatch:
+  # publish when these change in fdml-core
   push:
     paths:
       - 'corpus/**'
       - 'xslt/**'
       - 'Makefile'
+      - 'docs/style.css'
+      - 'scripts/build_index*.sh'
       - '.github/workflows/cards-pages.yml'
 permissions:
   contents: read
@@ -22,12 +25,12 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@master
       - run: brew update-reset
       - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
-      - run: brew install fdml libxslt
+      - run: brew install fdml
       - run: make html
       - run: bash scripts/build_index.sh
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out/html
+          path: site
   deploy:
     needs: build
     runs-on: ubuntu-latest
