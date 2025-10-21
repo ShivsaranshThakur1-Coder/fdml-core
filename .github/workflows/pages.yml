@@ -1,8 +1,13 @@
-name: Pages
-
+name: pages
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "docs/**"
+      - "xslt/**"
+      - "corpus/**"
+      - ".github/workflows/pages.yml"
+      - "README.md"
   workflow_dispatch:
 
 permissions:
@@ -16,30 +21,58 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Java 17
-        uses: actions/setup-java@v4
+      - uses: Homebrew/actions/setup-homebrew@master
         with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build & generate examples + PDFs
+          stable: false
+          core: false
+          cask: false
+      - name: Install toolchain
         run: |
-          mvn -q -DskipTests package
-          ./scripts/gen_examples.sh
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          brew update-reset
+          brew tap ShivsaranshThakur1-Coder/homebrew-fdml
+          brew install fdml libxslt
+      - name: Build site
+        shell: bash
+        run: |
+          rm -rf site
+          mkdir -p site/cards
+          if [ -d docs ]; then rsync -a --delete docs/ site/; fi
+          cat > site/cards/index.html <<'HTML'
+<!doctype html><meta charset="utf-8"><title>FDML Cards</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+<h1>FDML Cards</h1>
+<ul>
+  <li><a href="example-01.fdml.html">example-01.fdml.html</a></li>
+  <li><a href="example-02.fdml.html">example-02.fdml.html</a></li>
+  <li><a href="example-03.fdml.html">example-03.fdml.html</a></li>
+  <li><a href="example-04.fdml.html">example-04.fdml.html</a></li>
+  <li><a href="example-05-contra.fdml.html">example-05-contra.fdml.html</a></li>
+  <li><br></li>
+  <li><a href="example-06-square.fdml.html">example-06-square.fdml.html</a></li>
+  <li><a href="example-07-mixer.fdml.html">example-07-mixer.fdml.html</a></li>
+  <li><a href="example-08-init.fdml.html">example-08-init.fdml.html</a></li>
+  <li><br></li>
+  <li><a href="../index.html">Back to Documentation</a></li>
+</ul>
+HTML
+          shopt -s nullglob
+          for f in corpus/valid/*.xml; do
+            base="$(basename "$f" .xml)"
+            xsltproc xslt/card.xsl "$f" > "site/cards/${base}.html"
+          done
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: site
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+      url: ${{ steps.deploy.outputs.page_url }}
     needs: build
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deploy
         uses: actions/deploy-pages@v4
