@@ -36,3 +36,6 @@ html:
 		echo "HTML  $$out/$$stem.html"; \
 		xsltproc xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
 	done < $$tmp; rm -f $$tmp
+package: json html
+	@set -e; mkdir -p out; rm -f out/fdml-demo.zip; \
+	cd out && zip -r fdml-demo.zip html json >/dev/null
