@@ -1,43 +1,50 @@
 #!/usr/bin/env bash
 set -euo pipefail
-V="${1:-nocache}"
-mkdir -p site site/cards
+V="${1:-$EPOCHSECONDS}"
+rm -rf site
+mkdir -p site/cards
 cp -f docs/style.css site/style.css
-cp -f docs/style.css site/cards/style.css
-cp -f out/html/*.html site/ || true
-cp -f out/html/*.html site/cards/ || true
+cp -f out/html/*.html site/cards/
 
-ROOT_LIST=$(for f in out/html/*.html; do b=$(basename "$f"); printf '<li><a class="card" href="%s">%s</a></li>\n' "$b" "$b"; done)
-CARDS_LIST=$(for f in out/html/*.html; do b=$(basename "$f"); printf '<li><a class="card" href="cards/%s">%s</a></li>\n' "$b" "$b"; done)
-
+# Build a single “cards” grid homepage
 cat > site/index.html <<HTML
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>FDML – Examples</title>
-<link rel="stylesheet" href="style.css?$V"/>
-</head><body>
-<header class="site-head"><div class="container">
-  <a class="brand" href="./">FDML</a>
-  <nav class="nav"><a href="./index.html">Examples</a>
-  <a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core" target="_blank" rel="noopener">GitHub</a></nav>
-</div></header>
+<link rel="stylesheet" href="style.css?v=${V}">
+</head>
+<body>
+<header class="site-head">
+  <div class="container">
+    <a class="brand" href="./">FDML</a>
+    <nav class="nav">
+      <a href="./index.html">Home</a>
+      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+    </nav>
+  </div>
+</header>
 <main class="container">
-  <section class="hero"><h1>Folk Dance Markup Library</h1>
-  <p class="sub">Browse working examples of structured dance notation.</p></section>
-
-  <h2>Examples (root)</h2>
+  <div class="hero">
+    <h1>Folk Dance Markup Library</h1>
+    <p class="sub">Curated, validated examples rendered as clean, printable cards.</p>
+  </div>
   <ul class="grid">
-$ROOT_LIST
+HTML
+for p in site/cards/*.html; do
+  b="$(basename "$p")"
+  title="$(grep -m1 -oE '<h1[^>]*>[^<]+' "$p" | sed -E 's#<[^>]+>##g')"
+  printf '    <li><a class="card" href="cards/%s"><strong>%s</strong><div class="sub">%s</div></a></li>\n' "$b" "$title" "$b" >> site/index.html
+done
+cat >> site/index.html <<'HTML'
   </ul>
-
-  <h2>Examples under <span class="muted">/cards/</span></h2>
-  <ul class="grid">
-$CARDS_LIST
-  </ul>
+  <footer><div class="container">
+    <span class="muted">©</span> <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder">Shivsaransh Thakur</a> ·
+    <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">Source</a>
+  </div></footer>
 </main>
-<footer><div class="container">© $(date +%Y) FDML</div></footer>
 </body></html>
 HTML
-
-sed -i '' -e 's#href="../index\.html"#href="index.html"#g' site/*.html 2>/dev/null || true
-cp -f site/index.html site/cards/index.html
+echo "Site built → site/ (with cards/ and polished index)"
