@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes"/>
   <xsl:param name="cssVersion" select="'nocache'"/>
 
@@ -11,8 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="color-scheme" content="dark light"/>
         <title>FDML: <xsl:value-of select="/fdml/meta/title"/></title>
-        <link rel="stylesheet" href="{concat('style.css?', $thisVersion)}"/>
-        <xsl:variable name="thisVersion" select="$cssVersion"/>
+        <link rel="stylesheet" href="{concat('style.css?', $cssVersion)}"/>
       </head>
       <body>
         <header class="site-head">
@@ -31,7 +29,7 @@
             <p class="sub">
               <span>Meter <code><xsl:value-of select="/fdml/meta/meter"/></code></span>
               &#160;•&#160;
-              <span>Tempo <xsl:text> </xsl:text><code><xsl:value-of select="/fdml/meta/tempo"/></code></span>
+              <span>Tempo <code><xsl:value-of select="/fdml/meta/tempo"/></code></span>
             </p>
 
             <xsl:if test="/fdml/body/figure">
@@ -42,15 +40,9 @@
                 <tbody>
                   <xsl:for-each select="/fdml/body/figure">
                     <tr>
-                      <td>
-                        <button class="chip copy-btn" data-copy="{@id}" title="Copy ID">
-                          <code><xsl:value-of select="@id"/></code>
-                          <span class="copy-icon">⧉</span>
-                        </button>
-                      </td>
+                      <td><span class="chip"><code><xsl:value-of select="@id"/></code></span></td>
                       <td><xsl:value-of select="@name"/></td>
                     </tr>
-                  </tr>
                   </xsl:for-each>
                 </tbody>
               </table>
@@ -62,17 +54,6 @@
         </main>
 
         <footer><div class="container">© <xsl:value-of select="substring-before(/fdml/meta/date,'-')"/> FDML</div></footer>
-
-        <script>
-        document.addEventListener('click', function(e){
-          var btn = e.target.closest('[data-copy]');
-          if(!btn) return;
-          var txt = btn.getAttribute('data-copy') || '';
-          if (navigator.clipboard) { navigator.clipboard.writeText(txt); }
-          btn.classList.add('copied');
-          setTimeout(function(){ btn.classList.remove('copied'); }, 1200);
-        });
-        </script>
       </body>
     </html>
   </xsl:template>
