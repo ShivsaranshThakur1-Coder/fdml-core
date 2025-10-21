@@ -1,9 +1,58 @@
-          body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:2rem;max-width:900px}
-          .card{border:1px solid #e5e7eb;border-radius:14px;padding:1.25rem;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-          h1{margin:0 0 .25rem 0;font-size:1.6rem}
-          .sub{color:#6b7280;margin:0 0 1rem 0}
-          table{width:100%;border-collapse:collapse;margin-top:.5rem}
-          th,td{padding:.5rem;border-bottom:1px solid #f1f5f9;text-align:left}
-          th{color:#334155;font-weight:600;background:#f8fafc}
-          .meta{margin:.5rem 0 0 0;color:#475569}
-          code{background:#f1f5f9;padding:.1rem .4rem;border-radius:6px}
+/* FDML – richer light theme */
+:root{
+  --bg:#0b1020;         /* page background */
+  --panel:#0f172a;      /* card background */
+  --ink:#e5e7eb;        /* main text */
+  --muted:#9aa4b2;      /* secondary text */
+  --accent:#22c55e;     /* accent color */
+  --border:#1f2937;     /* subtle borders */
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+  background:var(--bg);
+  color:var(--ink);
+}
+.container{max-width:960px;margin:56px auto;padding:0 24px}
+.hero{
+  background:linear-gradient(90deg,#0ea5e9, #22c55e);
+  color:#0b1020;
+  padding:18px 24px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:.2px;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px 28px 24px;
+  margin-top:16px;
+  box-shadow:0 12px 28px rgba(2,6,23,.35);
+}
+h1{margin:0 0 12px;font-size:28px;font-weight:700}
+.sub{color:var(--muted);margin:.25rem 0 1.25rem}
+table{width:100%;border-collapse:separate;border-spacing:0}
+thead th{
+  text-align:left;
+  background:#0a0f1e;
+  color:var(--ink);
+  font-weight:600;
+  padding:10px 14px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+}
+tbody tr{background:var(--panel)}
+tbody tr+tr td{border-top:1px solid var(--border)}
+td{padding:10px 14px}
+code{
+  background:rgba(229,231,235,.08);
+  padding:.15rem .45rem;
+  border-radius:6px;
+  font:500 .95rem ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
