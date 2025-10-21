@@ -1,55 +1,81 @@
 :root{
-  --bg:#0b1020;--panel:#0f172a;--ink:#e5e7eb;--muted:#9aa4b2;--accent:#22c55e;--border:#1f2937;
-  --ring:0 0 0 3px rgba(34,197,94,.25)
+  --bg: #0b1020;
+  --panel: #0f172a;
+  --ink: #e5e7eb;
+  --muted: #9aa4b2;
+  --accent: #22c55e;
+  --border: #1f2937;
+  --radius: 14px;
+  --shadow-sm: 0 8px 20px rgba(2,6,23,.25);
 }
 @media (prefers-color-scheme: light){
-  :root{--bg:#0b1020;--panel:#f8fafc;--ink:#0f172a;--muted:#475569;--accent:#2563eb;--border:#e5e7eb}
+  :root{
+    --bg: #f7f8fb;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --accent: #2563eb;
+    --border: #e5e7eb;
+  }
 }
 *{box-sizing:border-box}
+html{color-scheme:dark light}
 html,body{height:100%}
 body{
   margin:0;
-  font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
-  background:var(--bg);color:var(--ink)
-}
-.container{max-width:980px;margin:56px auto;padding:0 24px}
-.hero{
-  background:linear-gradient(90deg,#0b1020,rgba(34,197,94,.08));
-  border:1px solid var(--border);
+  font:16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+  background:var(--bg);
   color:var(--ink);
-  padding:18px 22px;border-radius:16px;margin:0 0 18px 0
 }
-h1{margin:0 0 8px 0;font-size:28px;font-weight:700;letter-spacing:.2px}
-.sub{color:var(--muted);margin:.75rem 0 1.25rem 0}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+.site-head{
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:saturate(140%) blur(10px);
+  background:color-mix(in oklab, var(--bg), transparent 35%);
+  border-bottom:1px solid var(--border);
+}
+.site-head .container{display:flex;align-items:center;justify-content:space-between;padding:12px 24px}
+.brand{font-weight:700;color:var(--ink);text-decoration:none}
+.nav a{color:var(--muted);margin-left:16px;text-decoration:none}
+.nav a:hover{color:var(--ink)}
+.hero{
+  margin:88px 0 16px;
+  padding:20px 24px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:linear-gradient(90deg, rgba(11,16,32,.9), rgba(34,197,94,.08));
+  color:var(--ink)
+}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px}
+h2{font-size:20px;margin:0 0 12px}
+.sub{color:var(--muted);margin:8px 0 18px}
 .card{
   background:var(--panel);
   border:1px solid var(--border);
-  border-radius:16px;
-  padding:22px 24px;
-  margin-top:16px;
-  box-shadow:0 1px 2px rgba(2,6,23,.35)
+  border-radius:var(--radius);
+  padding:24px;
+  margin:24px 0;
+  box-shadow:var(--shadow-sm);
 }
-.meta{margin:.75rem 0 0 0;color:var(--muted)}
-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px}
-thead th{
-  text-align:left;background:rgba(148,163,184,.08);
-  color:var(--ink);font-weight:600;border-bottom:1px solid var(--border);padding:12px
-}
-tbody td{
-  padding:12px;border-bottom:1px solid var(--border)
-}
-tbody tr:last-child td{border-bottom:none}
-code{
-  background:rgba(148,163,184,.14);
-  padding:.16rem .44rem;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace
-}
-a{color:var(--accent);text-decoration:none}
+.spec{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px}
+.spec thead th{background:rgba(148,163,184,.10);color:var(--ink);text-align:left;padding:12px;border-bottom:1px solid var(--border)}
+.spec td{padding:12px;border-bottom:1px solid var(--border)}
+.spec tr:nth-child(odd) td{background:rgba(148,163,184,.06)}
+code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Ubuntu Mono", Consolas, monospace; font-size:.95em; background:rgba(148,163,184,.15); padding:.1rem .4rem; border-radius:6px}
+a{color:var(--accent); text-decoration:none}
 a:hover{text-decoration:underline}
-ul{line-height:1.9}
-@media (prefers-reduced-motion: reduce){
-  *{animation:none!important;transition:none!important}
-}
+a.muted{color:var(--muted)}
+/* index list */
+ul.doc-list{list-style:none;padding:0;margin:0}
+ul.doc-list li{padding:10px 0;border-bottom:1px dashed var(--border)}
+ul.doc-list li:last-child{border-bottom:none}
+ul.doc-list a{color:var(--ink)}
+ul.doc-list a:hover{color:var(--accent)}
+/* focus states */
+:where(a, button, [tabindex]):focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+/* print */
 @media print{
+  .site-head,.hero{display:none}
   body{background:#fff;color:#000}
-  .card{box-shadow:none;border-color:#999}
+  .card{box-shadow:none;border:none;padding:0}
 }
