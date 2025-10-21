@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
-shopt -s nullglob
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="$ROOT/site"
+OUT=site
 rm -rf "$OUT"
 mkdir -p "$OUT/cards"
-cp -a "$ROOT"/out/html/*.html "$OUT/" || true
-cp -a "$ROOT"/out/html/*.html "$OUT/cards/" || true
-install -m 0644 "$ROOT/docs/style.css" "$OUT/style.css"
-install -m 0644 "$ROOT/docs/style.css" "$OUT/cards/style.css"
-root_files=( "$OUT"/*.html )
-cards_files=( "$OUT"/cards/*.html )
-{
-  printf '<!doctype html><meta charset="utf-8"><title>FDML Cards</title>\n'
-  printf '<link rel="stylesheet" href="style.css">\n'
-  printf '<h1>FDML Cards</h1>\n'
-  printf '<h2>Examples (root)</h2><ul>\n'
-  for f in "${root_files[@]}"; do b="${f##*/}"; printf '<li><a href="./%s?nocache">%s</a></li>\n' "$b" "$b"; done
-  printf '</ul>\n'
-  printf '<h2>Examples under /cards/</h2><ul>\n'
-  for f in "${cards_files[@]}"; do b="${f##*/}"; printf '<li><a href="./cards/%s?nocache">%s</a></li>\n' "$b" "$b"; done
-  printf '</ul>\n'
-} > "$OUT/index.html"
-echo "Site generated at $OUT"
+cp -a out/html/. "$OUT/"
+cp -a out/html/. "$OUT/cards/"
+cp -a docs/style.css "$OUT/style.css"
+cp -a docs/style.css "$OUT/cards/style.css"
+cat > "$OUT/index.html" <<HTML
+<!doctype html><meta charset="utf-8"><title>FDML Cards</title>
+<link rel="stylesheet" href="./style.css">
+<div class="container">
+  <div class="hero"><h1>FDML Cards</h1></div>
+  <h2>Examples (root)</h2>
+  <ul>
+    $(for f in $(ls -1 out/html/*.html | xargs -n1 basename); do printf '<li><a href="./%s">%s</a></li>\n' "$f" "$f"; done)
+  </ul>
+  <h2>Examples under /cards/</h2>
+  <ul>
+    $(for f in $(ls -1 out/html/*.html | xargs -n1 basename); do printf '<li><a href="./cards/%s">%s</a></li>\n' "$f" "$f"; done)
+  </ul>
+</div>
+HTML
+echo "Site generated at $(pwd)/$OUT"

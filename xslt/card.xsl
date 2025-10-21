@@ -9,7 +9,7 @@
         <title>FDML: <xsl:value-of select="/fdml/meta/title"/></title>
         <link rel="stylesheet" href="style.css?1761058513" />
       </head>
-      <body>
+      <body><div class="container">
         <div class="card">
           <h1><xsl:value-of select="/fdml/meta/title"/></h1>
           <p class="sub">
@@ -36,7 +36,7 @@
 
           <p class="meta">Generated from FDML via XSLT.</p>
         </div>
-      </body>
+      </div></body>
     </html>
   </xsl:template>
 </xsl:stylesheet>
