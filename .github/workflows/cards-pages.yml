@@ -26,8 +26,8 @@ jobs:
       - run: brew update-reset
       - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
       - run: brew install fdml
-      - run: make html
-      - run: bash scripts/build_index.sh
+      - run: CSSV=${{ github.run_id }} make html
+      - run: bash scripts/build_index.sh ${{ github.run_id }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
