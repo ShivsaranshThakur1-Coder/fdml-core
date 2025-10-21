@@ -24,6 +24,7 @@ jobs:
       - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
       - run: brew install fdml libxslt
       - run: make html
+      - run: bash scripts/build_index.sh
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out/html
