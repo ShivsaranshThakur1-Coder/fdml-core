@@ -9,7 +9,8 @@ html:
 			xsltproc --stringparam cssVersion $$TS xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
 		done < $$tmp; rm -f $$tmp; \
 		mkdir -p site; cp -f docs/style.css site/style.css; cp -f $$out/*.html site/; \
-		scripts/build_index.sh $$TS
+		bin/fdml index corpus/valid --out site/index.json; \
+	scripts/build_index.sh $$TS
 
 validate-valid:
 	@set -e; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
