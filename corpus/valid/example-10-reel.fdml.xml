@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Reel — Two Couple</title>
+    <dance name="Reel"/>
+    <meter value="4/4"/>
+    <tempo bpm="116"/>
+  </meta>
+  <body>
+    <figure id="f-reel" name="Reel Basic" formation="longways">
+      <step who="both" action="Advance"     beats="2" count="1-2" startFoot="L">Step L, close</step>
+      <step who="both" action="Retreat"     beats="2" count="3-4" startFoot="R">Step R, close</step>
+    </figure>
+  </body>
+</fdml>

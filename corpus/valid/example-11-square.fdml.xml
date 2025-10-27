@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Square — Head Couples</title>
+    <dance name="Square"/>
+    <meter value="2/4"/>
+    <tempo bpm="126"/>
+  </meta>
+  <body>
+    <figure id="f-heads" name="Heads Lead" formation="square">
+      <step who="both" action="Heads Lead"  beats="2" count="1-2" startFoot="L">Forward</step>
+      <step who="both" action="Return"      beats="2" count="3-4" startFoot="R">Back to place</step>
+    </figure>
+  </body>
+</fdml>

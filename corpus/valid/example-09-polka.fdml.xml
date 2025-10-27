@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Polka — Basic</title>
+    <dance name="Polka"/>
+    <meter value="2/4"/>
+    <tempo bpm="120"/>
+  </meta>
+  <body>
+    <figure id="f-polka" name="Polka Step" formation="circle">
+      <step who="both" action="Step L"  beats="2" count="1-2" startFoot="L">Weight to L</step>
+      <step who="both" action="Close R" beats="2" count="3-4" startFoot="R" endFoot="B">Close R to L</step>
+    </figure>
+  </body>
+</fdml>
