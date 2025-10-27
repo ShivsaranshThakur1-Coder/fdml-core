@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+
+\title{\textbf{FDML Project — Week 5 Progress Report}}
+\author{Shivsaransthakur1-Coder}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Executive Summary}
+\begin{itemize}[leftmargin=1.2em]
+  \item Delivered a functional CLI release pipeline (\texttt{fdml-core} v0.3.3) packaged via Homebrew tap, plus validation and rendering workflows.
+  \item Built a curated, styled GitHub Pages site that publishes rendered FDML examples as printable cards.
+  \item Established repeatable CI for schema/corpus validation and for site rendering; resolved several publishing and cache-busting issues.
+  \item Current focus: unifying stylesheet delivery for card pages and finalizing “professional” presentation and navigation UX.
+\end{itemize}
+
+\section{Scope and Repositories}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{Core}: \texttt{fdml-core} — XSD schema, Schematron rules, XSLT renderer, CLI JAR, corpus and documentation.
+  \item \textbf{Packaging}: \texttt{homebrew-fdml} tap — installs \texttt{fdml} CLI (\texttt{fdml-core.jar}) and ships schema resources.
+\end{itemize}
+
+\section{What Was Completed}
+\subsection{Schema, Corpus, CLI}
+\begin{itemize}[leftmargin=1.2em]
+  \item Authored FDML XSD (\texttt{schema/}) and Schematron rules (\texttt{schematron/}).
+  \item Sample corpus in \texttt{corpus/valid} and \texttt{corpus/invalid}; invalid samples ensured to fail XSD deterministically.
+  \item CLI packaging as \texttt{fdml-core.jar}; Homebrew formula updated to v0.3.3 with verified SHA256.
+\end{itemize}
+
+\subsection{Local Developer Tooling}
+\begin{itemize}[leftmargin=1.2em]
+  \item \texttt{make ci} validates all valid and invalid samples.
+  \item \texttt{make json} emits machine-readable results for valid samples.
+  \item \texttt{make html} renders cards via XSLT into \texttt{out/html}.
+\end{itemize}
+
+\subsection{CI/CD Workflows}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{tap-test} and \textbf{tap-audit}: formula style/audit and install/validate smoke tests.
+  \item \textbf{fdml-validate}: corpus validation in CI (valid must pass; invalid must fail).
+  \item \textbf{render-test}: builds HTML cards in CI and uploads artifacts.
+  \item \textbf{cards-pages}: publishes styled site to GitHub Pages from \texttt{site/}.
+\end{itemize}
+
+\subsection{Website Publishing}
+\begin{itemize}[leftmargin=1.2em]
+  \item Static site structure: \texttt{site/index.html} (grid of examples) and \texttt{site/cards/*.html} (card pages).
+  \item Central stylesheet at \texttt{site/style.css}; cache-buster parameter threaded via CI and local builds.
+  \item Example pages link back to index and include minimal site header for consistency.
+\end{itemize}
+
+\section{Issues Found and Fixed}
+\subsection{Repeatability and Validation}
+\begin{itemize}[leftmargin=1.2em]
+  \item Several invalid corpus samples initially passed; replaced with deterministic XSD failures.
+  \item CI portability: adapted shell loops to macOS runner (bash 3.2) semantics.
+\end{itemize}
+
+\subsection{Publishing and Caching}
+\begin{itemize}[leftmargin=1.2em]
+  \item Intermittent 404s traced to artifact content vs. links and Pages cache; added explicit cache-busting and ensured index generation in CI.
+  \item Addressed duplicated output (\texttt{site/} vs. \texttt{site/cards/}) and removed embedded repos from tree (avoids Pages conflicts).
+\end{itemize}
+
+\section{Open Items / Known Gaps}
+\begin{itemize}[leftmargin=1.2em]
+  \item Some card pages reverted to unstyled look due to stylesheet path assumptions; fix is to link cards to \texttt{../style.css} and ship a single root CSS.
+  \item Strengthen validation outputs (attach JSON for CI artifacts) and add regression checks for Pages contents.
+  \item Improve table formatting and content density for long figure lists; add print CSS for page breaks.
+\end{itemize}
+
+\section{Next Steps (Week 5 Plan)}
+\begin{enumerate}[leftmargin=1.2em]
+  \item Finalize stylesheet unification and verify on Pages: card head should reference \texttt{../style.css?\{version\}}.
+  \item Extend CI to diff rendered HTML structure and ensure head links, header/nav and back-links are intact.
+  \item Author tutorial docs: ``Authoring FDML'', ``Validating FDML'', ``Rendering Cards''; link from landing page.
+  \item Prepare a tagged demo release and attach Pages URL and artifacts to GitHub Release notes.
+\end{enumerate}
+
+\section{Appendix — CI Matrix}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{tap-test}: install \& validate smoke.
+  \item \textbf{tap-audit}: style/audit; no redundant \texttt{version} stanza in formula.
+  \item \textbf{fdml-validate}: macOS; brew install \texttt{fdml}; run validation loops.
+  \item \textbf{render-test}: brew install \texttt{fdml} and \texttt{libxslt}; \texttt{make html}; upload artifact.
+  \item \textbf{cards-pages}: macOS build \textrightarrow{} Ubuntu deploy to Pages; cache-busted \texttt{site/} published.
+\end{itemize}
+
+\end{document}
