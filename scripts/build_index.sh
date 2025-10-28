@@ -23,7 +23,8 @@ cat > site/index.html <<HTML
     <a class="brand" href="./">FDML</a>
     <nav class="nav">
       <a href="./index.html">Home</a>
-      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+            <a href="./search.html">Search</a>
+<a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
     </nav>
   </div>
 </header>
