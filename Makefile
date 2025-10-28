@@ -37,6 +37,6 @@ serve:
 	cd site && python3 -m http.server 8000
 
 report:
-	cd docs/progress-report && latexmk -pdf -silent progress_2025-10-28.tex
+	cd docs/progress-report && latexmk -pdf -silent progress_2025-10-28_v2.tex
 
 

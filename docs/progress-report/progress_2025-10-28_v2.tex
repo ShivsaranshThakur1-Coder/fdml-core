@@ -1,0 +1,94 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{array}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\smallsec}[1]{\textbf{#1}\quad}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title{\textbf{FDML Core — Narrative Progress Report}\\\large (to 28 Oct 2025)}
+\author{Shivsaransh Thakur}
+\date{28 Oct 2025}
+
+\begin{document}
+\maketitle
+
+\section{Project Context \& Objectives}
+The FDML project aims to define a compact, machine- and human-friendly representation for folk dance material and to provide a practical toolchain around it: schema validation (XSD + Schematron), a command-line interface (CLI), and a publishing flow (XSLT renderer to web cards and PDF export). The intended outcomes are (i) a consistent data standard for dance material and (ii) a reproducible software pipeline that can validate, render and publish a curated corpus.
+
+\section{What Was Delivered This Sprint (Narrative)}
+\subsection{Schema \& Validation}
+We finalised an \emph{XML Schema Definition} for FDML (\code{schema/fdml.xsd}) expressing the core structure (meta, body with figures/sections/sequences). We complemented it with compiled Schematron rules (\code{schematron/fdml-compiled.xsl}) to enforce business constraints (e.g., non-empty \code{meta/title}; unique figure IDs; steps have positive beats; sequence references must point to existing figures). This combination provides orthogonal guarantees: XSD for structure and typing; Schematron for semantics. Validation behaviour is \emph{deterministic}: 12 valid samples pass, 7 intentionally invalid samples fail with clear messages.
+
+\subsection{CLI Tooling (\code{fdml-core.jar})}
+We packaged a shaded JAR exposing the commands: \code{validate}, \code{validate-sch}, \code{validate-all}, \code{render}, \code{export-pdf}, \code{index}, \code{lint}, \code{init}, \code{doctor}. 
+\begin{itemize}[leftmargin=1.2em]
+  \item \smallsec{Design} Commands are cohesive, single-purpose; outputs are stable for CI. \code{index} gathers a machine-readable \code{site/index.json}; \code{lint} provides advisory checks (e.g. off-meter totals); \code{doctor} is a strict gate combining XSD + Schematron + Lint.
+  \item \smallsec{Packaging} \code{maven-shade-plugin} embeds dependencies and sets the main class (\code{org.fdml.cli.Main}); wrapper script \code{bin/fdml} runs the JAR under OpenJDK 17.
+\end{itemize}
+
+\subsection{Web Publishing (Cards + Site)}
+We built an XSLT card renderer and a \code{scripts/build\_index.sh} site builder. Pages are styled via a single CSS with cache-busting tokens. Cards originally linked to \code{../style.css?V}; during local \code{file://} testing Safari blocked parent references. We corrected this by linking cards to a \emph{local} stylesheet (\code{./style.css?\$\{cssVersion\}}) and shipping a copy at \code{site/cards/style.css}. We also fixed all intra-site links so that the card header (brand \& ``Examples'') and footer back-link go to \code{../index.html}, and added a direct \code{../search.html} link.
+
+\subsection{Professional Search Page}
+The first search prototype was functional but basic and occasionally produced broken links because it transformed \code{*.fdml.xml} to \code{*.fdml.fdml.html}. We replaced it with a styled grid view that matches the homepage aesthetics and corrected mapping to \code{*.fdml.html}. The builder now emits \code{site/index.json} \emph{and} ships a cache-busted \code{search.html} every build; the page shows ``12 of 12 item(s)'' and supports live filtering by title/file/section IDs.
+
+\subsection{Release \& Homebrew Tap}
+We cut a release tag \textbf{v0.3.4} (CLI JAR attached), calculated SHA256 and updated the nested \code{homebrew-fdml} tap formula to point at the new artifact. During the tap update we encountered two issues: (i) an escaped Ruby interpolation in the wrapper script; (ii) tap divergence causing a push rejection. We resolved both by resetting to \code{origin/main}, rewriting the formula cleanly with correct Ruby interpolation, and pushing. A local reinstall via Homebrew confirmed \code{fdml 0.3.4} is installable and working with OpenJDK 17.
+
+\section{Key Technical Decisions \& Rationale}
+\begin{itemize}[leftmargin=1.2em]
+  \item \smallsec{Validation split (XSD + Schematron).} XSD encodes structural guarantees; Schematron captures cross-field constraints and human-friendly messages. This yields clearer failures and easier future rule additions.
+  \item \smallsec{Deterministic outputs.} All loops and file-ordering steps are sorted; cache-busting is parameterised; \code{index.json} content is stable for unit tests and CI diffs.
+  \item \smallsec{Local CSS on cards.} Serving \code{file://} in Safari is notoriously strict; shipping \code{site/cards/style.css} eliminates path traversal issues and keeps local/HTTP behaviours aligned.
+  \item \smallsec{Builder robustness.} The builder never nukes \code{site/} wholesale; it rebuilds \code{site/cards/}, ships Search, and emits \code{index.json} in one place to avoid race conditions.
+\end{itemize}
+
+\section{Issues Encountered \& How We Resolved Them}
+\begin{longtable}{L{0.32\linewidth} L{0.63\linewidth}}
+\textbf{Issue} & \textbf{Resolution}\\\hline
+Cards unstyled on \code{file://} in Safari & Switched to \code{./style.css?\$\{cssVersion\}} and shipped \code{site/cards/style.css}.\\
+Broken search links (\code{fdml.fdml.html}) & Corrected mapping: \code{*.fdml.xml} $\rightarrow$ \code{*.fdml.html}.\\
+Search showed 0/0 items & Builder now emits \code{site/index.json} after copying cards; Search fetch succeeds.\\
+Tap update rejected (divergence) & Hard reset to \code{origin/main}; rewrote formula; pushed cleanly.\\
+Wrapper interpolation literal & Removed escaping so Homebrew writes the correct Java path at install-time.\\
+\end{longtable}
+
+\section{Verification Evidence (selected)}
+\begin{itemize}[leftmargin=1.2em]
+  \item \smallsec{Corpus:} 12 valid samples \& 7 invalid samples behave deterministically (valid pass; invalid fail with XSD/Schematron messages).
+  \item \smallsec{Site:} \code{make clean html} builds cards, \code{index.html}, \code{search.html}, and \code{index.json}. Local \code{make serve} confirms navigation and search.
+  \item \smallsec{Release:} Tag \textbf{v0.3.4} live; SHA256: \code{477c6d08f41798228abb6e1414d83e4e7d67392b5319ccd7371a1fe558932ff8}. Tap reinstalls \code{fdml 0.3.4} successfully.
+  \item \smallsec{Commits:} site nav/search links (\code{cd6faea}); search grid + builder hardening (\code{ca25c65}); emit \code{index.json} during build (\code{a2f3cc1}); cache-busted CSS in cards (\code{d08e131}); make target \code{serve}; LaTeX report v1 compiled and v2 produced.
+\end{itemize}
+
+\section{Repository \& Environment}
+\begin{itemize}[leftmargin=1.2em]
+  \item \smallsec{Repo:} \code{\string~/Projects/fdml-core} (\code{main}).
+  \item \smallsec{Toolchain:} OpenJDK 17.0.16; Maven 3.9.11; Node 20.18.0; libxslt 1.1.35; latexmk 4.83; macOS 14.3.
+\end{itemize}
+
+\section{Plan for the Next Two Weeks}
+\begin{enumerate}[leftmargin=1.2em]
+  \item \textbf{Corpus Growth (to $\ge 30$):} add varied formations, longer sequences; expand invalid set (edge cases).
+  \item \textbf{Schematron Enhancements:} friendlier messages; checks for per-figure meter totals and duplicate steps; section coverage.
+  \item \textbf{PDF Export:} polish page-breaks \& typography; CI artifacts for all examples.
+  \item \textbf{Documentation:} author ``Authoring FDML'', ``Validator usage'', and ``Renderer/Export'' tutorials; link from homepage.
+  \item \textbf{CI Guardrails:} strengthen \code{scripts/ci\_verify.sh} to assert CSS links present on several cards and that Search is shipped.
+\end{enumerate}
+
+\section{Appendix — Prior Report Reference}
+This report supersedes the brief Week-5 summary while keeping its scope. The prior document remains available in the repository for traceability.\footnotesize\footnote{Prior PDF: \code{docs/progress-report/week05\_progress.pdf}.}
+\normalsize
+
+\end{document}
