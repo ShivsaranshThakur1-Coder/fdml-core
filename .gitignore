@@ -16,3 +16,6 @@ target/
 # Build output
 out/
 homebrew-fdml/
+
+# Build output
+site/
