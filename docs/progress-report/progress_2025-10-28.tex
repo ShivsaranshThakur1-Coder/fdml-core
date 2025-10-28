@@ -1,0 +1,135 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{longtable}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{\textbf{FDML Core — Progress Report (to 28 Oct 2025)}}
+\author{Shivsaransh Thakur}
+\date{28 Oct 2025}
+
+\begin{document}
+\maketitle
+
+\section{Executive Summary}
+Over the last sprint we delivered a complete, demonstrable pipeline for the FDML project:
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{Core}: Stable XSD schema + Schematron rules; sample corpus (12 valid, 7 invalid) with deterministic validation.
+  \item \textbf{CLI}: Shaded JAR (\code{fdml-core.jar}) exposing \code{validate}, \code{validate-sch}, \code{validate-all}, \code{render}, \code{export-pdf}, \code{index}, \code{lint}, \code{init}, \code{doctor}.
+  \item \textbf{Site}: Styled card renderer (XSLT), robust builder (\code{build\_index.sh}), cache-busted CSS, working navigation, and a \textbf{professional Search} page powered by \code{site/index.json}.
+  \item \textbf{Release}: Tagged \textbf{v0.3.4}, updated Homebrew tap, verified local brew install of \code{fdml} 0.3.4.
+  \item \textbf{Dev Flow}: Deterministic make targets (\code{html}, \code{serve}, \code{report}), CI workflows (validate, render, pages, release).
+\end{itemize}
+
+\section{Scope vs Plan}
+\begin{longtable}{p{0.30\linewidth} p{0.65\linewidth}}
+\textbf{Planned} & \textbf{Status / Evidence}\\\hline
+Schema (XSD) + Schematron & Done. XSD in \code{schema/fdml.xsd}; compiled Schematron \code{schematron/fdml-compiled.xsl}.\\
+Sample Corpus & Done. 12 valid + 7 invalid; all valid pass, all invalid fail deterministically.\\
+CLI packaging & Done. Shaded JAR; commands listed; wrapper \code{bin/fdml}.\\
+Website (cards) & Done. XSLT card renderer, cache-busted CSS; cards now fully styled even on \code{file://}.\\
+Search page & Done. New grid UI; links fixed (\code{*.fdml.xml} $\rightarrow$ \code{*.fdml.html}); count shows 12/12.\\
+Release + Tap & Done. Tag \code{v0.3.4}, SHA256 computed, tap formula updated and reinstall verified.\\
+CI & Active. \code{fdml-validate}, \code{render-test}, \code{cards-pages}, \code{release}.\\
+\end{longtable}
+
+\section{Technical Delivery}
+\subsection{Schema \& Validation}
+\begin{itemize}[leftmargin=1.2em]
+  \item XSD enforces IDs (\code{f-*}, \code{s-*}), meter/tempo types, and figure structure.
+  \item Schematron augments business rules: nonempty \code{meta/title}, unique figure IDs, positive beats, references valid figure IDs in sequences.
+  \item \textbf{Doctor} combines XSD + Schematron + Lint for a single strict gate.
+\end{itemize}
+
+\subsection{CLI}
+\begin{itemize}[leftmargin=1.2em]
+  \item Packaging via Maven Shade; main class \code{org.fdml.cli.Main}.
+  \item Commands: \code{validate}, \code{validate-sch}, \code{validate-all}, \code{render}, \code{export-pdf}, \code{index}, \code{lint}, \code{init}, \code{doctor}.
+  \item \code{index} assembles \code{site/index.json} for Search; \code{lint} warns on off-meter figures; \code{init} scaffolds a minimal FDML file.
+\end{itemize}
+
+\subsection{Website \& Search}
+\begin{itemize}[leftmargin=1.2em]
+  \item Card renderer (XSLT) now links \code{./style.css?\$\{cssVersion\}} and ships \code{site/cards/style.css} to support \code{file://} and HTTP.
+  \item Navigation fixed: brand, \textbf{Examples}, \textbf{Search}, and back link target \code{../index.html} or \code{../search.html} from cards.
+  \item \textbf{Search} redesigned as a grid, with live filtering and accurate link mapping (\code{*.fdml.xml} $\rightarrow$ \code{*.fdml.html}); uses \code{site/index.json}.
+\end{itemize}
+
+\subsection{Builder \& Make targets}
+\begin{itemize}[leftmargin=1.2em]
+  \item \code{scripts/build\_index.sh}: safe cache-buster \code{V=\$\{1:-\$\{V:-\$EPOCHSECONDS\}\}}, never nukes \code{site/}, ships CSS, emits \code{index.json}, threads \code{@@CSSV@@} into \code{search.html}.
+  \item \code{make html}: runs XSLT, then builder; \code{make serve}: \code{python3 -m http.server} on \code{site/}.
+  \item \code{site/} ignored in Git for clean diffs; CI publishes pages.
+\end{itemize}
+
+\subsection{Release \& Packaging}
+\begin{itemize}[leftmargin=1.2em]
+  \item Tag: \textbf{v0.3.4}. Artifact: \code{fdml-core.jar}. 
+  \item SHA256 (release): \code{477c6d08f41798228abb6e1414d83e4e7d67392b5319ccd7371a1fe558932ff8}.
+  \item Tap repo updated; local reinstall verified: \code{fdml 0.3.4} running on OpenJDK 17.
+\end{itemize}
+
+\section{Repository \& Environment}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{Repo}: \code{\string~/Projects/fdml-core} (\code{main} branch).
+  \item \textbf{Toolchain}: OpenJDK 17.0.16; Maven 3.9.11; Node 20.18.0; libxslt 1.1.35; latexmk 4.83; macOS 14.3.
+\end{itemize}
+
+\section{Key Commits / Evidence (subset)}
+\begin{itemize}[leftmargin=1.2em]
+  \item \code{v0.3.4} tag (release).
+  \item \code{cd6faea} cards: fix nav/back links; add Search link.
+  \item \code{ca25c65} search: grid UI; correct link mapping; builder hardened.
+  \item \code{a2f3cc1} builder emits \code{index.json}; Search 12/12 fixed.
+  \item \code{bf43a09} homepage nav shows \textbf{Search}.
+  \item \code{d08e131} cards: explicit cache-busted CSS href.
+\end{itemize}
+
+\section{Testing \& QA}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{XSD/Schematron}: valid corpus passes; invalid corpus fails deterministically (see CI job \code{fdml-validate}).
+  \item \textbf{Unit/Snapshot}: renderer snapshot, \code{IndexJsonTest} verifies \code{index.json} covers all valid files and has $\ge 12$ items.
+  \item \textbf{Manual}: local \code{make serve} on \code{site/} to confirm cards, nav, and Search.
+\end{itemize}
+
+\section{Risks \& Mitigations}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textit{Browser file security}: \code{file://} blocked fetch; mitigated by \code{make serve} and builder shipping correct assets.
+  \item \textit{Cache busting}: risk of stale CSS; mitigated via \code{V} parameter threaded through cards and Search.
+  \item \textit{Tap drift}: nested repo divergence; mitigated with a one-shot release script \code{scripts/release.sh}.
+\end{itemize}
+
+\section{Next 2 Weeks (Plan)}
+\begin{enumerate}[leftmargin=1.2em]
+  \item \textbf{Corpus}: expand to $\ge 30$ validated dances; add richer sequences and formations; add more invalid cases.
+  \item \textbf{Validation}: strengthen Schematron messages (figure totals by meter; section coverage; duplicate steps).
+  \item \textbf{Export}: finalize PDF export styling (page breaks, typography); ensure CI uploads PDF artifacts.
+  \item \textbf{Docs}: author \emph{Authoring FDML}, \emph{Validator usage}, \emph{Renderer/Export tutorial}; publish on site.
+  \item \textbf{CI Quality Gates}: add \code{scripts/ci\_verify.sh} assertions for Search link presence and card CSS href on multiple samples.
+\end{enumerate}
+
+\section{How to Reproduce Locally}
+\begin{verbatim}
+# Build CLI
+mvn -q -DskipTests package
+
+# Validate corpus
+bin/fdml validate corpus/valid
+bin/fdml validate-sch corpus/valid
+
+# Build site and serve
+make clean html
+make serve
+# open http://localhost:8000/index.html
+\end{verbatim}
+
+\end{document}
