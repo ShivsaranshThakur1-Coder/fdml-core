@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FDML – Search</title>
+  <link rel="stylesheet" href="style.css?v=1761640676"/>
+  <style>.muted{color:#94a3b8}.wrap{max-width:1000px;margin:0 auto;padding:24px 20px}</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav"><a class="cta" href="index.html">← Home</a></div>
+    <h1>Search</h1>
+    <input id="q" type="search" placeholder="Search…" style="width:100%;padding:10px">
+    <div id="meta" class="muted" style="margin:8px 0 12px"></div>
+    <div id="results"></div>
+  </div>
+<script>
+(async function(){
+  const r=await fetch("index.json");
+  const d=await r.json().catch(()=>({items:[]}));
+  const items=d.items||[];
+  const Q=document.getElementById("q"),R=document.getElementById("results"),M=document.getElementById("meta");
+  function render(){
+    const q=(Q.value||"").toLowerCase();
+    const hits=items.filter(it=>!q||(String(it.title||"").toLowerCase().includes(q)||String(it.file||"").toLowerCase().includes(q)));
+    M.textContent = (hits.length+" of "+items.length+" item(s)");
+    R.innerHTML = hits.map(it=>{
+      const base=String(it.file||"").replace(/^corpus\/valid\//,"").replace(/\.xml$/,".fdml.html");
+      return "<p><a href=\"cards/"+base+"\"><strong>"+(it.title||base)+"</strong></a> <span class=\"muted\">cards/"+base+"</span></p>";
+    }).join("");
+  }
+  Q.addEventListener("input",render); render();
+})();
+</script>
+</body></html>

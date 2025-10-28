@@ -5,6 +5,7 @@ rm -rf site
 mkdir -p site/cards
 cp -f docs/style.css site/style.css
 cp -f out/html/*.html site/cards/
+cp -f docs/search.html site/search.html
 
 # Build a single “cards” grid homepage
 cat > site/index.html <<HTML

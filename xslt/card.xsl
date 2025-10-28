@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="color-scheme" content="dark light"/>
         <title>FDML: <xsl:value-of select="/fdml/meta/title"/></title>
-        <link rel="stylesheet" href="./style.css?{}"/>
+        <link rel="stylesheet"><xsl:attribute name="href">./style.css?<xsl:value-of select="$cssVersion"/></xsl:attribute></link>
       </head>
       <body>
         <header class="site-head"><div class="container">
