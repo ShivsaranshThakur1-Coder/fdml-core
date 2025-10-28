@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 V="${1:-$EPOCHSECONDS}"
-rm -rf site
+rm -rf site/cards
+mkdir -p site
 mkdir -p site/cards
 cp -f docs/style.css site/style.css
 cp -f out/html/*.html site/cards/
+bin/fdml index corpus/valid --out site/index.json
+
 cp -f docs/search.html site/search.html
 
 # Build a single “cards” grid homepage
