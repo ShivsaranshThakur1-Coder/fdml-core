@@ -48,3 +48,5 @@ cat >> site/index.html <<'HTML'
 </body></html>
 HTML
 echo "Site built → site/ (with cards/ and polished index)"
+
+cp -f docs/style.css site/cards/style.css
