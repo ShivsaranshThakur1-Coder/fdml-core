@@ -14,8 +14,9 @@
       </head>
       <body>
         <header class="site-head"><div class="container">
-          <a class="brand" href="index.html">FDML</a>
-          <nav class="nav"><a href="index.html">Examples</a>
+          <a class="brand" href="../index.html">FDML</a>
+          <nav class="nav"><a href="../index.html">Examples</a>
+            <a href="../search.html">Search</a>
             <a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core" target="_blank" rel="noopener">GitHub</a>
           </nav>
         </div></header>
@@ -40,7 +41,7 @@
               </table>
             </xsl:if>
             <p class="sub">Generated from FDML</p>
-            <p class="sub"><a class="muted" href="index.html">← Back to all examples</a></p>
+            <p class="sub"><a class="muted" href="../index.html">← Back to all examples</a></p>
           </div>
         </main>
         <footer><div class="container">© FDML</div></footer>
