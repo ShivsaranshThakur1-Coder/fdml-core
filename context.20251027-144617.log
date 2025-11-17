@@ -1,0 +1,525 @@
+=== Context capture for: /Users/shivsaranshthakur/Projects/fdml-core ===
+=== Timestamp: 2025-10-27T14:46:17+00:00 ===
+## System
+Darwin Shivsaranshs-MacBook-Pro.local 23.3.0 Darwin Kernel Version 23.3.0: Wed Dec 20 21:30:59 PST 2023; root:xnu-10002.81.5~7/RELEASE_ARM64_T6030 arm64
+ProductName:		macOS
+ProductVersion:		14.3
+BuildVersion:		23D56
+/Library/Developer/CommandLineTools
+
+## Git (sanitised)
+git version 2.39.3 (Apple Git-146)
+/Users/shivsaranshthakur/Projects/fdml-core
+remote.origin.url: git@github.com:ShivsaranshThakur1-Coder/fdml-core.git
+## main...origin/main
+ M site/cards/example-01.fdml.html
+ M site/cards/example-02.fdml.html
+ M site/cards/example-03.fdml.html
+ M site/cards/example-04.fdml.html
+ M site/cards/example-05-contra.fdml.html
+ M site/cards/example-06-square.fdml.html
+ M site/cards/example-07-mixer.fdml.html
+ M site/cards/example-08-init.fdml.html
+ D site/cards/style.css
+ M site/index.html
+?? context.20251027-144617.log
+?? docs/progress-report/week05_progress.aux
+?? docs/progress-report/week05_progress.fdb_latexmk
+?? docs/progress-report/week05_progress.fls
+?? docs/progress-report/week05_progress.log
+?? docs/progress-report/week05_progress.out
+?? docs/progress-report/week05_progress.pdf
+current-branch: main
+v0.3.3-demo-36-g74dcc31
+-- last 20 commits --
+* 74dcc31 (HEAD -> main, origin/main, origin/HEAD) docs(progress): add Week 5 LaTeX progress report and README
+* e2816f0 xsl: card pages link ../style.css (single stylesheet at site root)
+* 28af9e8 site: reset XSL, rebuild cards with css v=1761573613, include cards/style.css
+* 19d82a9 pages: rebuild site (css v=1761573203) and include site/cards/style.css
+* c5ecb19 xsl: add cssVersion param + dynamic cssHref and link
+* 8975994 pages: ship cards/style.css and rebuild with CSSV=1761571994
+* 57b1d09 pages: ensure cards/style.css present; rebuild with CSSV=1761571152
+* 794fde0 pages: rebuild with CSSV=1761570830
+* 2eba03c Normalize output: cards only under site/cards, fix back/index links and stylesheet location
+* 8be182a ui: rebuild site with polished theme & cards grid (v1761070729)
+* 002d2a5 ui: professional theme refresh (1761070240)
+* 4452f91 ui: fix XSL, pro index, cache-busted CSS (1761069182)
+* 11f01da ui: pro theme, nav/hero/grid, cache-busted CSS (1761068934), consistent back-links
+* 349c073 pages: pass cssVersion into XSLT (CSSV) and use run_id for cache-busting
+* aee9617 pages: cssVersion=1761063795 via XSLT param; rebuild site with same cb
+* e062b9b pages: rebuild site with cssVersion=1761063091 and ship style.css to / and /cards
+* 50c32fa ui: add sticky header/nav, improved typography, tables, dark+light theme; dynamic CSS cache-busting
+* f80548d deploy: republish site with latest CSS
+* a8ec1eb ui: professional theme (light/dark), container layout, polished cards/tables
+* 0e0be7a chore: remove embedded repo and ignore it
+
+## .gitignore (first 120 lines or none)
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Java/Maven/Gradle (future steps)
+target/
+.build/
+.gradle/
+
+# Build output
+out/
+homebrew-fdml/
+
+## Top-level listing
+total 80
+drwxr-xr-x  28 shivsaranshthakur  staff   896 27 Oct 14:46 .
+drwxr-xr-x   3 shivsaranshthakur  staff    96 13 Oct 12:59 ..
+-rw-r--r--   1 shivsaranshthakur  staff   115 13 Oct 12:59 .editorconfig
+drwxr-xr-x  14 shivsaranshthakur  staff   448 27 Oct 14:46 .git
+drwxr-xr-x   3 shivsaranshthakur  staff    96 13 Oct 12:59 .github
+-rw-r--r--   1 shivsaranshthakur  staff   164 21 Oct 16:06 .gitignore
+-rw-r--r--   1 shivsaranshthakur  staff   414 20 Oct 10:54 CHANGELOG.md
+-rw-r--r--@  1 shivsaranshthakur  staff   222 13 Oct 12:59 LICENSE
+-rw-r--r--   1 shivsaranshthakur  staff   157 13 Oct 12:59 LICENSE-DATA
+-rw-r--r--   1 shivsaranshthakur  staff  1438 21 Oct 17:31 Makefile
+-rw-r--r--   1 shivsaranshthakur  wheel  1780 21 Oct 12:14 README.md
+drwxr-xr-x   3 shivsaranshthakur  staff    96 13 Oct 14:09 bin
+-rw-r--r--   1 shivsaranshthakur  staff  3076 27 Oct 14:46 context.20251027-144617.log
+drwxr-xr-x   4 shivsaranshthakur  staff   128 13 Oct 12:59 corpus
+drwxr-xr-x   3 shivsaranshthakur  staff    96 13 Oct 12:59 css
+-rw-r--r--   1 shivsaranshthakur  staff  2641 20 Oct 10:56 dependency-reduced-pom.xml
+drwxr-xr-x  13 shivsaranshthakur  staff   416 27 Oct 14:31 docs
+drwxr-xr-x   5 shivsaranshthakur  staff   160 13 Oct 21:51 homebrew-fdml
+drwxr-xr-x   3 shivsaranshthakur  staff    96 27 Oct 14:23 out
+-rw-r--r--   1 shivsaranshthakur  staff  2580 13 Oct 21:10 pom.xml
+drwxr-xr-x   3 shivsaranshthakur  staff    96 13 Oct 12:59 schema
+drwxr-xr-x   4 shivsaranshthakur  staff   128 13 Oct 13:39 schematron
+drwxr-xr-x   9 shivsaranshthakur  staff   288 21 Oct 12:12 scripts
+drwxr-xr-x   5 shivsaranshthakur  staff   160 27 Oct 14:23 site
+drwxr-xr-x   4 shivsaranshthakur  staff   128 13 Oct 13:58 src
+drwxr-xr-x  11 shivsaranshthakur  staff   352 16 Oct 11:39 target
+drwxr-xr-x   6 shivsaranshthakur  staff   192 13 Oct 12:59 test
+drwxr-xr-x   6 shivsaranshthakur  staff   192 27 Oct 14:23 xslt
+
+## Repo size summary
+ 46M	.
+
+## Tree (depth<=3, heavy dirs pruned)
+.
+.editorconfig
+.github
+.github/workflows
+.github/workflows/cards-pages.yml
+.github/workflows/ci.yml
+.github/workflows/fdml-validate.yml
+.github/workflows/release.yml
+.github/workflows/render-test.yml
+.gitignore
+CHANGELOG.md
+LICENSE
+LICENSE-DATA
+Makefile
+README.md
+bin
+bin/fdml
+context.20251027-144617.log
+corpus
+corpus/invalid
+corpus/invalid/example-01-invalid.fdml.xml
+corpus/invalid/example-02-empty-title.fdml.xml
+corpus/invalid/example-03-dup-id.fdml.xml
+corpus/invalid/example-04-bad-email.fdml.xml
+corpus/invalid/example-05-missing-id.fdml.xml
+corpus/invalid/example-06-bad-figure.fdml.xml
+corpus/invalid/example-07-bad-use.fdml.xml
+corpus/valid
+corpus/valid/example-01.fdml.xml
+corpus/valid/example-02.fdml.xml
+corpus/valid/example-03.fdml.xml
+corpus/valid/example-04.fdml.xml
+corpus/valid/example-05-contra.fdml.xml
+corpus/valid/example-06-square.fdml.xml
+corpus/valid/example-07-mixer.fdml.xml
+corpus/valid/example-08-init.fdml.xml
+css
+css/print.css
+dependency-reduced-pom.xml
+docs
+docs/ARCHITECTURE.md
+docs/CONTRIBUTING.md
+docs/USAGE.html
+docs/USAGE.md
+docs/css
+docs/css/print.css
+docs/examples
+docs/examples/example-01.fdml.html
+docs/examples/example-02.fdml.html
+docs/examples/example-03.fdml.html
+docs/examples/example-04.fdml.html
+docs/examples/example-05-contra.fdml.html
+docs/examples/example-06-square.fdml.html
+docs/examples/example-07-mixer.fdml.html
+docs/examples/example-08-init.fdml.html
+docs/examples/index.html
+docs/index.html
+docs/pdfs
+docs/pdfs/example-01.fdml.pdf
+docs/pdfs/example-02.fdml.pdf
+docs/pdfs/example-03.fdml.pdf
+docs/pdfs/example-04.fdml.pdf
+docs/pdfs/example-05-contra.fdml.pdf
+docs/pdfs/example-06-square.fdml.pdf
+docs/pdfs/example-07-mixer.fdml.pdf
+docs/pdfs/example-08-init.fdml.pdf
+docs/progress-report
+docs/progress-report/README.md
+docs/progress-report/week05_progress.aux
+docs/progress-report/week05_progress.fdb_latexmk
+docs/progress-report/week05_progress.fls
+docs/progress-report/week05_progress.log
+docs/progress-report/week05_progress.out
+docs/progress-report/week05_progress.pdf
+docs/progress-report/week05_progress.tex
+docs/site.css
+docs/style.css
+homebrew-fdml
+homebrew-fdml/.git
+homebrew-fdml/.git/COMMIT_EDITMSG
+homebrew-fdml/.git/HEAD
+homebrew-fdml/.git/config
+homebrew-fdml/.git/description
+homebrew-fdml/.git/hooks
+homebrew-fdml/.git/index
+homebrew-fdml/.git/info
+homebrew-fdml/.git/logs
+homebrew-fdml/.git/objects
+homebrew-fdml/.git/refs
+homebrew-fdml/Formula
+homebrew-fdml/Formula/fdml.rb
+homebrew-fdml/fdml-core-0.3.0.jar
+pom.xml
+schema
+schema/fdml.xsd
+schematron
+schematron/fdml-compiled.xsl
+schematron/fdml.sch
+scripts
+scripts/build_index.sh
+scripts/ci_debug.sh
+scripts/ci_diff.sh
+scripts/ci_latest.sh
+scripts/ci_logs.sh
+scripts/gen_examples.sh
+scripts/local_sanity.sh
+src
+src/main
+src/main/java
+src/test
+src/test/java
+src/test/resources
+target
+target/classes
+target/classes/org
+target/fdml-core-0.2.0-SNAPSHOT.jar
+target/fdml-core.jar
+target/generated-sources
+target/generated-sources/annotations
+target/generated-test-sources
+target/generated-test-sources/test-annotations
+target/maven-archiver
+target/maven-archiver/pom.properties
+target/maven-status
+target/maven-status/maven-compiler-plugin
+target/original-fdml-core.jar
+target/test-classes
+target/test-classes/org
+target/test-classes/snapshots
+test
+test/e2e
+test/perf
+test/snapshot
+test/unit
+xslt
+xslt/card.xsl
+xslt/fdml-to-card.xsl
+xslt/fdml-to-xhtml.xsl
+xslt/style.css
+
+## Key manifests / configs (first 120 lines each if present)
+--- BEGIN: README.md ---
+[![render-test](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml)
+
+[![fdml-validate](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml)
+
+# FDML Core
+
+Implementation of the FDML project: schema + validation (XSD + Schematron), transforms (XSLT), sample corpus, and test/CI scaffolding.
+
+## Layout
+- `schema/` — FDML XSD schema
+- `schematron/` — business-rule validation
+- `xslt/` — transformations (HTML card renderer, etc.)
+- `css/` — stylesheets for rendered output
+- `corpus/valid` and `corpus/invalid` — example FDML documents
+- `docs/` — architecture/spec notes
+- `test/` — unit, snapshot, e2e, perf scaffolding
+- `.github/workflows/` — CI
+
+## Getting Started
+- Java 17 required (installed in Step 1).
+- CI currently runs a placeholder `make ci`. Validation/build steps will be added in Step 3+.
+
+## Licenses
+- Code: MIT (`LICENSE`)
+- Docs & corpus: CC BY 4.0 (`LICENSE-DATA`)
+
+## Quick CLI
+
+Build once:
+```bash
+mvn -q -DskipTests package
+## Install (Homebrew)
+
+~~~bash
+brew tap ShivsaranshThakur1-Coder/fdml
+brew install fdml
+~~~
+
+## Quick Start
+
+```bash
+fdml init song.fdml.xml --title "My Dance" --meter 3/4 --tempo 96 --figure-id f-1 --figure-name Intro
+fdml validate song.fdml.xml
+fdml validate corpus/valid/*.xml
+fdml validate song.fdml.xml --json --json-out result.json
+```
+
+## Local CI
+
+```bash
+make ci
+```
+
+## Render
+
+```bash
+make html
+open out/html/example-01.fdml.html
+```
+
+**Live cards:** https://shivsaranshthakur1-coder.github.io/fdml-core/
+--- END: README.md ---
+--- BEGIN: Makefile ---
+.PHONY: html validate-valid validate-invalid json ci clean
+
+html:
+	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
+		find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do \
+			base=$$(basename "$$f"); stem=$${base%.xml}; \
+			echo "HTML  $$out/$$stem.html"; \
+			xsltproc --stringparam cssVersion $$TS xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
+		done < $$tmp; rm -f $$tmp; \
+		mkdir -p site; cp -f docs/style.css site/style.css; cp -f $$out/*.html site/; \
+		scripts/build_index.sh $$TS
+
+validate-valid:
+	@set -e; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do echo "VALID  $$f"; fdml validate "$$f"; done; rm -f $$tmp
+
+validate-invalid:
+	@set -e; tmp=$$(mktemp); find corpus/invalid -type f -name '*.xml' | sort > $$tmp; failures=0; \
+		while IFS= read -r f; do echo "INVALID $$f"; if fdml validate "$$f"; then echo "EXPECTED FAILURE but got success: $$f"; failures=$$((failures+1)); fi; done; \
+		rm -f $$tmp; test $$failures -eq 0
+
+json:
+	@set -e; out=out/json; mkdir -p $$out; tmp=$$(mktemp); \
+		find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do base=$$(basename "$$f"); stem=$${base%.xml}; \
+			echo "JSON  $$out/$$stem.json"; fdml validate "$$f" --json --json-out "$$out/$$stem.json"; \
+		done < $$tmp; rm -f $$tmp
+
+ci: validate-valid validate-invalid html
+
+clean:
+	rm -rf out site
+--- END: Makefile ---
+--- BEGIN: pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.fdml</groupId>
+  <artifactId>fdml-core</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>12.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.openhtmltopdf</groupId>
+      <artifactId>openhtmltopdf-pdfbox</artifactId>
+      <version>1.0.10</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration><release>17</release></configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <finalName>fdml-core</finalName>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.fdml.cli.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+--- END: pom.xml ---
+--- BEGIN: .editorconfig ---
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+--- END: .editorconfig ---
+--- BEGIN: xslt/card.xsl ---
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:param name="cssVersion" select="'0'"/>
+
+  <xsl:template match="/">
+    <html lang="en">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="color-scheme" content="dark light"/>
+        <title>FDML: <xsl:value-of select="/fdml/meta/title"/></title>
+        <link rel="stylesheet" href="../style.css?{}"/>
+      </head>
+      <body>
+        <header class="site-head"><div class="container">
+          <a class="brand" href="index.html">FDML</a>
+          <nav class="nav"><a href="index.html">Examples</a>
+            <a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core" target="_blank" rel="noopener">GitHub</a>
+          </nav>
+        </div></header>
+        <main class="container">
+          <div class="card">
+            <h1><xsl:value-of select="/fdml/meta/title"/></h1>
+            <p class="sub"><span>Meter <code><xsl:value-of select="/fdml/meta/meter"/></code></span>
+               &#160;•&#160;
+               <span>Tempo <code><xsl:value-of select="/fdml/meta/tempo"/></code></span>
+            </p>
+            <xsl:if test="/fdml/body/figure">
+              <table>
+                <thead><tr><th>Figure</th><th>Name</th></tr></thead>
+                <tbody>
+                  <xsl:for-each select="/fdml/body/figure">
+                    <tr>
+                      <td><code><xsl:value-of select="@id"/></code></td>
+                      <td><xsl:value-of select="@name"/></td>
+                    </tr>
+                  </xsl:for-each>
+                </tbody>
+              </table>
+            </xsl:if>
+            <p class="sub">Generated from FDML</p>
+            <p class="sub"><a class="muted" href="index.html">← Back to all examples</a></p>
+          </div>
+        </main>
+        <footer><div class="container">© FDML</div></footer>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>
+--- END: xslt/card.xsl ---
+
+## XSD/XSL inventory
+./schema/fdml.xsd
+./schematron/fdml-compiled.xsl
+./xslt/card.xsl
+./xslt/fdml-to-card.xsl
+./xslt/fdml-to-xhtml.xsl
+
+## Corpus samples (first 5 XML paths)
+./corpus/invalid/example-01-invalid.fdml.xml
+./corpus/invalid/example-02-empty-title.fdml.xml
+./corpus/invalid/example-03-dup-id.fdml.xml
+./corpus/invalid/example-04-bad-email.fdml.xml
+./corpus/invalid/example-05-missing-id.fdml.xml
+
+## Language/Tooling probes
+-- Python --
+Python 3.9.6
+pip 21.2.4 from /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages/pip (python 3.9)
+-- Java/Maven --
+openjdk version "17.0.16" 2025-07-15
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: /opt/homebrew/Cellar/maven/3.9.11/libexec
+Java version: 17.0.16, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk@17/17.0.16/libexec/openjdk.jdk/Contents/Home
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "14.3", arch: "aarch64", family: "mac"
+-- Node --
+v20.18.0
+10.8.2
+-- XSLT engines --
+Using libxml 20913, libxslt 10135 and libexslt 820
+
+## cloc summary (if installed)
+bash: -c: line 97: syntax error near unexpected token `('

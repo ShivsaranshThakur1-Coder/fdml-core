@@ -1,0 +1,934 @@
+=== FDML Deep Context ===
+CWD: /Users/shivsaranshthakur/Projects/fdml-core
+When: 2025-10-27T14:53:28+00:00
+
+## Git — head, remotes, status
+74dcc31  2025-10-27 14:31:10 +0000  a.schalk.manchester@gmail.com  docs(progress): add Week 5 LaTeX progress report and README
+origin	git@github.com:ShivsaranshThakur1-Coder/fdml-core.git (fetch)
+origin	git@github.com:ShivsaranshThakur1-Coder/fdml-core.git (push)
+## main...origin/main
+ M site/cards/example-01.fdml.html
+ M site/cards/example-02.fdml.html
+ M site/cards/example-03.fdml.html
+ M site/cards/example-04.fdml.html
+ M site/cards/example-05-contra.fdml.html
+ M site/cards/example-06-square.fdml.html
+ M site/cards/example-07-mixer.fdml.html
+ M site/cards/example-08-init.fdml.html
+ D site/cards/style.css
+ M site/index.html
+?? context.20251027-144617.log
+?? context.deep.20251027-145328.log
+?? docs/progress-report/week05_progress.aux
+?? docs/progress-report/week05_progress.fdb_latexmk
+?? docs/progress-report/week05_progress.fls
+?? docs/progress-report/week05_progress.log
+?? docs/progress-report/week05_progress.out
+?? docs/progress-report/week05_progress.pdf
+
+-- last 15 commits --
+* 74dcc31 (HEAD -> main, origin/main, origin/HEAD) docs(progress): add Week 5 LaTeX progress report and README
+* e2816f0 xsl: card pages link ../style.css (single stylesheet at site root)
+* 28af9e8 site: reset XSL, rebuild cards with css v=1761573613, include cards/style.css
+* 19d82a9 pages: rebuild site (css v=1761573203) and include site/cards/style.css
+* c5ecb19 xsl: add cssVersion param + dynamic cssHref and link
+* 8975994 pages: ship cards/style.css and rebuild with CSSV=1761571994
+* 57b1d09 pages: ensure cards/style.css present; rebuild with CSSV=1761571152
+* 794fde0 pages: rebuild with CSSV=1761570830
+* 2eba03c Normalize output: cards only under site/cards, fix back/index links and stylesheet location
+* 8be182a ui: rebuild site with polished theme & cards grid (v1761070729)
+* 002d2a5 ui: professional theme refresh (1761070240)
+* 4452f91 ui: fix XSL, pro index, cache-busted CSS (1761069182)
+* 11f01da ui: pro theme, nav/hero/grid, cache-busted CSS (1761068934), consistent back-links
+* 349c073 pages: pass cssVersion into XSLT (CSSV) and use run_id for cache-busting
+* aee9617 pages: cssVersion=1761063795 via XSLT param; rebuild site with same cb
+
+## Toolchain
+openjdk version "17.0.16" 2025-07-15
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: /opt/homebrew/Cellar/maven/3.9.11/libexec
+Java version: 17.0.16, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk@17/17.0.16/libexec/openjdk.jdk/Contents/Home
+v20.18.0
+10.8.2
+Using libxml 20913, libxslt 10135 and libexslt 820
+Latexmk, John Collins, 31 Jan. 2024. Version 4.83
+
+## Quick tree (tracked) + counts
+tracked files: 95
+.editorconfig
+.github/workflows/cards-pages.yml
+.github/workflows/ci.yml
+.github/workflows/fdml-validate.yml
+.github/workflows/release.yml
+.github/workflows/render-test.yml
+.gitignore
+CHANGELOG.md
+LICENSE
+LICENSE-DATA
+Makefile
+README.md
+bin/fdml
+corpus/invalid/example-01-invalid.fdml.xml
+corpus/invalid/example-02-empty-title.fdml.xml
+corpus/invalid/example-03-dup-id.fdml.xml
+corpus/invalid/example-04-bad-email.fdml.xml
+corpus/invalid/example-05-missing-id.fdml.xml
+corpus/invalid/example-06-bad-figure.fdml.xml
+corpus/invalid/example-07-bad-use.fdml.xml
+corpus/valid/example-01.fdml.xml
+corpus/valid/example-02.fdml.xml
+corpus/valid/example-03.fdml.xml
+corpus/valid/example-04.fdml.xml
+corpus/valid/example-05-contra.fdml.xml
+corpus/valid/example-06-square.fdml.xml
+corpus/valid/example-07-mixer.fdml.xml
+corpus/valid/example-08-init.fdml.xml
+css/print.css
+dependency-reduced-pom.xml
+docs/ARCHITECTURE.md
+docs/CONTRIBUTING.md
+docs/USAGE.html
+docs/USAGE.md
+docs/css/print.css
+docs/examples/example-01.fdml.html
+docs/examples/example-02.fdml.html
+docs/examples/example-03.fdml.html
+docs/examples/example-04.fdml.html
+docs/examples/example-05-contra.fdml.html
+docs/examples/example-06-square.fdml.html
+docs/examples/example-07-mixer.fdml.html
+docs/examples/example-08-init.fdml.html
+docs/examples/index.html
+docs/index.html
+docs/pdfs/example-01.fdml.pdf
+docs/pdfs/example-02.fdml.pdf
+docs/pdfs/example-03.fdml.pdf
+docs/pdfs/example-04.fdml.pdf
+docs/pdfs/example-05-contra.fdml.pdf
+docs/pdfs/example-06-square.fdml.pdf
+docs/pdfs/example-07-mixer.fdml.pdf
+docs/pdfs/example-08-init.fdml.pdf
+docs/progress-report/README.md
+docs/progress-report/week05_progress.tex
+docs/site.css
+docs/style.css
+pom.xml
+schema/fdml.xsd
+schematron/fdml-compiled.xsl
+schematron/fdml.sch
+scripts/build_index.sh
+scripts/ci_debug.sh
+scripts/ci_diff.sh
+scripts/ci_latest.sh
+scripts/ci_logs.sh
+scripts/gen_examples.sh
+scripts/local_sanity.sh
+site/cards/example-01.fdml.html
+site/cards/example-02.fdml.html
+site/cards/example-03.fdml.html
+site/cards/example-04.fdml.html
+site/cards/example-05-contra.fdml.html
+site/cards/example-06-square.fdml.html
+site/cards/example-07-mixer.fdml.html
+site/cards/example-08-init.fdml.html
+site/cards/style.css
+site/index.html
+site/style.css
+src/main/java/org/fdml/cli/Doctor.java
+src/main/java/org/fdml/cli/FdmlValidator.java
+src/main/java/org/fdml/cli/Indexer.java
+src/main/java/org/fdml/cli/Init.java
+src/main/java/org/fdml/cli/Linter.java
+src/main/java/org/fdml/cli/Main.java
+src/main/java/org/fdml/cli/MainJson.java
+src/main/java/org/fdml/cli/PdfExporter.java
+src/main/java/org/fdml/cli/Renderer.java
+src/main/java/org/fdml/cli/SchematronValidator.java
+src/test/java/org/fdml/cli/RenderSnapshotTest.java
+src/test/resources/snapshots/example-01.html
+xslt/card.xsl
+xslt/fdml-to-card.xsl
+xslt/fdml-to-xhtml.xsl
+xslt/style.css
+
+## Patch: xslt/card.xsl cssVersion AVT (if needed)
+No patch needed.
+
+## Build CLI (Maven package)
+-rw-r--r--  1 shivsaranshthakur  staff    35K 13 Oct 21:32 target/fdml-core-0.2.0-SNAPSHOT.jar
+-rw-r--r--  1 shivsaranshthakur  staff    14M 27 Oct 14:53 target/fdml-core.jar
+-rw-r--r--  1 shivsaranshthakur  staff    14M 16 Oct 11:39 target/original-fdml-core.jar
+
+## CLI smoke test
+FDML CLI
+Usage:
+  validate <path> [...] [--json] [--json-out file]
+  validate-sch <path> [...] [--json] [--json-out file]
+  validate-all <path> [...] [--json] [--json-out file]
+  render <fdml-file> [--out out.html]
+  export-pdf <fdml-file> [--out out.pdf]
+  index  <path> [...] [--out out.json]
+  lint   <path> [...] [--json] [--json-out file] [--strict]
+  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM]
+  doctor <path> [...] [--json] [--strict]
+FDML CLI
+Usage:
+  validate <path> [...] [--json] [--json-out file]
+  validate-sch <path> [...] [--json] [--json-out file]
+  validate-all <path> [...] [--json] [--json-out file]
+  render <fdml-file> [--out out.html]
+  export-pdf <fdml-file> [--out out.pdf]
+  index  <path> [...] [--out out.json]
+  lint   <path> [...] [--json] [--json-out file] [--strict]
+  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM]
+  doctor <path> [...] [--json] [--strict]
+
+## Schema / Schematron headers
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="idSection">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="s-[a-z0-9-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="idFigure">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="f-[a-z0-9-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="foot">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="L"/>
+      <xs:enumeration value="R"/>
+      <xs:enumeration value="B"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="who">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="lead"/>
+      <xs:enumeration value="follow"/>
+      <xs:enumeration value="both"/>
+      <xs:enumeration value="all"/>
+      <xs:enumeration value="gents"/>
+      <xs:enumeration value="ladies"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="direction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Fwd"/>
+      <xs:enumeration value="Back"/>
+      <xs:enumeration value="Left"/>
+      <xs:enumeration value="Right"/>
+      <xs:enumeration value="CW"/>
+      <xs:enumeration value="CCW"/>
+      <xs:enumeration value="In"/>
+      <xs:enumeration value="Out"/>
+      <xs:enumeration value="DiagL"/>
+      <xs:enumeration value="DiagR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="facing">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="N"/>
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="S"/>
+      <xs:enumeration value="W"/>
+      <xs:enumeration value="Partner"/>
+      <xs:enumeration value="Inside"/>
+      <xs:enumeration value="Outside"/>
+      <xs:enumeration value="Up"/>
+      <xs:enumeration value="Down"/>
+      <xs:enumeration value="Across"/>
+      <xs:enumeration value="Along"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="formation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="circle"/>
+      <xs:enumeration value="line"/>
+      <xs:enumeration value="couple"/>
+      <xs:enumeration value="set"/>
+      <xs:enumeration value="square"/>
+      <xs:enumeration value="improper"/>
+      <xs:enumeration value="longways"/>
+      <xs:enumeration value="ring"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="countSpan">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d+(-\d+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="sectionType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="idSection" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="stepType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="who" type="who" use="required"/>
+        <xs:attribute name="action" type="xs:string" use="required"/>
+        <xs:attribute name="beats" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="count" type="countSpan" use="optional"/>
+        <xs:attribute name="startFoot" type="foot" use="required"/>
+        <xs:attribute name="endFoot" type="foot" use="optional"/>
+        <xs:attribute name="direction" type="direction" use="optional"/>
+        <xs:attribute name="facing" type="facing" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="figureType">
+    <xs:sequence>
+      <xs:element name="step" type="stepType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="idFigure" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="formation" type="formation" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="useType">
+    <xs:attribute name="figure" type="idFigure" use="required"/>
+    <xs:attribute name="repeat" type="xs:positiveInteger" use="optional" default="1"/>
+  </xs:complexType>
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <pattern id="basic-rules">
+    <rule context="fdml">
+      <assert test="meta">fdml must contain meta</assert>
+      <assert test="body">fdml must contain body</assert>
+    </rule>
+  </pattern>
+</schema>
+
+## Validate corpus
+-- valid --
+OK  : corpus/valid/example-01.fdml.xml
+OK  : corpus/valid/example-02.fdml.xml
+OK  : corpus/valid/example-03.fdml.xml
+OK  : corpus/valid/example-04.fdml.xml
+OK  : corpus/valid/example-05-contra.fdml.xml
+OK  : corpus/valid/example-06-square.fdml.xml
+OK  : corpus/valid/example-07-mixer.fdml.xml
+OK  : corpus/valid/example-08-init.fdml.xml
+Validated 8 file(s).
+-- invalid (expect failures) --
+validator exit=2
+FAIL: corpus/invalid/example-01-invalid.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+FAIL: corpus/invalid/example-02-empty-title.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+FAIL: corpus/invalid/example-03-dup-id.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+FAIL: corpus/invalid/example-04-bad-email.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+FAIL: corpus/invalid/example-05-missing-id.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+FAIL: corpus/invalid/example-06-bad-figure.fdml.xml : (line 5, col 45): cvc-complex-type.4: Attribute 'id' must appear on element 'figure'.
+FAIL: corpus/invalid/example-07-bad-use.fdml.xml : (line 6, col 8): cvc-complex-type.2.4.b: The content of element 'fdml' is not complete. One of '{body}' is expected.
+Validated 7 file(s).
+
+## Rebuild site + index
+rm -rf out site
+HTML  out/html/example-01.fdml.html
+HTML  out/html/example-02.fdml.html
+HTML  out/html/example-03.fdml.html
+HTML  out/html/example-04.fdml.html
+HTML  out/html/example-05-contra.fdml.html
+HTML  out/html/example-06-square.fdml.html
+HTML  out/html/example-07-mixer.fdml.html
+HTML  out/html/example-08-init.fdml.html
+Site built → site/ (with cards/ and polished index)
+-- site listing --
+total 16
+drwxr-xr-x  10 shivsaranshthakur  staff   320 27 Oct 14:53 cards
+-rw-r--r--   1 shivsaranshthakur  staff  2271 27 Oct 14:53 index.html
+-rw-r--r--   1 shivsaranshthakur  staff  3176 27 Oct 14:53 style.css
+-- index.html head --
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FDML – Examples</title>
+<link rel="stylesheet" href="style.css?v=1761576811">
+</head>
+<body>
+<header class="site-head">
+  <div class="container">
+    <a class="brand" href="./">FDML</a>
+    <nav class="nav">
+      <a href="./index.html">Home</a>
+      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <div class="hero">
+    <h1>Folk Dance Markup Library</h1>
+    <p class="sub">Curated, validated examples rendered as clean, printable cards.</p>
+  </div>
+  <ul class="grid">
+    <li><a class="card" href="cards/example-01.fdml.html"><strong>Example Valid FDML</strong><div class="sub">example-01.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-02.fdml.html"><strong>Valid FDML with sections</strong><div class="sub">example-02.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-03.fdml.html"><strong>Circle Waltz — Basic</strong><div class="sub">example-03.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-04.fdml.html"><strong>Circle Waltz — Teaching Set</strong><div class="sub">example-04.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-05-contra.fdml.html"><strong>Contra — Longways Set</strong><div class="sub">example-05-contra.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-06-square.fdml.html"><strong>Square — Right &amp; Left Thru</strong><div class="sub">example-06-square.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-07-mixer.fdml.html"><strong>Circle Mixer — Intro</strong><div class="sub">example-07-mixer.fdml.html</div></a></li>
+    <li><a class="card" href="cards/example-08-init.fdml.html"><strong>Demo Init</strong><div class="sub">example-08-init.fdml.html</div></a></li>
+  </ul>
+  <footer><div class="container">
+    <span class="muted">©</span> <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder">Shivsaransh Thakur</a> ·
+    <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">Source</a>
+  </div></footer>
+</main>
+</body></html>
+
+## Key files (first 160 lines each)
+--- BEGIN README.md ---
+[![render-test](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/render-test.yml)
+
+[![fdml-validate](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml/badge.svg?branch=main)](https://github.com/ShivsaranshThakur1-Coder/fdml-core/actions/workflows/fdml-validate.yml)
+
+# FDML Core
+
+Implementation of the FDML project: schema + validation (XSD + Schematron), transforms (XSLT), sample corpus, and test/CI scaffolding.
+
+## Layout
+- `schema/` — FDML XSD schema
+- `schematron/` — business-rule validation
+- `xslt/` — transformations (HTML card renderer, etc.)
+- `css/` — stylesheets for rendered output
+- `corpus/valid` and `corpus/invalid` — example FDML documents
+- `docs/` — architecture/spec notes
+- `test/` — unit, snapshot, e2e, perf scaffolding
+- `.github/workflows/` — CI
+
+## Getting Started
+- Java 17 required (installed in Step 1).
+- CI currently runs a placeholder `make ci`. Validation/build steps will be added in Step 3+.
+
+## Licenses
+- Code: MIT (`LICENSE`)
+- Docs & corpus: CC BY 4.0 (`LICENSE-DATA`)
+
+## Quick CLI
+
+Build once:
+```bash
+mvn -q -DskipTests package
+## Install (Homebrew)
+
+~~~bash
+brew tap ShivsaranshThakur1-Coder/fdml
+brew install fdml
+~~~
+
+## Quick Start
+
+```bash
+fdml init song.fdml.xml --title "My Dance" --meter 3/4 --tempo 96 --figure-id f-1 --figure-name Intro
+fdml validate song.fdml.xml
+fdml validate corpus/valid/*.xml
+fdml validate song.fdml.xml --json --json-out result.json
+```
+
+## Local CI
+
+```bash
+make ci
+```
+
+## Render
+
+```bash
+make html
+open out/html/example-01.fdml.html
+```
+
+**Live cards:** https://shivsaranshthakur1-coder.github.io/fdml-core/
+--- END README.md ---
+--- BEGIN Makefile ---
+.PHONY: html validate-valid validate-invalid json ci clean
+
+html:
+	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
+		find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do \
+			base=$$(basename "$$f"); stem=$${base%.xml}; \
+			echo "HTML  $$out/$$stem.html"; \
+			xsltproc --stringparam cssVersion $$TS xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
+		done < $$tmp; rm -f $$tmp; \
+		mkdir -p site; cp -f docs/style.css site/style.css; cp -f $$out/*.html site/; \
+		scripts/build_index.sh $$TS
+
+validate-valid:
+	@set -e; tmp=$$(mktemp); find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do echo "VALID  $$f"; fdml validate "$$f"; done; rm -f $$tmp
+
+validate-invalid:
+	@set -e; tmp=$$(mktemp); find corpus/invalid -type f -name '*.xml' | sort > $$tmp; failures=0; \
+		while IFS= read -r f; do echo "INVALID $$f"; if fdml validate "$$f"; then echo "EXPECTED FAILURE but got success: $$f"; failures=$$((failures+1)); fi; done; \
+		rm -f $$tmp; test $$failures -eq 0
+
+json:
+	@set -e; out=out/json; mkdir -p $$out; tmp=$$(mktemp); \
+		find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
+		while IFS= read -r f; do base=$$(basename "$$f"); stem=$${base%.xml}; \
+			echo "JSON  $$out/$$stem.json"; fdml validate "$$f" --json --json-out "$$out/$$stem.json"; \
+		done < $$tmp; rm -f $$tmp
+
+ci: validate-valid validate-invalid html
+
+clean:
+	rm -rf out site
+--- END Makefile ---
+--- BEGIN pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.fdml</groupId>
+  <artifactId>fdml-core</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>12.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.openhtmltopdf</groupId>
+      <artifactId>openhtmltopdf-pdfbox</artifactId>
+      <version>1.0.10</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration><release>17</release></configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <finalName>fdml-core</finalName>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.fdml.cli.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+--- END pom.xml ---
+--- BEGIN xslt/card.xsl ---
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:param name="cssVersion" select="'0'"/>
+
+  <xsl:template match="/">
+    <html lang="en">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="color-scheme" content="dark light"/>
+        <title>FDML: <xsl:value-of select="/fdml/meta/title"/></title>
+        <link rel="stylesheet" href="../style.css?{}"/>
+      </head>
+      <body>
+        <header class="site-head"><div class="container">
+          <a class="brand" href="index.html">FDML</a>
+          <nav class="nav"><a href="index.html">Examples</a>
+            <a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core" target="_blank" rel="noopener">GitHub</a>
+          </nav>
+        </div></header>
+        <main class="container">
+          <div class="card">
+            <h1><xsl:value-of select="/fdml/meta/title"/></h1>
+            <p class="sub"><span>Meter <code><xsl:value-of select="/fdml/meta/meter"/></code></span>
+               &#160;•&#160;
+               <span>Tempo <code><xsl:value-of select="/fdml/meta/tempo"/></code></span>
+            </p>
+            <xsl:if test="/fdml/body/figure">
+              <table>
+                <thead><tr><th>Figure</th><th>Name</th></tr></thead>
+                <tbody>
+                  <xsl:for-each select="/fdml/body/figure">
+                    <tr>
+                      <td><code><xsl:value-of select="@id"/></code></td>
+                      <td><xsl:value-of select="@name"/></td>
+                    </tr>
+                  </xsl:for-each>
+                </tbody>
+              </table>
+            </xsl:if>
+            <p class="sub">Generated from FDML</p>
+            <p class="sub"><a class="muted" href="index.html">← Back to all examples</a></p>
+          </div>
+        </main>
+        <footer><div class="container">© FDML</div></footer>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>
+--- END xslt/card.xsl ---
+--- BEGIN xslt/fdml-to-xhtml.xsl ---
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
+  <xsl:output method="xhtml" indent="yes" />
+
+  <xsl:template match="/">
+    <html>
+      <head>
+        <title><xsl:value-of select="normalize-space(/fdml/meta/title)"/></title>
+        <link rel="stylesheet" href="../site.css" />
+        <link rel="stylesheet" href="../css/print.css" />
+      </head>
+      <body>
+        <div class="wrap">
+          <div class="nav"><a href="index.html">← Examples</a></div>
+          <xsl:apply-templates select="fdml"/>
+        </div>
+      </body>
+    </html>
+  </xsl:template>
+
+  <xsl:template match="fdml">
+    <div class="fdml">
+      <div class="meta">
+        <div class="title"><xsl:value-of select="normalize-space(meta/title)"/></div>
+        <xsl:if test="meta/dance/@name"><div class="muted">Dance: <xsl:value-of select="meta/dance/@name"/></div></xsl:if>
+        <xsl:if test="meta/meter/@value"><div class="muted">Meter: <xsl:value-of select="meta/meter/@value"/></div></xsl:if>
+        <xsl:if test="meta/tempo/@bpm"><div class="muted">Tempo: <xsl:value-of select="meta/tempo/@bpm"/> bpm</div></xsl:if>
+      </div>
+
+      <xsl:if test="body/sequence">
+        <xsl:for-each select="body/sequence"><xsl:call-template name="sequenceCard"/></xsl:for-each>
+      </xsl:if>
+
+      <xsl:for-each select="body/figure"><xsl:call-template name="figureCard"/></xsl:for-each>
+      <xsl:apply-templates select="body/section"/>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="sequenceCard">
+    <xsl:variable name="meterVal" select="/fdml/meta/meter/@value"/>
+    <xsl:variable name="beatsPerBar" select="number(substring-before($meterVal, '/'))"/>
+    <xsl:variable name="grand" select="sum(for $u in use return (sum(key('figById', $u/@figure)/step/@beats) * (if ($u/@repeat) then number($u/@repeat) else 1)))"/>
+    <xsl:variable name="bars" select="if ($beatsPerBar gt 0) then ($grand div $beatsPerBar) else ()"/>
+    <div class="figure-card">
+      <h2>
+        <xsl:text>Sequence</xsl:text>
+        <xsl:if test="@name"><xsl:text>: </xsl:text><xsl:value-of select="@name"/></xsl:if>
+        <span class="beats">
+          <xsl:text> — Total: </xsl:text><xsl:value-of select="$grand"/><xsl:text> beats</xsl:text>
+          <xsl:if test="$bars"><xsl:text> (~</xsl:text><xsl:value-of select="format-number($bars,'0.##')"/><xsl:text> bars @ </xsl:text><xsl:value-of select="$meterVal"/><xsl:text>)</xsl:text></xsl:if>
+        </span>
+      </h2>
+      <table class="steps">
+        <thead><tr><th>#</th><th>Figure</th><th>Name</th><th>Repeat</th><th>Beats each</th><th>Subtotal</th></tr></thead>
+        <tbody>
+          <xsl:for-each select="use">
+            <xsl:variable name="fig" select="key('figById', @figure)[1]"/>
+            <xsl:variable name="rep" select="if (@repeat) then number(@repeat) else 1"/>
+            <xsl:variable name="each" select="sum($fig/step/@beats)"/>
+            <xsl:variable name="sub" select="$each * $rep"/>
+            <tr>
+              <td><xsl:value-of select="position()"/></td>
+              <td><code><xsl:value-of select="@figure"/></code></td>
+              <td><xsl:value-of select="$fig/@name"/></td>
+              <td><xsl:value-of select="$rep"/></td>
+              <td><xsl:value-of select="$each"/></td>
+              <td><xsl:value-of select="$sub"/></td>
+            </tr>
+          </xsl:for-each>
+        </tbody>
+      </table>
+    </div>
+  </xsl:template>
+
+  <xsl:key name="figById" match="figure" use="@id"/>
+
+  <xsl:template name="figureCard">
+    <xsl:variable name="beats" select="sum(step/@beats)"/>
+    <xsl:variable name="meterVal" select="/fdml/meta/meter/@value"/>
+    <xsl:variable name="beatsPerBar" select="number(substring-before($meterVal, '/'))"/>
+    <xsl:variable name="bars" select="if ($beatsPerBar gt 0) then ($beats div $beatsPerBar) else ()"/>
+    <div class="figure-card">
+      <h2>
+        <xsl:text>Figure</xsl:text>
+        <xsl:if test="@name"><xsl:text>: </xsl:text><xsl:value-of select="@name"/></xsl:if>
+        <xsl:if test="@formation"><xsl:text> (</xsl:text><xsl:value-of select="@formation"/><xsl:text>)</xsl:text></xsl:if>
+        <span class="beats">
+          <xsl:text> — Total: </xsl:text><xsl:value-of select="$beats"/><xsl:text> beats</xsl:text>
+          <xsl:if test="$bars"><xsl:text> (~</xsl:text><xsl:value-of select="format-number($bars,'0.##')"/><xsl:text> bars @ </xsl:text><xsl:value-of select="$meterVal"/><xsl:text>)</xsl:text></xsl:if>
+        </span>
+      </h2>
+      <table class="steps">
+        <thead><tr><th>#</th><th>Who</th><th>Action</th><th>Beats</th><th>Count</th><th>Foot</th><th>Direction</th><th>Facing</th><th>Notes</th></tr></thead>
+        <tbody>
+          <xsl:for-each select="step">
+            <tr>
+              <td><xsl:value-of select="position()"/></td>
+              <td><xsl:value-of select="@who"/></td>
+              <td><xsl:value-of select="@action"/></td>
+              <td><xsl:value-of select="@beats"/></td>
+              <td><xsl:value-of select="@count"/></td>
+              <td><xsl:value-of select="@startFoot"/><xsl:if test="@endFoot"><xsl:text>→</xsl:text><xsl:value-of select="@endFoot"/></xsl:if></td>
+              <td><xsl:value-of select="@direction"/></td>
+              <td><xsl:value-of select="@facing"/></td>
+              <td><xsl:value-of select="normalize-space(.)"/></td>
+            </tr>
+          </xsl:for-each>
+        </tbody>
+      </table>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="section"><div class="section"><xsl:value-of select="normalize-space(.)"/></div></xsl:template>
+  <xsl:template match="@*|node()"><xsl:apply-templates select="@*|node()"/></xsl:template>
+</xsl:stylesheet>
+--- END xslt/fdml-to-xhtml.xsl ---
+--- BEGIN scripts/build_index.sh ---
+#!/usr/bin/env bash
+set -euo pipefail
+V="${1:-$EPOCHSECONDS}"
+rm -rf site
+mkdir -p site/cards
+cp -f docs/style.css site/style.css
+cp -f out/html/*.html site/cards/
+
+# Build a single “cards” grid homepage
+cat > site/index.html <<HTML
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FDML – Examples</title>
+<link rel="stylesheet" href="style.css?v=${V}">
+</head>
+<body>
+<header class="site-head">
+  <div class="container">
+    <a class="brand" href="./">FDML</a>
+    <nav class="nav">
+      <a href="./index.html">Home</a>
+      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <div class="hero">
+    <h1>Folk Dance Markup Library</h1>
+    <p class="sub">Curated, validated examples rendered as clean, printable cards.</p>
+  </div>
+  <ul class="grid">
+HTML
+for p in site/cards/*.html; do
+  b="$(basename "$p")"
+  title="$(grep -m1 -oE '<h1[^>]*>[^<]+' "$p" | sed -E 's#<[^>]+>##g')"
+  printf '    <li><a class="card" href="cards/%s"><strong>%s</strong><div class="sub">%s</div></a></li>\n' "$b" "$title" "$b" >> site/index.html
+done
+cat >> site/index.html <<'HTML'
+  </ul>
+  <footer><div class="container">
+    <span class="muted">©</span> <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder">Shivsaransh Thakur</a> ·
+    <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">Source</a>
+  </div></footer>
+</main>
+</body></html>
+HTML
+echo "Site built → site/ (with cards/ and polished index)"
+--- END scripts/build_index.sh ---
+--- BEGIN bin/fdml ---
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+JAR="$DIR/target/fdml-core.jar"
+if [[ ! -f "$JAR" ]]; then
+  echo "Building fdml-core.jar..."
+  (cd "$DIR" && mvn -q -DskipTests package)
+fi
+exec java -jar "$JAR" "$@"
+--- END bin/fdml ---
+
+## Java sources (paths + line counts)
+      50 src/main/java/org/fdml/cli/Doctor.java
+      91 src/main/java/org/fdml/cli/FdmlValidator.java
+      84 src/main/java/org/fdml/cli/Indexer.java
+      69 src/main/java/org/fdml/cli/Init.java
+     127 src/main/java/org/fdml/cli/Linter.java
+     300 src/main/java/org/fdml/cli/Main.java
+      39 src/main/java/org/fdml/cli/MainJson.java
+      34 src/main/java/org/fdml/cli/PdfExporter.java
+      25 src/main/java/org/fdml/cli/Renderer.java
+      89 src/main/java/org/fdml/cli/SchematronValidator.java
+     908 total
+
+## Progress report artifacts
+-rw-r--r--  1 shivsaranshthakur  staff    1756 27 Oct 14:33 docs/progress-report/week05_progress.aux
+-rw-r--r--  1 shivsaranshthakur  staff    9227 27 Oct 14:33 docs/progress-report/week05_progress.fdb_latexmk
+-rw-r--r--  1 shivsaranshthakur  staff    9300 27 Oct 14:33 docs/progress-report/week05_progress.fls
+-rw-r--r--  1 shivsaranshthakur  staff   14641 27 Oct 14:33 docs/progress-report/week05_progress.log
+-rw-r--r--  1 shivsaranshthakur  staff    2098 27 Oct 14:33 docs/progress-report/week05_progress.out
+-rw-r--r--@ 1 shivsaranshthakur  staff  108072 27 Oct 14:33 docs/progress-report/week05_progress.pdf
+-rw-r--r--  1 shivsaranshthakur  staff    5273 27 Oct 14:31 docs/progress-report/week05_progress.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+
+\title{\textbf{FDML Project — Week 5 Progress Report}}
+\author{Shivsaransthakur1-Coder}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Executive Summary}
+\begin{itemize}[leftmargin=1.2em]
+  \item Delivered a functional CLI release pipeline (\texttt{fdml-core} v0.3.3) packaged via Homebrew tap, plus validation and rendering workflows.
+  \item Built a curated, styled GitHub Pages site that publishes rendered FDML examples as printable cards.
+  \item Established repeatable CI for schema/corpus validation and for site rendering; resolved several publishing and cache-busting issues.
+  \item Current focus: unifying stylesheet delivery for card pages and finalizing “professional” presentation and navigation UX.
+\end{itemize}
+
+\section{Scope and Repositories}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{Core}: \texttt{fdml-core} — XSD schema, Schematron rules, XSLT renderer, CLI JAR, corpus and documentation.
+  \item \textbf{Packaging}: \texttt{homebrew-fdml} tap — installs \texttt{fdml} CLI (\texttt{fdml-core.jar}) and ships schema resources.
+\end{itemize}
+
+\section{What Was Completed}
+\subsection{Schema, Corpus, CLI}
+\begin{itemize}[leftmargin=1.2em]
+  \item Authored FDML XSD (\texttt{schema/}) and Schematron rules (\texttt{schematron/}).
+  \item Sample corpus in \texttt{corpus/valid} and \texttt{corpus/invalid}; invalid samples ensured to fail XSD deterministically.
+  \item CLI packaging as \texttt{fdml-core.jar}; Homebrew formula updated to v0.3.3 with verified SHA256.
+\end{itemize}
+
+\subsection{Local Developer Tooling}
+\begin{itemize}[leftmargin=1.2em]
+  \item \texttt{make ci} validates all valid and invalid samples.
+  \item \texttt{make json} emits machine-readable results for valid samples.
+  \item \texttt{make html} renders cards via XSLT into \texttt{out/html}.
+\end{itemize}
+
+\subsection{CI/CD Workflows}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{tap-test} and \textbf{tap-audit}: formula style/audit and install/validate smoke tests.
+  \item \textbf{fdml-validate}: corpus validation in CI (valid must pass; invalid must fail).
+  \item \textbf{render-test}: builds HTML cards in CI and uploads artifacts.
+  \item \textbf{cards-pages}: publishes styled site to GitHub Pages from \texttt{site/}.
+\end{itemize}
+
+\subsection{Website Publishing}
+\begin{itemize}[leftmargin=1.2em]
+  \item Static site structure: \texttt{site/index.html} (grid of examples) and \texttt{site/cards/*.html} (card pages).
+  \item Central stylesheet at \texttt{site/style.css}; cache-buster parameter threaded via CI and local builds.
+  \item Example pages link back to index and include minimal site header for consistency.
+\end{itemize}
+
+\section{Issues Found and Fixed}
+\subsection{Repeatability and Validation}
+\begin{itemize}[leftmargin=1.2em]
+  \item Several invalid corpus samples initially passed; replaced with deterministic XSD failures.
+  \item CI portability: adapted shell loops to macOS runner (bash 3.2) semantics.
+\end{itemize}
+
+\subsection{Publishing and Caching}
+\begin{itemize}[leftmargin=1.2em]
+  \item Intermittent 404s traced to artifact content vs. links and Pages cache; added explicit cache-busting and ensured index generation in CI.
+  \item Addressed duplicated output (\texttt{site/} vs. \texttt{site/cards/}) and removed embedded repos from tree (avoids Pages conflicts).
+\end{itemize}
+
+\section{Open Items / Known Gaps}
+\begin{itemize}[leftmargin=1.2em]
+  \item Some card pages reverted to unstyled look due to stylesheet path assumptions; fix is to link cards to \texttt{../style.css} and ship a single root CSS.
+  \item Strengthen validation outputs (attach JSON for CI artifacts) and add regression checks for Pages contents.
+  \item Improve table formatting and content density for long figure lists; add print CSS for page breaks.
+\end{itemize}
+
+\section{Next Steps (Week 5 Plan)}
+\begin{enumerate}[leftmargin=1.2em]
+  \item Finalize stylesheet unification and verify on Pages: card head should reference \texttt{../style.css?\{version\}}.
+  \item Extend CI to diff rendered HTML structure and ensure head links, header/nav and back-links are intact.
+  \item Author tutorial docs: ``Authoring FDML'', ``Validating FDML'', ``Rendering Cards''; link from landing page.
+  \item Prepare a tagged demo release and attach Pages URL and artifacts to GitHub Release notes.
+\end{enumerate}
+
+\section{Appendix — CI Matrix}
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{tap-test}: install \& validate smoke.
+  \item \textbf{tap-audit}: style/audit; no redundant \texttt{version} stanza in formula.
+  \item \textbf{fdml-validate}: macOS; brew install \texttt{fdml}; run validation loops.
+  \item \textbf{render-test}: brew install \texttt{fdml} and \texttt{libxslt}; \texttt{make html}; upload artifact.
+  \item \textbf{cards-pages}: macOS build \textrightarrow{} Ubuntu deploy to Pages; cache-busted \texttt{site/} published.
+\end{itemize}
+
+\end{document}
+
+## cloc summary (if installed)
+cloc: not installed
+
+=== Done. Log: context.deep.20251027-145328.log ===
