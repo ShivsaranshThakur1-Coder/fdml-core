@@ -19,3 +19,13 @@ homebrew-fdml/
 
 # Build output
 site/
+
+# Local context logs
+context*.log
+
+# LaTeX build artifacts (progress report)
+docs/progress-report/*.aux
+docs/progress-report/*.log
+docs/progress-report/*.out
+docs/progress-report/*.fdb_latexmk
+docs/progress-report/*.fls
