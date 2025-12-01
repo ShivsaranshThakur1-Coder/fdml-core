@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{FDML-Core Project: Tutor Briefing (with Plain-Language Explanations)}
+\author{Shiv Saransh Thakur}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{What my project is, in one sentence}
+
+My project is a \textbf{small publishing pipeline for folk dances}.
+
+\medskip
+Instead of keeping dances in scattered notes or random documents, I use a simple
+text format called \textbf{FDML} (Folk Dance Markup Language) to describe
+dances in a structured way, and then I have tools that:
+
+\begin{itemize}
+  \item check that the description makes sense, and
+  \item automatically produce caller cards, PDFs and a small searchable web site.
+\end{itemize}
+
+If I need to summarise quickly to my tutor, I can say:
+
+\begin{quote}
+``I treat folk dances as structured data: I write them in a simple markup
+language (FDML), then I run a tool that validates them and turns them into
+printable cards and a small searchable site.''
+\end{quote}
+
+\section{Key concepts explained in plain language}
+
+\subsection*{XML}
+
+\textbf{XML} is just a way of writing structured text with tags like
+\texttt{<meta>} or \texttt{<figure>}. It is similar in spirit to HTML but used
+for data rather than web pages.
+
+In my project, an FDML file is an XML file that follows some rules.
+
+\subsection*{FDML}
+
+\textbf{FDML (Folk Dance Markup Language)} is \emph{my} specific XML format for
+folk dances. Conceptually each FDML file has:
+
+\begin{itemize}
+  \item a \textbf{meta} section (title, dance name, meter, tempo, author), and
+  \item a \textbf{body} section (sections of text, figures and sequences).
+\end{itemize}
+
+Plain language:
+
+\begin{itemize}
+  \item A \textbf{figure} is one chunk of choreography, such as a basic step or promenade.
+  \item A \textbf{step} is one action inside a figure: who moves, what they do,
+        how many beats it takes.
+  \item A \textbf{sequence} is a list of figures in order, describing the whole dance.
+\end{itemize}
+
+\subsection*{Schema (XSD)}
+
+A \textbf{schema} is like a template or form that says:
+
+\begin{quote}
+``These elements are allowed, these attributes are allowed, and this is the
+structure they must appear in.''
+\end{quote}
+
+In my project, the XML Schema (XSD) defines what a valid FDML file \emph{looks}
+like structurally.
+
+\subsection*{Schematron rules}
+
+\textbf{Schematron} is a way to express extra rules that are more like
+\emph{logic} than structure. For example:
+
+\begin{itemize}
+  \item ``Every figure must have at least one step.''
+  \item ``If there is an email address, it must look roughly like an email.''
+  \item ``If a sequence refers to figure \texttt{f-basic}, that figure must exist.''
+\end{itemize}
+
+So:
+
+\begin{itemize}
+  \item The schema says \emph{which tags and attributes are allowed}.
+  \item Schematron says \emph{what combinations make semantic sense}.
+\end{itemize}
+
+\subsection*{Linter}
+
+A \textbf{linter} is a tool that looks for suspicious or inconsistent patterns
+and gives warnings rather than hard errors.
+
+In my project, the linter looks at:
+
+\begin{itemize}
+  \item the meter (for example 3/4), and
+  \item the total beats in each figure,
+\end{itemize}
+
+and warns if they do not line up nicely. For example, if a figure in 3/4 time
+has a total number of beats that does not divide well into bars, the linter
+flags it as an \emph{off\_meter} warning.
+
+\subsection*{CLI (Command-Line Interface)}
+
+A \textbf{CLI} is just a tool you run from the terminal, for example:
+
+\begin{quote}
+\texttt{fdml validate corpus/valid/example-01.fdml.xml}
+\end{quote}
+
+In conversation I can say: \emph{``The project provides a small command-line
+tool called \texttt{fdml} that I run to validate and render dances.''}
+
+\subsection*{XSLT}
+
+\textbf{XSLT} is a template language that says how to turn one XML document into
+another format, such as HTML.
+
+In my project, XSLT stylesheets describe how to lay out an FDML dance as a
+caller card: which information to show, how to show beats and bars, and how to
+format figures and sequences.
+
+\subsection*{JSON index and static site}
+
+\textbf{JSON} is a very simple data format (lists and key--value objects) that
+JavaScript can read easily in a browser.
+
+The project builds a JSON file that lists all the dances and some metadata (for
+example file path, title, sections). Then a tiny search page (pure HTML +
+JavaScript) loads that JSON and lets the user type a query to filter dances.
+
+It is a \textbf{static site}: there is no backend server or database. Everything
+is just files that can be hosted on GitHub Pages or any static web host.
+
+\section{What the toolchain does, step by step}
+
+Conceptually, the toolchain works like this:
+
+\begin{enumerate}
+  \item I or another author write a dance in FDML (that is, in my XML format).
+  \item I run the \texttt{fdml} command line tool to:
+    \begin{itemize}
+      \item check structure (schema),
+      \item check rules (Schematron),
+      \item and get any meter warnings (linter).
+    \end{itemize}
+  \item When the file looks good, I run commands to:
+    \begin{itemize}
+      \item render HTML caller cards,
+      \item generate a JSON index,
+      \item and build the static web pages.
+    \end{itemize}
+  \item Optionally, I run a command that turns the rendered HTML into a PDF
+        suitable for printing or sharing.
+\end{enumerate}
+
+In conversation, I can describe this as:
+
+\begin{quote}
+``Write the dance in FDML, run the tool to validate it, and then generate
+cards, PDFs and a small searchable web site from the same source.''
+\end{quote}
+
+\section{Current status (what is working now)}
+
+For the tutor meeting, this is the important status summary in non-technical language:
+
+\begin{itemize}
+  \item The FDML 1.0 format is defined and implemented as an XML schema.
+  \item Extra rules (Schematron) are implemented to catch common mistakes (for
+        example missing steps, bad references, empty titles).
+  \item A linter exists that looks at meter and beat counts and warns about
+        figures that do not fit nicely.
+  \item The \texttt{fdml} CLI can:
+    \begin{itemize}
+      \item validate FDML files,
+      \item run the linter,
+      \item render HTML cards,
+      \item export to PDF,
+      \item build a JSON index over the corpus.
+    \end{itemize}
+  \item There is a small example corpus of dances encoded in FDML.
+  \item There is a Makefile and scripts that build:
+    \begin{itemize}
+      \item the example HTML cards,
+      \item the JSON index,
+      \item and the static web pages (index page and search page).
+    \end{itemize}
+  \item The project builds and runs on Java~17, with automated tests that check
+        rendering and indexing.
+  \item Continuous integration on GitHub runs these checks on every push.
+  \item A separate \textbf{FDML-SPEC} document exists in the repo describing
+        the format in more detail.
+\end{itemize}
+
+If my tutor asks \emph{``So is it actually working?''} I can say:
+
+\begin{quote}
+``Yes. I can take an FDML file, run the CLI, and it will validate it, render a
+caller card, and include it in a small searchable site. The example corpus
+already goes through this pipeline, and tests and CI check that I do not break
+it.''
+\end{quote}
+
+\section{What is left to do (roadmap)}
+
+Planned next steps and polish, described in human terms:
+
+\begin{itemize}
+  \item \textbf{Richer index and search:}
+    \begin{itemize}
+      \item Add more metadata to the index, such as formation and total bars.
+      \item Move towards a more ``faceted'' search where you can filter by
+            formation or other properties, not just by text.
+    \end{itemize}
+  \item \textbf{Stronger rules and linting:}
+    \begin{itemize}
+      \item Improve error messages so they are more user friendly.
+      \item Add more checks for unusual or inconsistent structures.
+    \end{itemize}
+  \item \textbf{Bigger corpus:}
+    \begin{itemize}
+      \item Encode more real dances so that the system covers a wider variety
+            of formations and choreographies.
+    \end{itemize}
+  \item \textbf{Author documentation:}
+    \begin{itemize}
+      \item Write a short ``How to write FDML'' guide that takes someone from a
+            dance in their notebook to a clean FDML file.
+      \item Write a tutorial-style explanation of the \texttt{fdml} CLI
+            (how to validate, how to generate cards, how to build the site).
+    \end{itemize}
+  \item \textbf{Evaluation and reflection:}
+    \begin{itemize}
+      \item Reflect on what the design supports well (consistency, publishing,
+            validation).
+      \item Reflect on what it does not yet support (very complex dances,
+            integration with music or audio, and so on).
+    \end{itemize}
+\end{itemize}
+
+If my tutor asks \emph{``What would you do if you had more time?''} I can talk
+about these points.
+
+\section{Phrases I can reuse in the meeting}
+
+Some ready-made sentences I can use if I am put on the spot:
+
+\begin{itemize}
+  \item On the goal:
+    \begin{quote}
+    ``I am treating folk dances as first-class data. FDML is a small markup
+    for describing dances, and the project is a toolchain that can validate
+    and publish them.''
+    \end{quote}
+  \item On the pipeline:
+    \begin{quote}
+    ``Given an FDML file I can run a single command line tool to check it
+    structurally and semantically, then generate a printable caller card and
+    have it appear in a small searchable site.''
+    \end{quote}
+  \item On the current status:
+    \begin{quote}
+    ``The core schema, validation, rendering and static site are implemented.
+    Now I am focusing on richer search, a larger corpus and better
+    author-facing documentation.''
+    \end{quote}
+  \item If pressed on implementation details:
+    \begin{quote}
+    ``Under the hood it is Java~17 plus XSLT and Schematron, wrapped in a
+    simple \texttt{fdml} command line so that an end user does not need to
+    know the internals.''
+    \end{quote}
+\end{itemize}
+
+If I forget a detail in the meeting, I can say I need to double-check in the
+repository, but this briefing is designed so that I can talk about the project
+confidently at a conceptual level.
+
+\end{document}
+

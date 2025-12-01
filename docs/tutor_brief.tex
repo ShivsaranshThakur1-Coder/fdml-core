@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{FDML-Core Project: Conversational Tutor Briefing}
+\author{Shiv Saransh Thakur}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Big picture in one sentence}
+
+At a high level, this project is a small publishing pipeline for folk dances.
+Instead of keeping dances in scattered notes or PDFs, I define a simple XML
+language called FDML (Folk Dance Markup Language). From that XML, the
+toolchain can validate the data and automatically produce caller cards,
+PDFs and a small searchable web site.
+
+\section{What FDML actually is (without code)}
+
+FDML is just a structured way of writing down a dance. Each FDML file has two
+main parts: meta and body.
+
+\begin{itemize}
+  \item \textbf{Meta}: title of the dance, the name, the musical meter
+        (for example 3/4 or 4/4), tempo in beats per minute and an optional
+        author.
+  \item \textbf{Body}: the actual material of the dance: sections of text,
+        figures and sequences.
+\end{itemize}
+
+Informally:
+
+\begin{itemize}
+  \item A \textbf{figure} is one choreographic chunk, for example a basic step
+        or a promenade.
+  \item A \textbf{step} is a single action inside a figure: who moves,
+        what they do and how many beats it takes.
+  \item A \textbf{sequence} is a list of figures that describes the order
+        of the dance.
+\end{itemize}
+
+There are rules to keep things tidy:
+
+\begin{itemize}
+  \item Every figure has an id and at least one step.
+  \item Step beat counts must be positive.
+  \item When a sequence refers to a figure, that figure must actually exist
+        in the same file.
+  \item Titles and emails are checked for basic sanity.
+\end{itemize}
+
+\section{How the toolchain works conceptually}
+
+The Java project \texttt{fdml-core} is essentially a command line wrapper
+around three ideas: validate, render and index.
+
+\subsection{Validation in three layers}
+
+Validation happens in three layers, each one adding more meaning:
+
+\begin{enumerate}
+  \item \textbf{Schema layer}: XML Schema (XSD) checks that the file is
+        structurally valid FDML: elements appear where they should, attributes
+        have the right types and so on.
+  \item \textbf{Rule layer}: Schematron adds richer rules: titles are non
+        empty, beats are positive, references are valid, emails look sensible.
+  \item \textbf{Lint layer}: a linter looks at musical meter and total beats
+        in each figure and warns when they do not line up cleanly.
+\end{enumerate}
+
+From the user point of view there are simple commands:
+
+\begin{itemize}
+  \item \texttt{fdml validate}: schema only.
+  \item \texttt{fdml validate-sch}: Schematron only.
+  \item \texttt{fdml validate-all}: both together.
+  \item \texttt{fdml lint}: only meter consistency warnings.
+  \item \texttt{fdml doctor}: run everything and give a combined report.
+\end{itemize}
+
+\subsection{Rendering and PDFs}
+
+Rendering is done by XSLT stylesheets that transform FDML into HTML.
+Conceptually:
+
+\begin{itemize}
+  \item input: an FDML XML file,
+  \item transform: an XSLT file that lays it out as a caller card with figures,
+        steps and approximate bars,
+  \item output: HTML suitable for the web or for printing.
+\end{itemize}
+
+There is also a path that turns the HTML into a PDF using a headless HTML to
+PDF converter. In conversation I can simply say that once a dance is written
+in FDML, I can produce a printable caller card and a PDF automatically.
+
+\subsection{Indexing and search}
+
+The project also builds a small JSON index over all the FDML files. For each
+dance it records the file path, title, author email (if present) and any
+section ids. A static search page written in plain HTML and JavaScript loads
+this JSON and lets the user type a query. Matching dances are shown as cards.
+There is no database or server: the whole thing is a static site that can be
+hosted on GitHub Pages.
+
+\section{Current status (what is working now)}
+
+For the tutor meeting, this is the important status summary:
+
+\begin{itemize}
+  \item The FDML 1.0 schema and Schematron rules are implemented and stable.
+  \item The linter for meter and beat consistency is implemented.
+  \item The command line tool supports validation, linting, rendering,
+        PDF export and index generation.
+  \item A small example corpus of dances is encoded in FDML.
+  \item There is a Makefile and scripts that build the HTML cards, the JSON
+        index and the static site (index page plus search page).
+  \item The project builds and runs on Java 17, with automated tests for
+        rendering and indexing.
+  \item Continuous integration runs these checks on every push.
+  \item A human readable implementation specification file (FDML-SPEC) exists
+        in the repository.
+\end{itemize}
+
+In one sentence: the core pipeline is in place. I can write dances in FDML,
+validate them, generate cards and build a small searchable site, and there
+are tests and CI around that.
+
+\section{What is left to do}
+
+There are several follow up tasks and polish items:
+
+\begin{itemize}
+  \item Richer index and search: include formation, total bars and figure
+        information in the index, and move towards more faceted search
+        (for example filter by formation).
+  \item Stronger Schematron and lint rules: better messages and additional
+        checks around figures, sections and sequences.
+  \item Corpus expansion: encode more real dances to show that the format
+        generalises beyond a small set of examples.
+  \item Documentation for authors: write a short guide on how to go from a
+        notebook description of a dance to a clean FDML file, plus a tutorial
+        style usage guide for the command line.
+  \item Evaluation and reflection: discuss what the design handles well
+        (consistency, publishing, validation) and where it is limited
+        (very complex structures, integration with music and so on).
+\end{itemize}
+
+\section{Phrases I can reuse in the meeting}
+
+Some ready made sentences I can use if the tutor asks me to explain things:
+
+\begin{itemize}
+  \item On the goal: ``I am treating folk dances as first class data. FDML is
+        a simple markup for describing dances, and the project is a toolchain
+        that can validate and publish them.''
+  \item On the pipeline: ``Given an FDML file I can run a single command line
+        tool to check it structurally and semantically, then generate a
+        printable caller card and have it appear in a small searchable site.''
+  \item On the status: ``The core schema, validation, rendering and static
+        site are implemented. Now I am focusing on richer search, a larger
+        corpus and better author facing documentation.''
+  \item If pressed on implementation details: ``Under the hood it is Java 17
+        plus XSLT and Schematron, wrapped in a simple fdml command line so
+        that an end user does not need to know the internals.''
+\end{itemize}
+
+\end{document}
+

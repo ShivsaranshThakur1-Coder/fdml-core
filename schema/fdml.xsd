@@ -1,171 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:simpleType name="idSection">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="s-[a-z0-9-]+"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="idFigure">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="f-[a-z0-9-]+"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="foot">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="L"/>
-      <xs:enumeration value="R"/>
-      <xs:enumeration value="B"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="who">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="lead"/>
-      <xs:enumeration value="follow"/>
-      <xs:enumeration value="both"/>
-      <xs:enumeration value="all"/>
-      <xs:enumeration value="gents"/>
-      <xs:enumeration value="ladies"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="direction">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Fwd"/>
-      <xs:enumeration value="Back"/>
-      <xs:enumeration value="Left"/>
-      <xs:enumeration value="Right"/>
-      <xs:enumeration value="CW"/>
-      <xs:enumeration value="CCW"/>
-      <xs:enumeration value="In"/>
-      <xs:enumeration value="Out"/>
-      <xs:enumeration value="DiagL"/>
-      <xs:enumeration value="DiagR"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="facing">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="N"/>
-      <xs:enumeration value="E"/>
-      <xs:enumeration value="S"/>
-      <xs:enumeration value="W"/>
-      <xs:enumeration value="Partner"/>
-      <xs:enumeration value="Inside"/>
-      <xs:enumeration value="Outside"/>
-      <xs:enumeration value="Up"/>
-      <xs:enumeration value="Down"/>
-      <xs:enumeration value="Across"/>
-      <xs:enumeration value="Along"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="formation">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="circle"/>
-      <xs:enumeration value="line"/>
-      <xs:enumeration value="couple"/>
-      <xs:enumeration value="set"/>
-      <xs:enumeration value="square"/>
-      <xs:enumeration value="improper"/>
-      <xs:enumeration value="longways"/>
-      <xs:enumeration value="ring"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="countSpan">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="\d+(-\d+)?"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:complexType name="sectionType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="id" type="idSection" use="optional"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="stepType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="who" type="who" use="required"/>
-        <xs:attribute name="action" type="xs:string" use="required"/>
-        <xs:attribute name="beats" type="xs:positiveInteger" use="required"/>
-        <xs:attribute name="count" type="countSpan" use="optional"/>
-        <xs:attribute name="startFoot" type="foot" use="required"/>
-        <xs:attribute name="endFoot" type="foot" use="optional"/>
-        <xs:attribute name="direction" type="direction" use="optional"/>
-        <xs:attribute name="facing" type="facing" use="optional"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="figureType">
-    <xs:sequence>
-      <xs:element name="step" type="stepType" minOccurs="1" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute name="id" type="idFigure" use="required"/>
-    <xs:attribute name="name" type="xs:string" use="optional"/>
-    <xs:attribute name="formation" type="formation" use="optional"/>
-  </xs:complexType>
-
-  <xs:complexType name="useType">
-    <xs:attribute name="figure" type="idFigure" use="required"/>
-    <xs:attribute name="repeat" type="xs:positiveInteger" use="optional" default="1"/>
-  </xs:complexType>
-
-  <xs:complexType name="sequenceType">
-    <xs:sequence>
-      <xs:element name="use" type="useType" minOccurs="1" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute name="name" type="xs:string" use="optional"/>
-  </xs:complexType>
-
-  <xs:complexType name="metaType">
-    <xs:sequence>
-      <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="dance" minOccurs="0" maxOccurs="1">
-        <xs:complexType><xs:attribute name="name" type="xs:string" use="required"/></xs:complexType>
-      </xs:element>
-      <xs:element name="meter" minOccurs="0" maxOccurs="1">
-        <xs:complexType><xs:attribute name="value" type="xs:string" use="required"/></xs:complexType>
-      </xs:element>
-      <xs:element name="tempo" minOccurs="0" maxOccurs="1">
-        <xs:complexType><xs:attribute name="bpm" type="xs:positiveInteger" use="required"/></xs:complexType>
-      </xs:element>
-      <xs:element name="author" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:simpleContent>
-            <xs:extension base="xs:string">
-              <xs:attribute name="email" type="xs:string" use="optional"/>
-            </xs:extension>
-          </xs:simpleContent>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="bodyType">
-    <xs:choice minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="section" type="sectionType"/>
-      <xs:element name="figure" type="figureType"/>
-      <xs:element name="sequence" type="sequenceType"/>
-    </xs:choice>
-  </xs:complexType>
-
+  <!-- Root FDML document -->
   <xs:element name="fdml">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="meta" type="metaType"/>
-        <xs:element name="body" type="bodyType"/>
+        <xs:element name="meta" type="MetaType"/>
+        <xs:element name="body" type="BodyType"/>
       </xs:sequence>
-      <xs:attribute name="version" type="xs:string" use="required" fixed="1.0"/>
+      <xs:attribute name="version" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
+
+  <!-- ===================== -->
+  <!-- Meta section          -->
+  <!-- ===================== -->
+
+  <xs:complexType name="MetaType">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="dance" type="DanceType" minOccurs="0"/>
+      <xs:element name="origin" type="OriginType" minOccurs="0"/>
+      <xs:element name="type" type="TypeType" minOccurs="0"/>
+      <xs:element name="meter" type="MeterType" minOccurs="0"/>
+      <xs:element name="tempo" type="TempoType" minOccurs="0"/>
+      <xs:element name="formation" type="FormationType" minOccurs="0"/>
+      <xs:element name="styling" type="StylingType" minOccurs="0"/>
+      <xs:element name="music" type="MusicType" minOccurs="0"/>
+      <xs:element name="source" type="SourceType" minOccurs="0"/>
+      <xs:element name="difficulty" type="DifficultyType" minOccurs="0"/>
+      <xs:element name="tags" type="TagsType" minOccurs="0"/>
+      <xs:element name="author" type="AuthorType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DanceType">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="OriginType">
+    <xs:attribute name="country" type="xs:string" use="required"/>
+    <xs:attribute name="region" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="TypeType">
+    <xs:attribute name="genre" type="xs:string" use="required"/>
+    <xs:attribute name="style" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="MeterType">
+    <xs:attribute name="value" type="xs:string" use="required"/>
+    <xs:attribute name="rhythmPattern" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="TempoType">
+    <xs:attribute name="bpm" type="xs:integer" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="FormationType">
+    <xs:attribute name="text" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="StylingType">
+    <xs:sequence>
+      <xs:element name="p" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MusicType">
+    <xs:sequence>
+      <xs:element name="record" type="RecordType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RecordType">
+    <xs:attribute name="label" type="xs:string" use="optional"/>
+    <xs:attribute name="track" type="xs:string" use="required"/>
+    <xs:attribute name="medium" type="xs:string" use="optional"/>
+    <xs:attribute name="year" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="SourceType">
+    <xs:attribute name="title" type="xs:string" use="required"/>
+    <xs:attribute name="author" type="xs:string" use="optional"/>
+    <xs:attribute name="year" type="xs:string" use="optional"/>
+    <xs:attribute name="publisher" type="xs:string" use="optional"/>
+    <xs:attribute name="url" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="DifficultyType">
+    <xs:attribute name="level" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="TagsType">
+    <xs:sequence>
+      <xs:element name="tag" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AuthorType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="email" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ===================== -->
+  <!-- Body section          -->
+  <!-- ===================== -->
+
+  <xs:complexType name="BodyType">
+    <xs:sequence>
+      <xs:element name="section" type="SectionType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="part" type="PartType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="figure" type="FigureType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sequence" type="SequenceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SectionType" mixed="true">
+    <xs:sequence>
+      <xs:element name="p" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="type" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="PartType">
+    <xs:sequence>
+      <xs:element name="figure" type="FigureType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="label" type="xs:string" use="optional"/>
+    <xs:attribute name="repeat" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="FigureType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="step" type="StepType"/>
+      <xs:element name="measureRange" type="MeasureRangeType"/>
+    </xs:choice>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="formation" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="MeasureRangeType">
+    <xs:sequence>
+      <xs:element name="step" type="StepType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="from" type="xs:integer" use="required"/>
+    <xs:attribute name="to" type="xs:integer" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="StepType" mixed="true">
+    <xs:attribute name="who" type="xs:string" use="required"/>
+    <xs:attribute name="action" type="xs:string" use="required"/>
+    <xs:attribute name="beats" type="xs:integer" use="required"/>
+    <xs:attribute name="startFoot" type="xs:string" use="optional"/>
+    <xs:attribute name="endFoot" type="xs:string" use="optional"/>
+    <xs:attribute name="direction" type="xs:string" use="optional"/>
+    <xs:attribute name="facing" type="xs:string" use="optional"/>
+    <xs:attribute name="count" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="SequenceType">
+    <xs:sequence>
+      <xs:element name="use" type="UseType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="optional"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="UseType">
+    <xs:attribute name="figure" type="xs:string" use="optional"/>
+    <xs:attribute name="part" type="xs:string" use="optional"/>
+    <xs:attribute name="repeat" type="xs:integer" use="optional"/>
+  </xs:complexType>
 
 </xs:schema>
