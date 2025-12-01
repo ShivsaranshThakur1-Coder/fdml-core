@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.1">
+  <meta>
+    <title>Çobankat</title>
+    <dance name="Cobankat"/>
+
+    <origin country="Albania" region=""/>
+    <type genre="line" style="Albanian folk"/>
+
+    <meter value="2/4" rhythmPattern="2+2"/>
+    <tempo bpm="118"/>
+
+    <formation text="Open line of dancers facing centre; hands in W-hold."/>
+
+    <styling>
+      <p>Albanian line dance with strong, grounded steps and light use of the upper body. Movement is confident and rhythmic.</p>
+    </styling>
+
+    <music>
+      <record label="Example Label"
+              track="Cobankat"
+              medium="record"
+              year="2004"/>
+    </music>
+
+    <source title="Cobankat – dance notes"
+            author="Unknown"
+            year="2004"
+            publisher="Folk Dance Camp Syllabus"/>
+
+    <difficulty level="intermediate"/>
+
+    <tags>
+      <tag>Albanian</tag>
+      <tag>line</tag>
+      <tag>2/4</tag>
+    </tags>
+  </meta>
+
+  <body>
+
+    <section id="s-notes" type="notes">
+      <p>Albanian line dance, performed in an open line. Steps are strong and rhythmic, with emphasis on clear accents in the feet.</p>
+    </section>
+
+    <section id="s-setup" type="setup">
+      <p>Dancers form an open line facing centre. Hands are held in W-hold. The dance begins travelling to the right.</p>
+    </section>
+
+    <!-- Part I – Travelling right -->
+    <part id="p-I" label="Part I – Travelling right" repeat="1">
+      <figure id="f-I" name="Travelling to the right" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all"
+                action="Step R to side, close L to R, step R to side, touch L to R"
+                beats="4"
+                startFoot="R"
+                direction="Right"
+                facing="Centre"/>
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all"
+                action="Repeat travelling to the right with stronger accent on the last step"
+                beats="4"
+                startFoot="R"
+                direction="Right"
+                facing="Centre"/>
+        </measureRange>
+      </figure>
+    </part>
+
+    <!-- Part II – Inward and outward -->
+    <part id="p-II" label="Part II – Inward and outward" repeat="1">
+      <figure id="f-II" name="Inward and outward pattern" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all"
+                action="Step R towards centre, close L to R, step R away from centre, touch L"
+                beats="4"
+                startFoot="R"
+                direction="In"
+                facing="Centre"/>
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all"
+                action="Step L away from centre, close R to L, step L towards centre, touch R"
+                beats="4"
+                startFoot="L"
+                direction="Out"
+                facing="Centre"/>
+        </measureRange>
+      </figure>
+    </part>
+
+    <!-- Part III – Turning phrase -->
+    <part id="p-III" label="Part III – Turning phrase" repeat="1">
+      <figure id="f-III" name="Turning phrase" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all"
+                action="Small running steps turning clockwise to change facing slightly along the line"
+                beats="4"
+                startFoot="R"
+                direction="Along the line"
+                facing="Along the line"/>
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all"
+                action="Small running steps turning counterclockwise to return facing centre"
+                beats="4"
+                startFoot="L"
+                direction="Along the line"
+                facing="Centre"/>
+        </measureRange>
+      </figure>
+    </part>
+
+    <!-- Sequence -->
+    <sequence id="seq-main">
+      <use figure="f-I" repeat="1"/>
+      <use figure="f-II" repeat="1"/>
+      <use figure="f-III" repeat="1"/>
+    </sequence>
+
+  </body>
+</fdml>
+
