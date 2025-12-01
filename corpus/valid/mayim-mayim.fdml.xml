@@ -132,10 +132,10 @@
     </part>
 
     <sequence id="seq-main">
-      <use part="p-I" repeat="1"/>
-      <use part="p-II" repeat="1"/>
-      <use part="p-III" repeat="1"/>
-      <use part="p-IV" repeat="1"/>
+      <use figure="f-I" repeat="1"/>
+      <use figure="f-II" repeat="1"/>
+      <use figure="f-III" repeat="1"/>
+      <use figure="f-IV" repeat="1"/>
     </sequence>
 
   </body>
