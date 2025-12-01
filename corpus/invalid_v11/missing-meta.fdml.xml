@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.1">
+  <meta>
+    <title>Invalid Example – Missing Meta</title>
+    <dance name="Invalid Missing Meta"/>
+
+    <!-- Intentionally omit origin/@country and type/@genre to trigger Schematron -->
+    <meter value="2/4" rhythmPattern="2+2"/>
+    <tempo bpm="100"/>
+
+    <formation text="Line of dancers facing centre."/>
+  </meta>
+
+  <body>
+
+    <section id="s-notes" type="notes">
+      <p>This FDML file is intentionally missing origin/@country and type/@genre to test Schematron meta rules.</p>
+    </section>
+
+    <section id="s-setup" type="setup">
+      <p>Dancers form a simple line facing centre.</p>
+    </section>
+
+    <part id="p-I" label="Part I" repeat="1">
+      <figure id="f-I" name="Simple pattern" formation="line">
+        <measureRange from="1" to="2">
+          <step who="all"
+                action="Step R to side, close L to R, step R in place"
+                beats="4"
+                startFoot="R"
+                direction="Right"
+                facing="Centre"/>
+        </measureRange>
+      </figure>
+    </part>
+
+    <sequence id="seq-main">
+      <use figure="f-I" repeat="1"/>
+    </sequence>
+
+  </body>
+</fdml>
+
