@@ -40,6 +40,7 @@
           <primitive kind="face" frame="formation" dir="center" />
         </geo>
       </step>
-    </figure>
+    <step who="all" action="run" beats="3" direction="around" startFoot="R">
+        </step></figure>
   </body>
 </fdml>
