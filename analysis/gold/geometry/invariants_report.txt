@@ -1,0 +1,64 @@
+== aalistullaa (couple) ==
+formation: couple
+coord: Relative directions: facing is relative to current orientation; CW/CCW are around the couple/center as stated; inside/outside refer to inner
+relations: facing_opposites, inside_outside_roles, partners_side_by_side
+steps_head:
+  - Introduction meas 1-2 travel | inward to face next couple (toward center/line of dance as applicable)
+  - Fig I (Forward and Back) meas 1-2 travel | toward opposite couple then back
+  - Fig I (Forward and Back) meas 3-4 repeat | same as meas 1-2
+  - Fig II (Partner Twirl) meas 5-8 turn | cw then ccw
+  - Fig III (Change places with opposite) meas 1-2 pass | pass left shoulder with opposite; then turn cw in place
+  - Fig III (Change places with opposite) meas 3-4 repeat | reverse of meas 1-2 to return
+issues: none (v0 checks passed)
+
+== abdala (line) ==
+formation: Short mixed lines in a line formation, belt hold (L hand over R). If no belt, hands joined down at sides in a low 'V'. Face R of center (toward LOD/CCW travel). Weight on L foot.
+coord: Relative directions: 'R of center' = facing along line of dance (LOD, counterclockwise); 'face center' = turn to face inward toward center o
+relations: hold, orientation, timing, travel_path
+steps_head:
+  - Figure I: Travelling and Rocking Step Meas 1 (cts 1-2-3-A) cukce+steps (travel) | facing r of center; moving in lod (ccw)
+  - Figure I: Travelling and Rocking Step Meas 2 (cts 1-2-3-A) cukce+turn+steps | begin facing r of center; turn to face center during ct2
+  - Figure I: Travelling and Rocking Step Meas 3 (cts 1-2-3-A) hop+rock steps | in place (facing center)
+  - Figure I: Travelling and Rocking Step Meas 4 (cts 1-2-3-A) repeat (opposite footwork) | in place (facing center)
+  - Figure I: Travelling and Rocking Step Meas 5-8 (8 measures total figure continuation) repeat (reverse footwork and direction) | reverse travel direction and reverse footwork relative to meas 1-4
+  - Figure II: Clicks in Place Meas 1 (cts 1-2-3-A) forward-ball step + back-full step with knee lifts (in place) | facing center, in place
+issues: none (v0 checks passed)
+
+== cobankat (line) ==
+formation: line
+coord: Facing center; movement along line of dance: Right = clockwise, Left = counterclockwise; counts are in 2/4 with subdivisions (1,2,&) where g
+relations: facing, hold, travel_direction
+steps_head:
+  - INTRODUCTION intro (clarinet solo + 4 measures drumbeats) hold | in place
+  - I. CROSS BEHIND, THEN MOVE meas 1 (cts 1,2,&) step | in place facing center
+  - I. CROSS BEHIND, THEN MOVE meas 2 (cts 1,2,&) repeat | in place facing center
+  - I. CROSS BEHIND, THEN MOVE meas 3 (cts 1,2,&) travel | to the right (clockwise), facing center
+  - I. CROSS BEHIND, THEN MOVE meas 4 (cts 1,2,&) travel | to the right (clockwise), facing center
+  - I. CROSS BEHIND, THEN MOVE meas 5-8 repeat | as in meas 1-4
+issues: none (v0 checks passed)
+
+== haire-mamougeh (two_lines) ==
+formation: Two lines facing each other about 6 feet apart; within each line dancers use Armenian hold (little fingers linked, hands at shoulder level, elbows bent down). One line is bride's side, the other groom's side.
+coord: Assume each line is roughly parallel to the x-axis; dancers face the opposite line along +y. 'Forward' (fwd/twd opp line) = +y; 'backward' (
+relations: approach_and_retreat, facing_lines, handhold_within_line
+steps_head:
+  - Introduction meas 1-12 pause | 
+  - Figure meas 1 gesture | backward
+  - Figure meas 1 touch | in place
+  - Figure meas 2 gesture | backward
+  - Figure meas 2 touch | in place
+  - Figure meas 3 step | forward
+issues: none (v0 checks passed)
+
+== mayim-mayim (circle) ==
+formation: circle
+coord: Circle formation: dancers oriented tangent to the circle unless otherwise stated; forward = direction currently facing; left/right are dance
+relations: formation, timing
+steps_head:
+  - Part 1 1-4 step | across in front (r across in front of l)
+  - Part 1 2 step | left
+  - Part 1 3 step | behind (r behind l)
+  - Part 1 4 step | left
+  - Part 1 5-16 repeat | left
+  - Part 2 1-4 run | forward
+issues: none (v0 checks passed)

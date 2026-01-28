@@ -1,0 +1,6 @@
+dance_id,kind,line_sep_max,line_sep_min,mean_angle_delta,mean_x_delta,min_radius_max,min_radius_min
+aalistullaa,couple,,,,,,
+abdala,line,,,,0.0,,
+cobankat,line,,,,0.30000000000000016,,
+haire-mamougeh,two_lines,2.4800000000000004,1.52,,,,
+mayim-mayim,circle,,,0.5999999999999992,,1.0,0.95

@@ -1,0 +1,311 @@
+{
+  "dance_id": "mayim-mayim",
+  "initial_formation": "circle",
+  "coordinate_convention": "Circle formation: dancers oriented tangent to the circle unless otherwise stated; forward = direction currently facing; left/right are dancer-relative; center = toward circle center; around the circle = along the circle in the line-of-dance direction (left-facing described explicitly when given).",
+  "steps": [
+    {
+      "part": "Part 1",
+      "count_range": "1-4",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "across in front (R across in front of L)",
+      "amount": "1 step",
+      "notes": "Grapevine count 1: step R foot across in front of L foot."
+    },
+    {
+      "part": "Part 1",
+      "count_range": "2",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "left",
+      "amount": "1 step",
+      "notes": "Grapevine count 2: step on L foot to L."
+    },
+    {
+      "part": "Part 1",
+      "count_range": "3",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "behind (R behind L)",
+      "amount": "1 step",
+      "notes": "Grapevine count 3: step on R foot behind L foot."
+    },
+    {
+      "part": "Part 1",
+      "count_range": "4",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "left",
+      "amount": "1 step",
+      "notes": "Grapevine count 4: step on L foot to L; turning a bit as you go so the R foot goes more forward and backward rather than directly crossing."
+    },
+    {
+      "part": "Part 1",
+      "count_range": "5-16",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "left",
+      "amount": "Repeat counts 1-4 x3",
+      "notes": "Repeat the grapevine (counts 1–4) three more times."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "1-4",
+      "action_type": "run",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward",
+      "amount": "4 steps (R L R L)",
+      "notes": "Run four steps forward, R L R L. Begin leaning forward with arms down on 1, then straighten up and raise arms during 2–4."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "1",
+      "action_type": "gesture",
+      "actors": [
+        "all"
+      ],
+      "direction": "down",
+      "amount": "arms",
+      "notes": "Arms down on 1 while beginning to lean forward."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "2-4",
+      "action_type": "gesture",
+      "actors": [
+        "all"
+      ],
+      "direction": "up",
+      "amount": "arms",
+      "notes": "Straighten up and raise arms during 2–4."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "5-8",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "4 steps (R L R L)",
+      "notes": "Take four steps backwards, R L R L, bringing arms back down again. Variation: clap on count 5 before beginning to bring the arms down."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "5",
+      "action_type": "clap",
+      "actors": [
+        "all"
+      ],
+      "direction": "",
+      "amount": "1 clap (optional variation)",
+      "notes": "Variation: clap on count 5 before beginning to bring the arms down."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "5-8",
+      "action_type": "gesture",
+      "actors": [
+        "all"
+      ],
+      "direction": "down",
+      "amount": "arms",
+      "notes": "Bring arms back down during 5–8 (earlier version brings arms down on 5)."
+    },
+    {
+      "part": "Part 2",
+      "count_range": "9-16",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward then backward",
+      "amount": "Repeat counts 1-8 x1",
+      "notes": "Repeat counts 1–8."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "1",
+      "action_type": "face",
+      "actors": [
+        "all"
+      ],
+      "direction": "left",
+      "amount": "",
+      "notes": "Facing left, begin running around the circle."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "1-3",
+      "action_type": "run",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward around the circle",
+      "amount": "3 steps (R L R)",
+      "notes": "Facing left, run three steps forward around the circle, R L R."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "4",
+      "action_type": "face",
+      "actors": [
+        "all"
+      ],
+      "direction": "center",
+      "amount": "",
+      "notes": "face center while hopping on R and touching L foot slightly to the side."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "4",
+      "action_type": "hop",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "1 hop on R",
+      "notes": "Hop on R (simultaneous with facing change)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "4",
+      "action_type": "touch",
+      "actors": [
+        "all"
+      ],
+      "direction": "side (L slightly to the side)",
+      "amount": "1 touch with L",
+      "notes": "Touch L foot slightly to the side (no weight)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "5",
+      "action_type": "hop",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "1 hop on R",
+      "notes": "Facing center, hop on R foot while touching L toe in front."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "5",
+      "action_type": "touch",
+      "actors": [
+        "all"
+      ],
+      "direction": "front",
+      "amount": "1 touch with L toe",
+      "notes": "Touch L toe in front (no weight)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "6",
+      "action_type": "hop",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "1 hop on R",
+      "notes": "Facing center, hop on R foot while touching L to side, near R foot and slightly to the back."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "6",
+      "action_type": "touch",
+      "actors": [
+        "all"
+      ],
+      "direction": "side/back (near R, slightly to the back)",
+      "amount": "1 touch with L",
+      "notes": "Touch L to side near R foot and slightly to the back (no weight)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "7-12",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Repeat counts 5-6 x3",
+      "notes": "Repeat counts 5–6 three more times; on 12 transfer some weight onto L foot."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "12",
+      "action_type": "weight_transfer",
+      "actors": [
+        "all"
+      ],
+      "direction": "to L",
+      "amount": "partial",
+      "notes": "On 12 transfer some weight onto L foot."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "13-20",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Repeat counts 5-12 with opposite footwork",
+      "notes": "Repeat counts 5–12 with opposite footwork and clapping hands each time you touch R in front, finishing with R foot free to start Part 1 again. (Variation: some people turn while doing counts 13–20)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "13-20",
+      "action_type": "clap",
+      "actors": [
+        "all"
+      ],
+      "direction": "",
+      "amount": "on each front touch (R in front)",
+      "notes": "Clap hands each time you touch R in front (during opposite-footwork repetition)."
+    },
+    {
+      "part": "Part 3",
+      "count_range": "13-20",
+      "action_type": "turn",
+      "actors": [
+        "all"
+      ],
+      "direction": "unspecified",
+      "amount": "optional",
+      "notes": "Variation: some people turn while doing counts 13–20."
+    }
+  ],
+  "inferred_relations": [
+    {
+      "relation": "formation",
+      "between": [
+        "all",
+        "circle"
+      ],
+      "notes": "Dance is in a circle formation throughout unless locally altered by facing changes."
+    },
+    {
+      "relation": "timing",
+      "between": [
+        "Part 1",
+        "Part 2"
+      ],
+      "notes": "Parts proceed sequentially: Part 1 (1–16), then Part 2 (1–16), then Part 3 (1–20), then return to Part 1."
+    }
+  ]
+}

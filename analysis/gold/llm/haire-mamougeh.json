@@ -1,0 +1,230 @@
+{
+  "dance_id": "haire-mamougeh",
+  "initial_formation": "Two lines facing each other about 6 feet apart; within each line dancers use Armenian hold (little fingers linked, hands at shoulder level, elbows bent down). One line is bride's side, the other groom's side.",
+  "coordinate_convention": "Assume each line is roughly parallel to the x-axis; dancers face the opposite line along +y. 'Forward' (fwd/twd opp line) = +y; 'backward' (bkwd/away) = -y; side directions are dancer-relative (L = -x, R = +x).",
+  "steps": [
+    {
+      "part": "Introduction",
+      "count_range": "meas 1-12",
+      "action_type": "pause",
+      "actors": [
+        "all"
+      ],
+      "direction": "",
+      "amount": "12 measures",
+      "notes": "No action. Begin with the drum (dumbeg). Maintain formation and Armenian hold."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 1",
+      "action_type": "gesture",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Point L toe straight back, weight on R (ct 1)",
+      "notes": "Lean slightly forward (subtle) while pointing."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 1",
+      "action_type": "touch",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Touch ball of L beside R, no weight (ct 2)",
+      "notes": "Straighten torso on the touch."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 2",
+      "action_type": "gesture",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Repeat: point L toe straight back, weight on R (ct 1)",
+      "notes": "Same styling as meas 1."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 2",
+      "action_type": "touch",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Repeat: touch ball of L beside R, no weight (ct 2)",
+      "notes": ""
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 3",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward",
+      "amount": "Step forward on L (ct 1)",
+      "notes": "Small, solid step; slight torso turn to R as L leads; head stays facing opposite person."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 3",
+      "action_type": "close",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Close R to L, no weight (ct 2)",
+      "notes": "Continue advancing overall toward opposite line across measures."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 4",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward",
+      "amount": "Step forward on R (ct 1)",
+      "notes": "Small, solid step; slight torso turn to L as R leads; head stays facing opposite person."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 4",
+      "action_type": "close",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Close L to R, no weight (ct 2)",
+      "notes": ""
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 5",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward",
+      "amount": "Repeat meas 3: step forward on L (ct 1)",
+      "notes": "Continue moving toward opposite line."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 5",
+      "action_type": "close",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Close R to L, no weight (ct 2)",
+      "notes": ""
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 6",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "forward",
+      "amount": "Repeat meas 4: step forward on R (ct 1)",
+      "notes": ""
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 6",
+      "action_type": "close",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "Close L to R, no weight (ct 2)",
+      "notes": ""
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 7",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Small 'sinking' step back on L with toes turned left (ct 1)",
+      "notes": "Bend knee as step is taken; slight torso turn to L; keep looking at opposite person."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 7",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Small 'sinking' step back on R (ct 2)",
+      "notes": "Maintain slight knee flex throughout."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 8",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Repeat meas 7: small 'sinking' step back on L, toes turned left (ct 1)",
+      "notes": "Continue retreating away from opposite line."
+    },
+    {
+      "part": "Figure",
+      "count_range": "meas 8",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "backward",
+      "amount": "Small 'sinking' step back on R (ct 2)",
+      "notes": ""
+    },
+    {
+      "part": "Repeat",
+      "count_range": "after meas 8",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "",
+      "amount": "Repeat dance from beginning",
+      "notes": "Return to meas 1 (the 2-measure point/touch figure) after completing meas 8."
+    }
+  ],
+  "inferred_relations": [
+    {
+      "relation": "facing_lines",
+      "between": [
+        "bride_line",
+        "groom_line"
+      ],
+      "notes": "Two separate lines face each other ~6 feet apart; dancers maintain eye contact with the opposite person."
+    },
+    {
+      "relation": "handhold_within_line",
+      "between": [
+        "neighbors_in_same_line"
+      ],
+      "notes": "Armenian hold: little fingers linked, hands at shoulder level, elbows bent down."
+    },
+    {
+      "relation": "approach_and_retreat",
+      "between": [
+        "bride_line",
+        "groom_line"
+      ],
+      "notes": "Measures 3-6 advance toward opposite line; measures 7-8 retreat away; repeat."
+    }
+  ]
+}

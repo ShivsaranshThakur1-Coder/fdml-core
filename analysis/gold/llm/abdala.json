@@ -1,0 +1,215 @@
+{
+  "dance_id": "abdala",
+  "initial_formation": "Short mixed lines in a line formation, belt hold (L hand over R). If no belt, hands joined down at sides in a low 'V'. Face R of center (toward LOD/CCW travel). Weight on L foot.",
+  "coordinate_convention": "Relative directions: 'R of center' = facing along line of dance (LOD, counterclockwise); 'face center' = turn to face inward toward center of circle/line curvature. Steps described for an individual dancer, mirrored by footwork reversals when stated. Counts use 9/16 grouped as 1-2-3-A (Quick-Quick-Quick-Slow).",
+  "steps": [
+    {
+      "part": "Figure I: Travelling and Rocking Step",
+      "count_range": "Meas 1 (cts 1-2-3-A)",
+      "action_type": "cukce+steps (travel)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing R of center; moving in LOD (CCW)",
+      "amount": "1 measure",
+      "notes": "ct1: Cukce on L. ct2: step R. ct3: Cukce on R. ctA: step L."
+    },
+    {
+      "part": "Figure I: Travelling and Rocking Step",
+      "count_range": "Meas 2 (cts 1-2-3-A)",
+      "action_type": "cukce+turn+steps",
+      "actors": [
+        "all"
+      ],
+      "direction": "Begin facing R of center; turn to face center during ct2",
+      "amount": "1 measure",
+      "notes": "ct1: Cukce on L. ct2: step R to R side while turning to face center. ct3: step L behind R. ctA: step R to R side."
+    },
+    {
+      "part": "Figure I: Travelling and Rocking Step",
+      "count_range": "Meas 3 (cts 1-2-3-A)",
+      "action_type": "hop+rock steps",
+      "actors": [
+        "all"
+      ],
+      "direction": "In place (facing center)",
+      "amount": "1 measure",
+      "notes": "ct1: low hop on R, bring L around in front of R (L knee bent, foot low). ct2: step L in front of R. ct3: low step back on R. ctA: low step forward on L. (cts 3-A feel like 'rock-rock')."
+    },
+    {
+      "part": "Figure I: Travelling and Rocking Step",
+      "count_range": "Meas 4 (cts 1-2-3-A)",
+      "action_type": "repeat (opposite footwork)",
+      "actors": [
+        "all"
+      ],
+      "direction": "In place (facing center)",
+      "amount": "1 measure",
+      "notes": "Repeat meas 3 with opposite footwork (swap L/R)."
+    },
+    {
+      "part": "Figure I: Travelling and Rocking Step",
+      "count_range": "Meas 5-8 (8 measures total figure continuation)",
+      "action_type": "repeat (reverse footwork and direction)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Reverse travel direction and reverse footwork relative to meas 1-4",
+      "amount": "4 measures",
+      "notes": "Repeat meas 1-4 but reverse footwork and direction (i.e., travel opposite LOD and mirror steps)."
+    },
+    {
+      "part": "Figure II: Clicks in Place",
+      "count_range": "Meas 1 (cts 1-2-3-A)",
+      "action_type": "forward-ball step + back-full step with knee lifts (in place)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing center, in place",
+      "amount": "1 measure",
+      "notes": "ct1: step on ball of R in front of L. ct2: step back onto full L, pick up R knee sharply. ct3: step on ball of R in front of L. ctA: step back onto full L, lift R foot to R side; knees close together."
+    },
+    {
+      "part": "Figure II: Clicks in Place",
+      "count_range": "Meas 2 (cts 1-2-3-A)",
+      "action_type": "close+click + falls/repeats (in place)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing center, in place",
+      "amount": "1 measure",
+      "notes": "ct1: close R to L with sharp click; weight equal on both. ct2: fall onto L, raise R foot to R side (knees close). ct3: repeat ct1. ctA: repeat ct2."
+    },
+    {
+      "part": "Figure II: Clicks in Place",
+      "count_range": "Repeat cycle",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing center, in place",
+      "amount": "Repeat meas 1-2 three more times (total 4x)",
+      "notes": "On final count of final repetition, raise R knee in front to prepare for next figure."
+    },
+    {
+      "part": "Figure III: Travelling Step and Jumps",
+      "count_range": "Meas 1 (cts 1-2-3-A)",
+      "action_type": "cukce+steps (travel)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing R of center; moving in LOD (CCW)",
+      "amount": "1 measure",
+      "notes": "ct1: Cukce on L. ct2: step R. ct3: Cukce on R. ctA: step L."
+    },
+    {
+      "part": "Figure III: Travelling Step and Jumps",
+      "count_range": "Meas 2 (cts 1-2-3-A)",
+      "action_type": "turn+side steps + lift/close click",
+      "actors": [
+        "all"
+      ],
+      "direction": "Turn to face center during meas 2",
+      "amount": "1 measure",
+      "notes": "ct1: step R to R. ct2: step L behind R. ct3: step R in place, raise L foot to L side (knees close). ctA: close L to R with sharp click."
+    },
+    {
+      "part": "Figure III: Travelling Step and Jumps",
+      "count_range": "Meas 3 (cts 1-2-3-A)",
+      "action_type": "jumps with feet apart/together + clicks",
+      "actors": [
+        "all"
+      ],
+      "direction": "In place",
+      "amount": "1 measure",
+      "notes": "ct1: jump, land feet apart to sides. ct2: jump, bring feet together with a click. ct3: repeat ct1. ctA: repeat ct2."
+    },
+    {
+      "part": "Figure III: Travelling Step and Jumps",
+      "count_range": "Meas 4 (cts 1-2-3-A)",
+      "action_type": "hop + side/forward/back steps",
+      "actors": [
+        "all"
+      ],
+      "direction": "In place (facing center)",
+      "amount": "1 measure",
+      "notes": "ct1: hop on L in place, lift R knee. ct2: step R to R. ct3: step L in front of R. ctA: step back on R in place."
+    },
+    {
+      "part": "Figure III: Travelling Step and Jumps",
+      "count_range": "Meas 5-8",
+      "action_type": "repeat (reverse footwork and direction)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Reverse travel direction and reverse footwork relative to meas 1-4",
+      "amount": "4 measures",
+      "notes": "Repeat meas 1-4, reversing footwork and direction."
+    },
+    {
+      "part": "Figure IV: Stamps in Place",
+      "count_range": "Meas 1 (cts 1-2-3-A)",
+      "action_type": "ball steps with forward bend + leg lifts (in place)",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing center, in place",
+      "amount": "1 measure",
+      "notes": "ct1: step on ball of R in front of L; equal weight on balls of both. ct2: bend forward from waist; take full weight on R, bend R knee; bring L foot up sharply behind R (L knee bent, turned out). ct3: step back on ball of L; equal weight on balls as torso straightens. ctA: take full weight on L; raise R leg sharply in front (knee bent)."
+    },
+    {
+      "part": "Figure IV: Stamps in Place",
+      "count_range": "Meas 2 (cts 1-2-3-A)",
+      "action_type": "small leaps + no-weight stamps",
+      "actors": [
+        "all"
+      ],
+      "direction": "In place",
+      "amount": "1 measure",
+      "notes": "ct1: small leap on R to R. ct2: stamp L slightly forward, no weight. ct3: small leap on L beside R. ctA: stamp R slightly forward, no weight."
+    },
+    {
+      "part": "Figure IV: Stamps in Place",
+      "count_range": "Repeat cycle",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "Facing center, in place",
+      "amount": "Repeat meas 1-2 three more times (total 4x)",
+      "notes": "Maintain compact, sharp styling; knees slightly bent; 'heavy' quality."
+    }
+  ],
+  "inferred_relations": [
+    {
+      "relation": "hold",
+      "between": [
+        "neighbors in line"
+      ],
+      "notes": "Belt hold with L hand over R; if no belt, hands joined low in 'V'."
+    },
+    {
+      "relation": "timing",
+      "between": [
+        "all dancers"
+      ],
+      "notes": "All dancers execute counts in unison in 9/16 grouped 1-2-3-A (Quick-Quick-Quick-Slow)."
+    },
+    {
+      "relation": "orientation",
+      "between": [
+        "all dancers",
+        "center"
+      ],
+      "notes": "Figures alternate between facing R of center (travel) and facing center (in-place/turning sequences)."
+    },
+    {
+      "relation": "travel_path",
+      "between": [
+        "all dancers",
+        "line of dance"
+      ],
+      "notes": "When stated, travel is along LOD (CCW); later repetitions reverse direction as specified."
+    }
+  ]
+}

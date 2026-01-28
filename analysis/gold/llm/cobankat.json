@@ -1,0 +1,241 @@
+{
+  "dance_id": "cobankat",
+  "initial_formation": "line",
+  "coordinate_convention": "Facing center; movement along line of dance: Right = clockwise, Left = counterclockwise; counts are in 2/4 with subdivisions (1,2,&) where given.",
+  "steps": [
+    {
+      "part": "INTRODUCTION",
+      "count_range": "intro (clarinet solo + 4 measures drumbeats)",
+      "action_type": "hold",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place",
+      "amount": "duration of introduction",
+      "notes": "No action. Hands joined in V-pos; styling: proud; gentle bounce twice on every count (1,&) throughout dance."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 1 (cts 1,2,&)",
+      "action_type": "step",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "R step (ct1); L cross-behind (ct2); R in place (ct&)",
+      "notes": "Dance in place."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 2 (cts 1,2,&)",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "Repeat meas 1 with opposite footwork",
+      "notes": "So: L step (ct1); R cross-behind (ct2); L in place (ct&)."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 3 (cts 1,2,&)",
+      "action_type": "travel",
+      "actors": [
+        "all"
+      ],
+      "direction": "to the Right (clockwise), facing center",
+      "amount": "R to R (ct1); L cross-behind (ct2); R to R (ct&)",
+      "notes": "Progress clockwise while still facing center."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 4 (cts 1,2,&)",
+      "action_type": "travel",
+      "actors": [
+        "all"
+      ],
+      "direction": "to the Right (clockwise), facing center",
+      "amount": "L cross-front (ct1); R to R (ct2); L cross-front (ct&)",
+      "notes": "Crossing in front while continuing to travel right."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 5-8",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in meas 1-4",
+      "amount": "Repeat measures 1-4",
+      "notes": "Second full cycle of the 4-measure motif."
+    },
+    {
+      "part": "I. CROSS BEHIND, THEN MOVE",
+      "count_range": "meas 9-11",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in meas 1-3",
+      "amount": "Repeat measures 1-3",
+      "notes": "Motif repeated 2.75 times total; there is no measure 12."
+    },
+    {
+      "part": "II. STEP FORWARD AND LIFT, CROSS BEHIND",
+      "count_range": "meas 1 (cts 1,2,&)",
+      "action_type": "step_and_bounce",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "L step forward crossing in front of R (ct1); 2 bounces on L (cts 2,&) while free R swings to directly in front of L shin",
+      "notes": "Weight stays on L during bounces; free foot styling described."
+    },
+    {
+      "part": "II. STEP FORWARD AND LIFT, CROSS BEHIND",
+      "count_range": "meas 2 (cts 1,2,&)",
+      "action_type": "travel",
+      "actors": [
+        "all"
+      ],
+      "direction": "to the Right (clockwise), facing center",
+      "amount": "R step directly behind L (ct1); L step directly behind R (ct2); R step to R (ct&)",
+      "notes": "Begins in place then initiates/continues slight rightward travel on ct&."
+    },
+    {
+      "part": "II. STEP FORWARD AND LIFT, CROSS BEHIND",
+      "count_range": "meas 3-12",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in meas 1-2",
+      "amount": "Repeat measures 1-2 five more times (6 total)",
+      "notes": "Song verse figure."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 1 (cts 1,2,&)",
+      "action_type": "step_and_turn",
+      "actors": [
+        "all"
+      ],
+      "direction": "turning slowly to face Left while generally facing toward center orientation",
+      "amount": "L step forward crossing in front of R (ct1); 2 bounces on L (cts 2,&) while R swings slowly around to front of L",
+      "notes": "Slow turn to face left occurs through the measure."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 2 (cts 1,2,&)",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "mirrored/opposite footwork",
+      "amount": "Repeat meas 1 with opposite footwork",
+      "notes": "R step forward crossing in front of L (ct1); 2 bounces on R (cts 2,&) while L swings to front of R; continue slow turning quality."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 3-4",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "Repeat Fig I, measures 1-2 (cross-behind motif in place)",
+      "notes": "So: meas3 = Fig I meas1; meas4 = Fig I meas2."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 5-6",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in meas 1-2",
+      "amount": "Repeat III meas 1-2",
+      "notes": "Crossing-in-front with bounces, alternating feet."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 7 (cts 1,2,&)",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "Repeat Fig II, meas 1",
+      "notes": "Use Fig II meas1 action: L step fwd cross-front (ct1); 2 bounces on L (cts 2,&) with R swinging to front of L shin."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 8 (cts 1,2,&)",
+      "action_type": "step_and_bounce",
+      "actors": [
+        "all"
+      ],
+      "direction": "in place facing center",
+      "amount": "R step directly behind L (ct1); 2 bounces on R (cts 2,&) while L twists slightly behind R leg then swings around to front of R",
+      "notes": "Distinct styling: free L twists behind then swings forward during bounces."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 9-12",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in Fig II meas 1-2",
+      "amount": "Repeat Fig II measures 1-2 twice",
+      "notes": "Two full repetitions (4 measures) of the Fig II 2-measure unit."
+    },
+    {
+      "part": "III. CROSSING IN FRONT",
+      "count_range": "meas 13 (cts 1,2,&)",
+      "action_type": "repeat",
+      "actors": [
+        "all"
+      ],
+      "direction": "as in Fig II meas 1",
+      "amount": "Repeat Fig II, meas 1",
+      "notes": "There is no meas 14."
+    },
+    {
+      "part": "SEQUENCE / ENDING",
+      "count_range": "overall",
+      "action_type": "sequence",
+      "actors": [
+        "all"
+      ],
+      "direction": "N/A",
+      "amount": "Dance repeats twice more from the beginning; on last instrumental phrase continue Fig II steps (beginning with Fig II meas 2) to end of music; finish by bringing feet slowly together",
+      "notes": "Applies to full-dance playback/structure rather than a single measure."
+    }
+  ],
+  "inferred_relations": [
+    {
+      "relation": "hold",
+      "between": [
+        "all"
+      ],
+      "notes": "Hands joined in V-position throughout unless otherwise stated."
+    },
+    {
+      "relation": "facing",
+      "between": [
+        "all",
+        "center"
+      ],
+      "notes": "Primary orientation is facing center; some slow turning to face left occurs in Fig III meas 1-2."
+    },
+    {
+      "relation": "travel_direction",
+      "between": [
+        "all",
+        "clockwise"
+      ],
+      "notes": "When text says 'moving to the R', dancers travel to their right (clockwise) along the circle/line."
+    }
+  ]
+}

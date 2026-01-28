@@ -1,0 +1,200 @@
+{
+  "dance_id": "aalistullaa",
+  "initial_formation": "couple",
+  "coordinate_convention": "Relative directions: facing is relative to current orientation; CW/CCW are around the couple/center as stated; inside/outside refer to inner vs outer position in concentric-circle option or toward/away from center in single-circle option.",
+  "steps": [
+    {
+      "part": "Introduction",
+      "count_range": "meas 1-2",
+      "action_type": "travel",
+      "actors": [
+        "couple_1"
+      ],
+      "direction": "inward to face next couple (toward center/line of dance as applicable)",
+      "amount": "2 measures (walking)",
+      "notes": "Original form: Cpl 1 moves in to face Cpl 2. Recreational concentric circles: no action; couples already facing; begin with vocal."
+    },
+    {
+      "part": "Fig I (Forward and Back)",
+      "count_range": "meas 1-2",
+      "action_type": "travel",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "toward opposite couple then back",
+      "amount": "4 running or scuff steps forward + 4 running or scuff steps back",
+      "notes": "Facing couples approach and retreat."
+    },
+    {
+      "part": "Fig I (Forward and Back)",
+      "count_range": "meas 3-4",
+      "action_type": "repeat",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "same as meas 1-2",
+      "amount": "repeat meas 1-2",
+      "notes": ""
+    },
+    {
+      "part": "Fig II (Partner Twirl)",
+      "count_range": "meas 5-8",
+      "action_type": "turn",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "CW then CCW",
+      "amount": "8 walking steps CW (meas 5-6) + 8 walking steps CCW (meas 7-8)",
+      "notes": "Face partner; join both hands palm-to-palm (ML-WR and MR-WL); hands out about shoulder level; circle together."
+    },
+    {
+      "part": "Fig III (Change places with opposite)",
+      "count_range": "meas 1-2",
+      "action_type": "pass",
+      "actors": [
+        "all_dancers"
+      ],
+      "direction": "pass left shoulder with opposite; then turn CW in place",
+      "amount": "2 running steps to pass (cts 1-2) + 2 steps turning alone to R/CW (cts 3-4)",
+      "notes": "‘Opposite’ = dancer directly facing (not partner)."
+    },
+    {
+      "part": "Fig III (Change places with opposite)",
+      "count_range": "meas 3-4",
+      "action_type": "repeat",
+      "actors": [
+        "all_dancers"
+      ],
+      "direction": "reverse of meas 1-2 to return",
+      "amount": "repeat back to original place",
+      "notes": "Pass L shoulder again with opposite; turn CW alone to face in."
+    },
+    {
+      "part": "Fig I (Forward and Back)",
+      "count_range": "meas 5-8",
+      "action_type": "repeat",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "toward opposite couple then back",
+      "amount": "repeat Fig I meas 1-2 twice",
+      "notes": "Text: Repeat meas 1-2 (i.e., forward/back sequence)."
+    },
+    {
+      "part": "Fig IV (Twirl with opposite)",
+      "count_range": "meas 1-4",
+      "action_type": "turn",
+      "actors": [
+        "all_dancers"
+      ],
+      "direction": "CW then CCW with opposite person",
+      "amount": "8 steps CW + 8 steps CCW",
+      "notes": "Twirl as described for partner but with opposite; end in original place."
+    },
+    {
+      "part": "Fig V (Inside arch / outside pass)",
+      "count_range": "meas 5-8",
+      "action_type": "weave",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "inside couples form arch; outside couples pass under; exchange places",
+      "amount": "8 running or scuff steps",
+      "notes": "Inside couples (closer to center/inner circle) join inside hands to form arch. Outside couples join hands and pass under arch to change places with inside couples. On last 2 steps: change hands and, turning toward partner, face back to original facing direction."
+    },
+    {
+      "part": "Fig VI (Repeat arch with roles swapped)",
+      "count_range": "meas 1-4",
+      "action_type": "weave",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "original outside couples form arch; original inside couples pass under",
+      "amount": "repeat Fig V (8 running or scuff steps)",
+      "notes": "Roles reverse from previous figure."
+    },
+    {
+      "part": "Fig VII (Partner twirl CW)",
+      "count_range": "meas 5-6",
+      "action_type": "turn",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "CW with partner",
+      "amount": "8 steps CW",
+      "notes": "Twirl CW with partner."
+    },
+    {
+      "part": "Fig VIII (Partner twirl CCW with progression)",
+      "count_range": "meas 7-8",
+      "action_type": "turn",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "CCW with partner while progressing to next opposite couple",
+      "amount": "CCW twirl continuing through end of phrase (implied 8 steps across meas 7-8)",
+      "notes": "During CCW twirl, couples advance to face next couple per progression rules below."
+    },
+    {
+      "part": "Progression (Original single open circle)",
+      "count_range": "after Fig VIII meas 7-8",
+      "action_type": "progress",
+      "actors": [
+        "couple_1",
+        "couple_2",
+        "all_couples"
+      ],
+      "direction": "along set/open circle (CCW end referenced)",
+      "amount": "1 position",
+      "notes": "Original form: after progressing on Fig VIII meas 7-8, Cpl 1 moves on to face Cpl 3; Cpl 2 remains in place."
+    },
+    {
+      "part": "Progression (Recreational concentric circles)",
+      "count_range": "after Fig VIII meas 7-8",
+      "action_type": "progress",
+      "actors": [
+        "inner_circle_couples"
+      ],
+      "direction": "to face next outer couple to their right",
+      "amount": "1 couple faced",
+      "notes": "Inside couples gradually move to face next outside couple to their R during the CCW twirl/progression."
+    },
+    {
+      "part": "Circle-end handling (Recreational concentric circles)",
+      "count_range": "as needed (end of inner/outer circle)",
+      "action_type": "transition",
+      "actors": [
+        "all_couples"
+      ],
+      "direction": "between inner and outer circles per endpoints",
+      "amount": "variable",
+      "notes": "If a couple reaches end of inner circle: step into outer circle, face center, wait to be faced. If a couple reaches R end of outer circle: wait out 1 time through the dance; then on next progression move into inner circle. Repeat until music ends."
+    }
+  ],
+  "inferred_relations": [
+    {
+      "relation": "facing_opposites",
+      "between": [
+        "couple_A",
+        "couple_B"
+      ],
+      "notes": "Primary working relationship is a couple facing an opposite couple (in open circle: adjacent along line; in concentric circles: inner couple faces an outer couple)."
+    },
+    {
+      "relation": "partners_side_by_side",
+      "between": [
+        "man",
+        "woman"
+      ],
+      "notes": "W is left of partner; typical handhold noted as M-L and W-R joined in V-position when applicable."
+    },
+    {
+      "relation": "inside_outside_roles",
+      "between": [
+        "inside_couples",
+        "outside_couples"
+      ],
+      "notes": "Some figures require defining inside vs outside couples to form arch and pass under; roles swap on repeat."
+    }
+  ]
+}

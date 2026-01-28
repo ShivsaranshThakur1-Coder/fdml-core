@@ -1,0 +1,6 @@
+dance_id,sim_kind,n_dancers_assumed,order_inversions,partner_dist_mean,partner_dist_std,opposite_dist_mean,opposite_dist_std,min_distance_final
+aalistullaa,couples_circle,10,0,0.16,4.47545209131181e-17,1.9515557516902988,0.0,0.15999999999999998
+abdala,line,8,0,1.0,0.0,0.0,0.0,1.0
+cobankat,line,8,0,1.0,1.5700924586837752e-16,0.0,0.0,0.9999999999999998
+haire-mamougeh,two_lines,10,0,1.694427190999916,1.3888543819998318,0.0,0.0,1.0
+mayim-mayim,circle,8,0,0.7653668647301791,7.259024953699689e-16,2.0,1.1102230246251565e-16,0.7653668647301779
