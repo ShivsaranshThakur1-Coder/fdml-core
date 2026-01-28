@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Haire Mamougeh (v1.2 geometry example)</title>
+    <dance name="Mayim Mayim" />
+    <origin country="UNKNOWN" />
+    <type genre="circle" />
+    <meter value="2/4" />
+    <tempo bpm="120" />
+    <formation text="circle" />
+
+    <geometry>
+      <formation kind="circle" />
+      <roles>
+        <role id="all" /><role id="bride_line" /><role id="groom_line" /></roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <twoLines><line role="bride_line" /><line role="groom_line" /><facing a="bride_line" b="groom_line" /></twoLines></geometry>
+
+    <figure id="f-haire-v12" name="Approach and retreat"><step who="all" action="approach" beats="2" startFoot="R"><geo><primitive kind="approach" who="bride_line" /><primitive kind="approach" who="groom_line" /></geo></step><step who="all" action="retreat" beats="2" startFoot="L"><geo><primitive kind="retreat" who="bride_line" /><primitive kind="retreat" who="groom_line" /></geo></step><step who="all" action="approach" beats="2" startFoot="R"><geo><primitive kind="approach" who="bride_line" /><primitive kind="approach" who="groom_line" /></geo></step><step who="all" action="retreat" beats="2" startFoot="L"><geo><primitive kind="retreat" who="bride_line" /><primitive kind="retreat" who="groom_line" /></geo></step></figure></body>
+</fdml>
