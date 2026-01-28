@@ -55,6 +55,15 @@ public class GeometryValidatorTest {
   }
 
   @Test
+
+  public void haireBadFormationFailsGeometryValidation() {
+    var p = Paths.get("corpus/invalid_v12/haire-mamougeh.bad-formation.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("bad_formation_for_approach_retreat")),
+      "Expected bad_formation_for_approach_retreat");
+  }
+
   public void validateGeoCollectSkipsNonXmlFiles() throws Exception {
     Path dir = Files.createTempDirectory("fdml-geo-dir");
     Files.writeString(dir.resolve("note.txt"), "hi");
