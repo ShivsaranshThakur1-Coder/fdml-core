@@ -3,6 +3,24 @@ package org.fdml.cli;
 class MainJson {
   static String esc(String s){ if(s==null)return null; return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r",""); }
 
+  static String toJsonValidateGeo(java.util.List<GeometryValidator.Result> rs) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"command\":\"validate-geo\",\"results\":[");
+    for (int i = 0; i < rs.size(); i++) {
+      var r = rs.get(i);
+      sb.append("{\"file\":\"").append(esc(r.file.toString())).append("\",\"ok\":").append(r.ok).append(",\"issues\":[");
+      for (int j = 0; j < r.issues.size(); j++) {
+        var is = r.issues.get(j);
+        sb.append("{\"code\":\"").append(esc(is.code)).append("\",\"message\":\"").append(esc(is.message)).append("\"}");
+        if (j < r.issues.size() - 1) sb.append(",");
+      }
+      sb.append("]}");
+      if (i < rs.size() - 1) sb.append(",");
+    }
+    sb.append("]}");
+    return sb.toString();
+  }
+
   static String toJsonDoctor(java.util.List<FdmlValidator.Result> rX,
                              java.util.List<SchematronValidator.Result> rS,
                              java.util.List<Linter.FileResult> rL){

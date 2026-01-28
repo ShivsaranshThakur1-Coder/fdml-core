@@ -76,6 +76,25 @@ public class Main {
           }
         }
 
+        case "validate-geo": {
+          boolean json = hasFlag(args, "--json");
+          String jsonOut = flagValue(args, "--json-out");
+          List<Path> targets = collectNonFlagPaths(args, 1);
+          if (targets.isEmpty()) { System.err.println("validate-geo: provide at least one file or directory"); System.exit(EXIT_IO_ERR); }
+
+          var rs = GeometryValidator.validateCollect(targets);
+          if (json || jsonOut != null) {
+            String payload = MainJson.toJsonValidateGeo(rs);
+            System.out.println(payload);
+            if (jsonOut != null) Files.writeString(Paths.get(jsonOut), payload, StandardCharsets.UTF_8);
+          } else {
+            boolean ok = GeometryValidator.validatePaths(targets);
+            if (!ok) System.exit(EXIT_VALIDATION_ERR);
+          }
+          boolean allOk = true; for (var r : rs) if (!r.ok) { allOk = false; break; }
+          System.exit(allOk ? EXIT_OK : EXIT_VALIDATION_ERR);
+        }
+
         case "render": {
           List<String> rest = new ArrayList<>();
           Path out = Paths.get("out/render.html");
@@ -290,6 +309,7 @@ public class Main {
     System.out.println("  validate <path> [...] [--json] [--json-out file]");
     System.out.println("  validate-sch <path> [...] [--json] [--json-out file]");
     System.out.println("  validate-all <path> [...] [--json] [--json-out file]");
+    System.out.println("  validate-geo <path> [...] [--json] [--json-out file]");
     System.out.println("  render <fdml-file> [--out out.html]");
     System.out.println("  export-pdf <fdml-file> [--out out.pdf]");
     System.out.println("  index  <path> [...] [--out out.json]");

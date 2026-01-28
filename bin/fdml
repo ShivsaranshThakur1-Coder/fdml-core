@@ -6,4 +6,17 @@ if [[ ! -f "$JAR" ]]; then
   echo "Building fdml-core.jar..."
   (cd "$DIR" && mvn -q -DskipTests package)
 fi
-exec java -jar "$JAR" "$@"
+# Prefer Java 17 if available (project is built with --release 17)
+JAVA_BIN="java"
+if [[ -n "${JAVA_HOME:-}" && -x "${JAVA_HOME}/bin/java" ]]; then
+  JAVA_BIN="${JAVA_HOME}/bin/java"
+elif [[ -x "/opt/homebrew/opt/openjdk/bin/java" ]]; then
+  # Homebrew OpenJDK (often >=17)
+  JAVA_BIN="/opt/homebrew/opt/openjdk/bin/java"
+elif command -v /usr/libexec/java_home >/dev/null 2>&1; then
+  JH="$(/usr/libexec/java_home -v 17 2>/dev/null || true)"
+  if [[ -n "$JH" && -x "$JH/bin/java" ]]; then
+    JAVA_BIN="$JH/bin/java"
+  fi
+fi
+exec "$JAVA_BIN" -jar "$JAR" "$@"

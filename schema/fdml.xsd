@@ -31,6 +31,9 @@
       <xs:element name="difficulty" type="DifficultyType" minOccurs="0"/>
       <xs:element name="tags" type="TagsType" minOccurs="0"/>
       <xs:element name="author" type="AuthorType" minOccurs="0"/>
+
+      <!-- FDML v1.2 (optional): structured geometry declarations -->
+      <xs:element name="geometry" type="MetaGeometryType" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -112,6 +115,9 @@
 
   <xs:complexType name="BodyType">
     <xs:sequence>
+      <!-- FDML v1.2 (optional): topology / formation specifics -->
+      <xs:element name="geometry" type="BodyGeometryType" minOccurs="0"/>
+
       <xs:element name="section" type="SectionType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="part" type="PartType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="figure" type="FigureType" minOccurs="0" maxOccurs="unbounded"/>
@@ -154,7 +160,14 @@
     <xs:attribute name="to" type="xs:integer" use="required"/>
   </xs:complexType>
 
+  <!--
+    StepType is mixed to preserve compatibility with existing inline notes text.
+    FDML v1.2 adds an optional <geo> child containing one or more geometry primitives.
+  -->
   <xs:complexType name="StepType" mixed="true">
+    <xs:sequence minOccurs="0" maxOccurs="1">
+      <xs:element name="geo" type="GeoType" minOccurs="0"/>
+    </xs:sequence>
     <xs:attribute name="who" type="xs:string" use="required"/>
     <xs:attribute name="action" type="xs:string" use="required"/>
     <xs:attribute name="beats" type="xs:integer" use="required"/>
@@ -177,6 +190,151 @@
     <xs:attribute name="figure" type="xs:string" use="optional"/>
     <xs:attribute name="part" type="xs:string" use="optional"/>
     <xs:attribute name="repeat" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <!-- ===================== -->
+  <!-- FDML v1.2 Geometry    -->
+  <!-- ===================== -->
+
+  <!-- meta/geometry -->
+  <xs:complexType name="MetaGeometryType">
+    <xs:sequence>
+      <xs:element name="formation" type="GeoFormationType"/>
+      <xs:element name="dancers" type="GeoDancersType" minOccurs="0"/>
+      <xs:element name="roles" type="GeoRolesType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="GeoFormationKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="circle"/>
+      <xs:enumeration value="line"/>
+      <xs:enumeration value="couple"/>
+      <xs:enumeration value="twoLinesFacing"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="GeoFormationType">
+    <xs:attribute name="kind" type="GeoFormationKind" use="required"/>
+    <xs:attribute name="notes" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="GeoDancersType">
+    <xs:attribute name="count" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="GeoRolesType">
+    <xs:sequence>
+      <xs:element name="role" type="GeoRoleType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GeoRoleType">
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="notes" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <!-- body/geometry -->
+  <xs:complexType name="BodyGeometryType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="circle" type="BodyCircleType"/>
+      <xs:element name="twoLines" type="BodyTwoLinesType"/>
+      <xs:element name="couples" type="BodyCouplesType"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="BodyCircleType">
+    <xs:sequence>
+      <xs:element name="order" type="BodyCircleOrderType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BodyCircleOrderType">
+    <xs:attribute name="role" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BodyTwoLinesType">
+    <xs:sequence>
+      <xs:element name="line" type="BodyLineType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="facing" type="BodyFacingType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BodyLineType">
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="role" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BodyFacingType">
+    <xs:attribute name="a" type="xs:string" use="required"/>
+    <xs:attribute name="b" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BodyCouplesType">
+    <xs:sequence>
+      <xs:element name="pair" type="BodyPairType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BodyPairType">
+    <xs:attribute name="a" type="xs:string" use="required"/>
+    <xs:attribute name="b" type="xs:string" use="required"/>
+    <xs:attribute name="relationship" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <!-- per-step geo primitives -->
+  <xs:complexType name="GeoType">
+    <xs:sequence>
+      <xs:element name="primitive" type="GeoPrimitiveType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="GeoPrimitiveKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="move"/>
+      <xs:enumeration value="face"/>
+      <xs:enumeration value="turn"/>
+      <xs:enumeration value="approach"/>
+      <xs:enumeration value="retreat"/>
+      <xs:enumeration value="pass"/>
+      <xs:enumeration value="weave"/>
+      <xs:enumeration value="hold"/>
+      <xs:enumeration value="release"/>
+      <xs:enumeration value="swapPlaces"/>
+      <xs:enumeration value="progress"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GeoFrame">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="formation"/>
+      <xs:enumeration value="line"/>
+      <xs:enumeration value="partner"/>
+      <xs:enumeration value="opposite"/>
+      <xs:enumeration value="dancer"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GeoUnit">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="beats"/>
+      <xs:enumeration value="counts"/>
+      <xs:enumeration value="measures"/>
+      <xs:enumeration value="steps"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="GeoPrimitiveType">
+    <xs:attribute name="kind" type="GeoPrimitiveKind" use="required"/>
+    <xs:attribute name="who" type="xs:string" use="optional"/>
+    <xs:attribute name="frame" type="GeoFrame" use="optional"/>
+    <xs:attribute name="axis" type="xs:string" use="optional"/>
+    <xs:attribute name="dir" type="xs:string" use="optional"/>
+    <xs:attribute name="amount" type="xs:decimal" use="optional"/>
+    <xs:attribute name="unit" type="GeoUnit" use="optional"/>
+    <xs:attribute name="preserveOrder" type="xs:boolean" use="optional"/>
+    <xs:attribute name="handhold" type="xs:string" use="optional"/>
+    <xs:attribute name="slot" type="xs:string" use="optional"/>
   </xs:complexType>
 
 </xs:schema>

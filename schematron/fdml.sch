@@ -36,6 +36,84 @@
     </rule>
   </pattern>
 
+  <!-- FDML v1.2 geometry: basic structural consistency checks.
+       Note: deeper stateful invariants are validated by the Java GeometryValidator.
+  -->
+  <pattern id="v12-geometry-meta">
+    <rule context="fdml[@version = '1.2']">
+      <assert test="meta/geometry/formation/@kind">
+        v1.2 dances must include meta/geometry/formation/@kind
+      </assert>
+
+      <!-- If any step contains geo primitives, roles should be declared so @who can be checked. -->
+      <assert test="not(.//step/geo) or meta/geometry/roles/role">
+        v1.2 dances that use step/geo should declare meta/geometry/roles/role
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="v12-geometry-step-primitives">
+    <rule context="fdml[@version = '1.2']//step[geo]">
+      <assert test="geo/primitive">
+        step/geo must contain at least one primitive
+      </assert>
+      <assert test="count(geo/primitive[not(@kind)]) = 0">
+        each geo/primitive must have @kind
+      </assert>
+    </rule>
+  </pattern>
+
+  <!-- Role reference checks for v1.2 (lightweight).
+       We only check @who when roles are declared.
+  -->
+  <pattern id="v12-geometry-role-refs">
+    <rule context="fdml[@version = '1.2'][meta/geometry/roles/role]//step">
+      <let name="who" value="normalize-space(@who)"/>
+      <assert test="$who = '' or count(/fdml/meta/geometry/roles/role[@id = $who]) &gt; 0">
+        step/@who should reference a declared meta/geometry/roles/role/@id (for v1.2)
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][meta/geometry/roles/role]//geo/primitive[@who]">
+      <let name="pwho" value="normalize-space(@who)"/>
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = $pwho]) &gt; 0">
+        geo/primitive/@who must reference a declared meta/geometry/roles/role/@id (for v1.2)
+      </assert>
+    </rule>
+  </pattern>
+
+  <!-- Body geometry cross-reference checks (v1.2).
+       XSD enforces presence of attributes; Schematron checks their referents if roles are declared.
+  -->
+  <pattern id="v12-body-geometry">
+    <rule context="fdml[@version = '1.2']/body/geometry/circle/order">
+      <assert test="@role">
+        body/geometry/circle/order must have @role
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/circle/order[@role]">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0">
+        circle/order/@role must reference a declared role id
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/line[@role]">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0">
+        twoLines/line/@role must reference a declared role id
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/facing">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @a]) &gt; 0">
+        twoLines/facing/@a must reference a declared role id
+      </assert>
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @b]) &gt; 0">
+        twoLines/facing/@b must reference a declared role id
+      </assert>
+    </rule>
+  </pattern>
+
   <!-- Every figure must contain at least one step -->
   <pattern id="figure-structure">
     <rule context="figure">
@@ -84,4 +162,3 @@
   </pattern>
 
 </schema>
-
