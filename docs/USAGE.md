@@ -1,35 +1,51 @@
-# FDML — Usage
+## FDML v1.2 Geometry Extension
 
-## CLI
-~~~bash
-./bin/fdml validate <file-or-dir> [--json]
-./bin/fdml validate-sch <file-or-dir> [--json]
-./bin/fdml validate-all <file-or-dir> [--json]
-./bin/fdml render <fdml-file> [--out out.html]
-~~~
+FDML v1.2 adds an optional geometry layer that makes formations and movement constraints explicit and machine-checkable. This supports invariants that are difficult to express in XSD/Schematron alone (e.g., order preservation in circles; formation–primitive compatibility).
 
-### Exit codes
-- **0** = OK
-- **2** = Validation errors (XSD or Schematron)
-- **3** = Transform/render error
-- **4** = I/O / usage error
+### Files and commands
 
-### Examples
-~~~bash
-./bin/fdml validate corpus/valid
-./bin/fdml validate-sch corpus/valid --json
-./bin/fdml validate-all corpus/valid --json
-./bin/fdml render corpus/valid/example-01.fdml.xml --out out/example-01.html
-~~~
+Validate geometry for all v1.2 valid examples:
+./bin/fdml validate-geo corpus/valid_v12
 
-## Sequences
-FDML supports assembling routines via `<sequence>`:
-```xml
-<body>
-  <figure id="f-basic">…</figure>
-  <figure id="f-turn">…</figure>
-  <sequence name="Teaching Set">
-    <use figure="f-basic" repeat="2"/>
-    <use figure="f-turn" repeat="2"/>
-  </sequence>
-</body>
+Validate geometry for invalid examples (expected to FAIL with exit code 2):
+./bin/fdml validate-geo corpus/invalid_v12
+
+Run the full “doctor” pipeline (XSD + Schematron + GEO + Lint) on the v1.2 examples:
+./bin/fdml doctor --strict corpus/valid_v12/mayim-mayim.v12.fdml.xml
+./bin/fdml doctor --strict corpus/valid_v12/haire-mamougeh.v12.fdml.xml
+
+Example v1.2 files in this repo:
+
+Valid:
+- corpus/valid_v12/mayim-mayim.v12.fdml.xml
+- corpus/valid_v12/haire-mamougeh.v12.fdml.xml
+
+Invalid (intentionally fails GEO validation):
+- corpus/invalid_v12/haire-mamougeh.bad-formation.v12.fdml.xml
+- corpus/invalid_v12/mayim-mayim.order-broken.v12.fdml.xml
+
+### v1.2 structure (minimum required)
+
+For fdml version="1.2" the geometry validator requires:
+- meta/geometry/formation/@kind (e.g., circle, twoLinesFacing, couple)
+- If roles are declared in meta/geometry/roles, then any @who references in steps/primitives must refer to declared role IDs.
+- Per-step geometry primitives are expressed under step/geo/primitive and each primitive must have @kind.
+
+See: docs/GEOMETRY-SPEC.md for the full schema and intended semantics.
+
+### Current validator rules (GeometryValidator)
+
+- v1.2 requires meta/geometry/formation/@kind.
+- Each step/geo/primitive must have @kind.
+- If roles exist, step/@who and primitive/@who must reference a declared role.
+- approach / retreat primitives only allowed for formation/@kind="twoLinesFacing".
+- Circle order preservation proxy: if any primitive has preserveOrder="true", then crossing primitives (pass, weave, swapPlaces) trigger circle_order_violation.
+
+### Interpreting GEO failures
+
+validate-geo prints either GEO OK or GEO FAIL plus issue codes like:
+- missing_formation_kind
+- missing_primitive_kind
+- unknown_role
+- bad_formation_for_approach_retreat
+- circle_order_violation
