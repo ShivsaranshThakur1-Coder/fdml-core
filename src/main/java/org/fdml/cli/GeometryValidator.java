@@ -239,12 +239,58 @@ class GeometryValidator {
         }
       }
 
-      // Circle order preservation (minimal proxy): if any primitive demands preserveOrder, forbid crossing primitives.
+      // Circle order preservation (proxy): if any primitive demands preserveOrder, forbid crossing primitives.
       if ("circle".equals(formationKind) && hasPreserveOrder && hasCrossingPrimitive) {
         issues.add(new Issue(
           "circle_order_violation",
           "circle formation with preserveOrder=true must not include crossing primitives (pass/weave/swapPlaces)"
         ));
+      }
+
+      // Circle order preservation (true / explicit role order slots)
+      if ("circle".equals(formationKind) && hasPreserveOrder) {
+        XdmValue slots = xpc.evaluate("/fdml/body/geometry/circle/order/slot/@who", doc);
+        List<String> initialOrder = new ArrayList<>();
+        for (XdmItem it : slots) {
+          String who = it.getStringValue();
+          if (who != null && !who.isBlank()) initialOrder.add(who);
+        }
+
+        if (initialOrder.isEmpty()) {
+          issues.add(new Issue(
+            "missing_circle_order_slots",
+            "circle formation uses preserveOrder=true but body/geometry/circle/order/slot list is missing"
+          ));
+        } else {
+          List<String> working = new ArrayList<>(initialOrder);
+
+          // Scan primitives in document order and apply swapPlaces(a,b) to the order list.
+          for (XdmItem it : prims) {
+            XdmNode p = (XdmNode) it;
+            String kind = str(xpc, "string(@kind)", p);
+            if (kind == null) kind = "";
+            String k = kind.toLowerCase(Locale.ROOT);
+            if ("swapplaces".equals(k)) {
+              String a = str(xpc, "string(@a)", p);
+              String b = str(xpc, "string(@b)", p);
+              if (a != null && b != null && !a.isBlank() && !b.isBlank()) {
+                int ia = working.indexOf(a);
+                int ib = working.indexOf(b);
+                if (ia >= 0 && ib >= 0 && ia != ib) {
+                  working.set(ia, b);
+                  working.set(ib, a);
+                }
+              }
+            }
+          }
+
+          if (!working.equals(initialOrder)) {
+            issues.add(new Issue(
+              "circle_order_changed",
+              "circle preserveOrder=true but swapPlaces primitives changed the explicit circle order"
+            ));
+          }
+        }
       }
 
     } catch (Exception e) {

@@ -98,6 +98,22 @@
       </assert>
     </rule>
 
+    <!-- FDML v1.2: explicit circle order slots (only enforced when slots are present). -->
+    <rule context="fdml[@version = '1.2']/body/geometry/circle/order[slot]">
+      <assert test="count(slot) &gt;= 4">
+        circle/order with explicit slots must include at least 4 slot entries
+      </assert>
+      <assert test="count(slot/@who) = count(distinct-values(slot/@who))">
+        circle/order slot list must not contain duplicate who values
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/circle/order/slot[@who]">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @who]) &gt; 0">
+        circle/order/slot/@who must reference a declared role id
+      </assert>
+    </rule>
+
     <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/line[@role]">
       <assert test="count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0">
         twoLines/line/@role must reference a declared role id

@@ -73,6 +73,15 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void circleOrderBrokenFailsWithCircleOrderChanged() {
+    var p = Paths.get("corpus/invalid_v12/mayim-mayim.order-broken.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("circle_order_changed")),
+      "Expected circle_order_changed");
+  }
+
+  @Test
   public void validateGeoCollectSkipsNonXmlFiles() throws Exception {
     Path dir = Files.createTempDirectory("fdml-geo-dir");
     Files.writeString(dir.resolve("note.txt"), "hi");

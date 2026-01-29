@@ -13,6 +13,14 @@
       <formation kind="circle" />
       <roles>
         <role id="all" />
+        <role id="d1" />
+        <role id="d2" />
+        <role id="d3" />
+        <role id="d4" />
+        <role id="d5" />
+        <role id="d6" />
+        <role id="d7" />
+        <role id="d8" />
       </roles>
     </geometry>
   </meta>
@@ -20,7 +28,16 @@
   <body>
     <geometry>
       <circle>
-        <order role="all" />
+        <order role="all">
+          <slot who="d1" />
+          <slot who="d2" />
+          <slot who="d3" />
+          <slot who="d4" />
+          <slot who="d5" />
+          <slot who="d6" />
+          <slot who="d7" />
+          <slot who="d8" />
+        </order>
       </circle>
     </geometry>
 
@@ -29,7 +46,7 @@
         <geo>
           <primitive kind="face" frame="formation" dir="counterclockwise" />
           <primitive kind="face" frame="formation" dir="clockwise" />
-        <primitive kind="move" dir="counterclockwise" who="all" /><primitive kind="move" dir="clockwise" who="all" /></geo>
+        </geo>
       </step>
       <step who="all" action="run" beats="3" direction="around" startFoot="R">
         <geo>
