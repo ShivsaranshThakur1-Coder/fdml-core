@@ -30,7 +30,7 @@
     <figure id="f-aalistullaa" name="Twirl example">
       <step who="man" action="twirl" beats="4" startFoot="R">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="clockwise" />
+          <primitive kind="twirl" frame="formation" dir="clockwise" />
         </geo>
       </step>
     </figure>

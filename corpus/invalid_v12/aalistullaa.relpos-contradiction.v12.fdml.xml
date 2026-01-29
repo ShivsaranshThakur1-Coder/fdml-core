@@ -30,7 +30,7 @@
     <figure id="f-aalistullaa" name="Twirl example">
       <step who="man" action="twirl" beats="2" startFoot="R">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="clockwise" />
+          <primitive kind="twirl" frame="formation" dir="clockwise" />
           <!-- keep a consistent relpos to satisfy Schematron requirement -->
           <primitive kind="relpos" a="woman" b="man" relation="leftOf" />
           <!-- contradictory relpos evidence (should trigger GEO relpos_contradiction) -->
@@ -39,7 +39,7 @@
       </step>
       <step who="woman" action="twirl" beats="2" startFoot="L">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="counterclockwise" />
+          <primitive kind="twirl" frame="formation" dir="counterclockwise" />
         </geo>
       </step>
     </figure>

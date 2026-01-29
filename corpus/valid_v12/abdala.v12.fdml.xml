@@ -21,7 +21,7 @@
     <figure id="f-abdala" name="Example">
       <step who="all" action="walk" beats="4" startFoot="R">
         <geo>
-          <primitive kind="move" frame="formation" dir="right" amount="1" unit="steps" />
+          <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />
         </geo>
       </step>
     </figure>

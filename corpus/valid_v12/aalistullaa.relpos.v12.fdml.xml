@@ -30,13 +30,13 @@
     <figure id="f-aalistullaa" name="Twirl example">
       <step who="man" action="twirl" beats="2" startFoot="R">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="clockwise" />
+          <primitive kind="twirl" frame="formation" dir="clockwise" />
           <primitive kind="relpos" a="woman" b="man" relation="leftOf" />
         </geo>
       </step>
       <step who="woman" action="twirl" beats="2" startFoot="L">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="counterclockwise" />
+          <primitive kind="twirl" frame="formation" dir="counterclockwise" />
         </geo>
       </step>
     </figure>

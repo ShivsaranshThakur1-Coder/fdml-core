@@ -47,13 +47,13 @@
     <figure id="f-dosido" name="Do-si-do" formation="longways">
       <step who="both" action="Pass R shoulders" beats="2" count="1-2" startFoot="R" direction="CW">
         <geo>
-          <primitive kind="move" who="both" dir="clockwise" />
+          <primitive kind="move" who="both" dir="clockwise" frame="formation" />
         </geo>
       </step>
       <step who="both" action="Return" beats="2" count="3-4" startFoot="L" direction="CW">
         <geo>
-          <primitive kind="turn" who="both" dir="clockwise" />
-          <primitive kind="move" who="both" dir="clockwise" />
+          <primitive kind="turn" who="both" dir="clockwise" frame="formation" />
+          <primitive kind="move" who="both" dir="clockwise" frame="formation" />
         </geo>
       </step>
     </figure>

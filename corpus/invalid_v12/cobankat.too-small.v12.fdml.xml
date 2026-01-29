@@ -20,5 +20,5 @@
     <geometry>
       <line id="line1" /></geometry>
 
-    <figure id="f-cobankat-v12" name="Travel right then left"><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="left" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="left" who="all" /></geo></step></figure></body>
+    <figure id="f-cobankat-v12" name="Travel right then left"><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" frame="dancer" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="left" frame="dancer" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" frame="dancer" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="left" frame="dancer" who="all" /></geo></step></figure></body>
 </fdml>

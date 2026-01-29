@@ -30,13 +30,13 @@
     <figure id="f-aalistullaa" name="Hold broken example">
       <step who="man" action="twirl" beats="2" startFoot="R">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="clockwise" />
+          <primitive kind="twirl" frame="formation" dir="clockwise" />
         </geo>
       </step>
       <step who="woman" action="twirl" beats="2" startFoot="L">
         <geo>
-          <primitive kind="twirl" frame="partner" dir="counterclockwise" />
-          <primitive kind="releaseHold" frame="partner" />
+          <primitive kind="twirl" frame="formation" dir="counterclockwise" />
+          <primitive kind="releaseHold" frame="dancer" />
         </geo>
       </step>
     </figure>
