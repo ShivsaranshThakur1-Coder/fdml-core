@@ -45,6 +45,20 @@
       <svrl:failed-assert><svrl:text>v1.2 dances with hold/@kind != 'none' must not use primitive kind='releaseHold'</svrl:text></svrl:failed-assert>
     </xsl:if>
 
+    <!-- Ontology Batch 4A (FDML v1.2 only): line progression requires explicit line order slots and delta. -->
+    <xsl:if test="@version='1.2' and meta/geometry/formation/@kind='line' and .//step/geo/primitive[@kind='progress'] and count(body/geometry/line/order/slot) &lt; 2">
+      <svrl:failed-assert><svrl:text>line formation with progress primitives must declare body/geometry/line/order with at least 2 slots</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version='1.2' and meta/geometry/formation/@kind='line' and .//step/geo/primitive[@kind='progress'] and count(body/geometry/line/order/slot/@who) != count(distinct-values(body/geometry/line/order/slot/@who))">
+      <svrl:failed-assert><svrl:text>line order slot list must not contain duplicate who values</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version='1.2' and meta/geometry/formation/@kind='line' and .//step/geo/primitive[@kind='progress'] and count(.//step/geo/primitive[@kind='progress' and not(@delta)]) &gt; 0">
+      <svrl:failed-assert><svrl:text>every progress primitive must have @delta</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version='1.2' and meta/geometry/formation/@kind='line' and .//step/geo/primitive[@kind='progress'] and meta/geometry/roles/role and body/geometry/line/order/slot/@who and not(every $w in body/geometry/line/order/slot/@who satisfies meta/geometry/roles/role[@id = $w])">
+      <svrl:failed-assert><svrl:text>line/order/slot/@who must reference a declared role id</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
     <xsl:apply-templates select="body"/>
   </xsl:template>
 

@@ -104,6 +104,9 @@ class GeometryValidator {
 
       boolean sawReleaseHold = false;
 
+      boolean sawProgress = false;
+      boolean sawProgressMissingDelta = false;
+
       for (XdmItem it : prims) {
         XdmNode p = (XdmNode) it;
         String kind = str(xpc, "string(@kind)", p);
@@ -138,6 +141,12 @@ class GeometryValidator {
         if ("retreat".equals(kind)) sawRetreat = true;
 
         if ("releaseHold".equals(kind)) sawReleaseHold = true;
+
+        if ("progress".equals(kind)) {
+          sawProgress = true;
+          String delta = str(xpc, "string(@delta)", p);
+          if (delta == null || delta.isBlank()) sawProgressMissingDelta = true;
+        }
 
         // Formation-specific primitive checks
         if (("approach".equals(kind) || "retreat".equals(kind)) && !"twoLinesFacing".equals(formationKind)) {
@@ -269,6 +278,33 @@ class GeometryValidator {
           "hold_broken",
           "meta/geometry/hold/@kind='" + holdKind + "' but a primitive uses kind='releaseHold'"
         ));
+      }
+
+      // Ontology Batch 4A: line progression requires explicit line order slots and progress delta.
+      if ("line".equals(formationKind) && sawProgress) {
+        XdmValue lineSlots = xpc.evaluate("/fdml/body/geometry/line/order/slot/@who", doc);
+        boolean hasLineSlots = false;
+        for (XdmItem it : lineSlots) {
+          String who = it.getStringValue();
+          if (who != null && !who.isBlank()) {
+            hasLineSlots = true;
+            break;
+          }
+        }
+
+        if (!hasLineSlots) {
+          issues.add(new Issue(
+            "missing_line_order_slots",
+            "line formation includes progress primitives but body/geometry/line/order/slot list is missing"
+          ));
+        }
+
+        if (sawProgressMissingDelta) {
+          issues.add(new Issue(
+            "progress_missing_delta",
+            "progress primitive is missing required @delta"
+          ));
+        }
       }
 
       // Ontology Batch 2: twirl primitives must contain both halves (cw + ccw) within each figure.

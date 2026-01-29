@@ -184,6 +184,64 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void progressMissingOrderTriggersMissingLineOrderSlots() {
+    var p = Paths.get("corpus/invalid_v12/example-05-contra.progress-missing-order.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("missing_line_order_slots")),
+      "Expected missing_line_order_slots");
+  }
+
+  @Test
+  public void progressMissingDeltaTriggersProgressMissingDelta() throws Exception {
+    String xml = """
+      <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+      <fdml version=\"1.2\">
+        <meta>
+          <title>Bad progress delta</title>
+          <type genre=\"line\"/>
+          <meter value=\"4/4\"/>
+          <tempo bpm=\"120\"/>
+          <formation text=\"line\"/>
+          <geometry>
+            <formation kind=\"line\"/>
+            <roles>
+              <role id=\"all\"/>
+              <role id=\"d1\"/>
+              <role id=\"d2\"/>
+            </roles>
+          </geometry>
+        </meta>
+        <body>
+          <geometry>
+            <line id=\"line1\">
+              <order>
+                <slot who=\"d1\"/>
+                <slot who=\"d2\"/>
+              </order>
+            </line>
+          </geometry>
+          <figure id=\"f-x\" name=\"x\">
+            <step who=\"all\" action=\"progress\" beats=\"4\" startFoot=\"R\">
+              <geo>
+                <primitive kind=\"progress\" who=\"all\" />
+              </geo>
+            </step>
+          </figure>
+        </body>
+      </fdml>
+      """;
+
+    Path tmp = Files.createTempFile("fdml-bad-progress", ".fdml.xml");
+    Files.writeString(tmp, xml);
+
+    var r = GeometryValidator.validateOne(tmp);
+    assertFalse(r.ok, "Expected geometry validation to fail");
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("progress_missing_delta")),
+      "Expected progress_missing_delta");
+  }
+
+  @Test
   public void validateGeoCollectSkipsNonXmlFiles() throws Exception {
     Path dir = Files.createTempDirectory("fdml-geo-dir");
     Files.writeString(dir.resolve("note.txt"), "hi");

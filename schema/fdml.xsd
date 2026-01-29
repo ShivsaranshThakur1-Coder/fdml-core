@@ -264,11 +264,7 @@
       <xs:element name="twoLines" type="BodyTwoLinesType"/>
       <xs:element name="couples" type="BodyCouplesType"/>
     
-      <xs:element name="line">
-        <xs:complexType>
-          <xs:attribute name="id" type="xs:string" use="required"/>
-        </xs:complexType>
-      </xs:element>
+      <xs:element name="line" type="BodyLineType"/>
 </xs:choice>
   </xs:complexType>
 
@@ -292,14 +288,32 @@
 
   <xs:complexType name="BodyTwoLinesType">
     <xs:sequence>
-      <xs:element name="line" type="BodyLineType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="line" type="BodyTwoLinesLineType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="facing" type="BodyFacingType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="BodyLineType">
+  <xs:complexType name="BodyTwoLinesLineType">
     <xs:attribute name="id" type="xs:string" use="required"/>
     <xs:attribute name="role" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- body/geometry/line -->
+  <xs:complexType name="BodyLineType">
+    <xs:sequence>
+      <xs:element name="order" type="BodyLineOrderType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BodyLineOrderType">
+    <xs:sequence>
+      <xs:element name="slot" type="BodyLineSlotType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BodyLineSlotType">
+    <xs:attribute name="who" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="BodyFacingType">
@@ -338,6 +352,7 @@
       <xs:enumeration value="pass"/>
       <xs:enumeration value="weave"/>
       <xs:enumeration value="releaseHold"/>
+      <xs:enumeration value="progress"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -380,6 +395,7 @@
     <xs:attribute name="a" type="xs:string" use="optional"/>
     <xs:attribute name="b" type="xs:string" use="optional"/>
     <xs:attribute name="holdKind" type="xs:string" use="optional"/>
+    <xs:attribute name="delta" type="xs:integer" use="optional"/>
     <xs:attribute name="frame" type="GeoFrame" use="optional"/>
     <xs:attribute name="axis" type="xs:string" use="optional"/>
     <xs:attribute name="dir" type="GeoDir" use="optional"/>

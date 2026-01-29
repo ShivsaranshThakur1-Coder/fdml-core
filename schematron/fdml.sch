@@ -101,6 +101,25 @@
        XSD enforces presence of attributes; Schematron checks their referents if roles are declared.
   -->
   <pattern id="v12-body-geometry">
+    <!-- Ontology Batch 4A: line progression requires explicit line order slots and progress deltas. -->
+    <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'line'][.//step/geo/primitive[@kind='progress']]">
+      <assert test="count(body/geometry/line/order/slot) &gt;= 2">
+        line formation with progress primitives must declare body/geometry/line/order with at least 2 slots
+      </assert>
+      <assert test="count(body/geometry/line/order/slot/@who) = count(distinct-values(body/geometry/line/order/slot/@who))">
+        line order slot list must not contain duplicate who values
+      </assert>
+      <assert test="count(.//step/geo/primitive[@kind='progress' and not(@delta)]) = 0">
+        every progress primitive must have @delta
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'line'][.//step/geo/primitive[@kind='progress']][meta/geometry/roles/role]//body/geometry/line/order/slot[@who]">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = current()/@who]) &gt; 0">
+        line/order/slot/@who must reference a declared role id
+      </assert>
+    </rule>
+
     <!-- Ontology Batch 1: twoLinesFacing must declare which lines face each other. -->
     <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'twoLinesFacing']">
       <assert test="body/geometry/twoLines/facing">
