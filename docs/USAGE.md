@@ -5,14 +5,23 @@ FDML v1.2 adds an optional geometry layer that makes formations and movement con
 ### Files and commands
 
 Validate geometry for all v1.2 valid examples:
+
+```bash
 ./bin/fdml validate-geo corpus/valid_v12
+```
 
 Validate geometry for invalid examples (expected to FAIL with exit code 2):
+
+```bash
 ./bin/fdml validate-geo corpus/invalid_v12
+```
 
 Run the full “doctor” pipeline (XSD + Schematron + GEO + Lint) on the v1.2 examples:
+
+```bash
 ./bin/fdml doctor --strict corpus/valid_v12/mayim-mayim.v12.fdml.xml
 ./bin/fdml doctor --strict corpus/valid_v12/haire-mamougeh.v12.fdml.xml
+```
 
 Example v1.2 files in this repo:
 
