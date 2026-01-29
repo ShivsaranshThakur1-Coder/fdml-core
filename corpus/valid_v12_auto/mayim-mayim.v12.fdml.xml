@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Mayim Mayim</title>
+    <dance name="Mayim Mayim" />
+
+    <origin country="Israel" region="" />
+    <type genre="circle" style="Israeli folk" />
+
+    <meter value="4/4" rhythmPattern="4+4" />
+    <tempo bpm="120" />
+
+    <formation text="Circle of dancers facing centre; hands joined in W-hold." />
+
+    <styling>
+      <p>Lively Israeli circle dance. Steps are light and springy; let the body move naturally with the music.</p>
+    </styling>
+
+    <music>
+      <record label="Example Label" track="Mayim Mayim" medium="record" year="1950" />
+    </music>
+
+    <source title="Mayim Mayim – dance notes" author="Unknown" year="1950" publisher="Folk Dance Syllabus" />
+
+    <difficulty level="beginner" />
+
+    <tags>
+      <tag>Israeli</tag>
+      <tag>circle</tag>
+      <tag>Mayim</tag>
+    </tags>
+  <geometry><formation kind="circle" /><hold kind="vPosition" /><roles><role id="all" /></roles></geometry></meta>
+
+  <body>
+
+    <geometry><circle><order role="all" /></circle></geometry><section id="s-notes" type="notes">
+      <p>Popular Israeli folk dance, often used as an introduction to the style. The name means “Water, Water”.</p>
+    </section>
+
+    <section id="s-setup" type="setup">
+      <p>Dancers stand in a circle facing centre, holding hands in W-hold. The dance begins with a grapevine to the right.</p>
+    </section>
+
+    <part id="p-I" label="Part I – Grapevine" repeat="1">
+      <figure id="f-f-i" name="Grapevine" formation="circle">
+        <measureRange from="1" to="4">
+          <step who="all" action="Step R to side, cross L behind R, step R to side, touch L beside R" beats="4" startFoot="R" direction="Right" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Step L to side, cross R behind L, step L to side, touch R beside L" beats="4" startFoot="L" direction="Left" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    <part id="p-II" label="Part II – Centre and back" repeat="1">
+      <figure id="f-f-ii" name="Centre and back" formation="circle">
+        <measureRange from="1" to="4">
+          <step who="all" action="Walk four steps towards the centre starting on R" beats="4" startFoot="R" direction="In" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Walk four steps backwards away from centre starting on L" beats="4" startFoot="L" direction="Out" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    <part id="p-III" label="Part III – Turn and clap" repeat="1">
+      <figure id="f-f-iii" name="Turn and clap" formation="circle">
+        <measureRange from="1" to="4">
+          <step who="all" action="Step R forward, pivot half turn to the left, clap on last count" beats="4" startFoot="R" direction="Clockwise" facing="Along the line" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Step L forward, pivot half turn to the right, clap on last count to face centre" beats="4" startFoot="L" direction="Counterclockwise" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    <part id="p-IV" label="Part IV – Toe touches" repeat="1">
+      <figure id="f-f-iv" name="Toe touches and claps" formation="circle">
+        <measureRange from="1" to="4">
+          <step who="all" action="Touch R toe to side twice with claps, then step R in place" beats="4" startFoot="R" direction="On the spot" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Touch L toe to side twice with claps, then step L in place" beats="4" startFoot="L" direction="On the spot" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    <sequence id="seq-main">
+      <use figure="f-f-i" repeat="1" />
+      <use figure="f-f-ii" repeat="1" />
+      <use figure="f-f-iii" repeat="1" />
+      <use figure="f-f-iv" repeat="1" />
+    </sequence>
+
+  </body>
+</fdml>

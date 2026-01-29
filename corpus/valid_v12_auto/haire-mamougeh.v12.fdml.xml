@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Haire Mamougeh</title>
+    <dance name="Haire Mamougeh" />
+
+    <origin country="Armenia" region="" />
+    <type genre="line" style="Armenian folk" />
+
+    <meter value="2/4" rhythmPattern="2+2" />
+    <tempo bpm="116" />
+
+    <formation text="Open line of dancers facing centre or slightly to the right; hands in W-hold or shoulder hold as described by the teacher." />
+
+    <styling>
+      <p>Traditional Armenian wedding dance. Steps should be smooth and dignified, with a gentle bounce rather than sharp accents.</p>
+    </styling>
+
+    <music>
+      <record label="Example Label" track="Haire Mamougeh" medium="record" year="1985" />
+    </music>
+
+    <source title="Haire Mamougeh – dance notes" author="Unknown" year="1985" publisher="Folk Dance Camp Syllabus" />
+
+    <difficulty level="intermediate" />
+
+    <tags>
+      <tag>Armenian</tag>
+      <tag>line</tag>
+      <tag>wedding</tag>
+    </tags>
+  <geometry><formation kind="line" /><roles><role id="all" /></roles></geometry></meta>
+
+  <body>
+
+    <geometry><line id="line1" /></geometry><section id="s-notes" type="notes">
+      <p>Armenian wedding dance often performed in a line. The character is proud and flowing, with emphasis on upper body carriage.</p>
+    </section>
+
+    <section id="s-setup" type="setup">
+      <p>Dancers form an open line, facing centre or slightly to the right. Hands are held in W-hold or on neighbours' shoulders. The default direction of travel is to the right.</p>
+    </section>
+
+    
+    <part id="p-intro" label="Introduction" repeat="1">
+      <figure id="f-intro" name="Intro rocking" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all" action="Rock R in place, replace on L, step R to side" beats="4" startFoot="R" direction="On the spot" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Rock L in place, replace on R, step L to side" beats="4" startFoot="L" direction="On the spot" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <part id="p-I" label="Part I – Travelling right" repeat="1">
+      <figure id="f-f-i" name="Travelling to the right" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all" action="Step R to side, close L to R, step R to side, brush L" beats="4" startFoot="R" direction="Right" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Repeat travelling to the right" beats="4" startFoot="R" direction="Right" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <part id="p-II" label="Part II – Inward and outward" repeat="1">
+      <figure id="f-f-ii" name="Inward and outward pattern" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all" action="Step R towards centre, close L to R, step R away from centre, touch L" beats="4" startFoot="R" direction="In" facing="Centre" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Step L away from centre, close R to L, step L towards centre, touch R" beats="4" startFoot="L" direction="Out" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <part id="p-III" label="Part III – Turning phrase" repeat="1">
+      <figure id="f-f-iii" name="Turning phrase" formation="line">
+        <measureRange from="1" to="4">
+          <step who="all" action="Step R forward and across, pivot half turn to face along the line" beats="4" startFoot="R" direction="Along the line" facing="Along the line" />
+        </measureRange>
+        <measureRange from="5" to="8">
+          <step who="all" action="Step L forward and across, pivot half turn back to face centre" beats="4" startFoot="L" direction="Along the line" facing="Centre" />
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <sequence id="seq-main">
+      <use figure="f-intro" repeat="1" />
+      <use figure="f-f-i" repeat="1" />
+      <use figure="f-f-ii" repeat="1" />
+      <use figure="f-f-iii" repeat="1" />
+    </sequence>
+
+  </body>
+</fdml>
