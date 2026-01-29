@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Example Valid FDML</title>
+    <meter value="3/4" />
+    <tempo bpm="90" />
+  <geometry><formation kind="line" /><roles><role id="all" /></roles></geometry></meta>
+  <body>
+    <geometry><line id="line1" /></geometry><section id="s-one">A simple body.</section>
+  </body>
+</fdml>

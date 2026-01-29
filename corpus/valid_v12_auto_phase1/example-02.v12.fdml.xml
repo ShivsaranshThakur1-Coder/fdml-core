@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Valid FDML with sections</title>
+    <meter value="4/4" />
+    <tempo bpm="112" />
+    <author email="alice@example.com">Alice</author>
+  <geometry><formation kind="line" /><roles><role id="all" /></roles></geometry></meta>
+  <body>
+    <geometry><line id="line1" /></geometry><section id="s-intro">Intro</section>
+    <section id="s-details">Details</section>
+  </body>
+</fdml>

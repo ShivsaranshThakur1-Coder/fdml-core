@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Demo Init</title>
+    <dance name="Demo" />
+    <meter value="3/4" />
+    <tempo bpm="96" />
+  <geometry><formation kind="circle" /><hold kind="vPosition" /><roles><role id="all" /><role id="both" /></roles></geometry></meta>
+  <body>
+    <geometry><circle><order role="all" /></circle></geometry><figure id="f-demo" name="Demo Figure" formation="circle">
+      <step who="both" action="Step L" beats="1" count="1" startFoot="L">Weight to L<geo><primitive kind="move" who="both" /></geo></step>
+      <step who="both" action="Close R" beats="1" count="2" startFoot="R" endFoot="B">Close R to L<geo><primitive kind="move" who="both" /></geo></step>
+      <step who="both" action="Step L" beats="1" count="3" startFoot="L">Weight to L<geo><primitive kind="move" who="both" /></geo></step>
+    </figure>
+  </body>
+</fdml>

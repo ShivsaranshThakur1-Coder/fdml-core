@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Aalistullaa</title>
+    <dance name="Aalistullaa" />
+
+    <origin country="Finland" region="" />
+    <type genre="couple" style="Finnish folk" />
+
+    <meter value="3/4" rhythmPattern="3+3+3" />
+    <tempo bpm="120" />
+
+    <formation text="Couples in closed position facing line of dance, arranged around the room." />
+
+    <styling>
+      <p>Traditional Finnish couple dance in waltz time. Movement is smooth and gliding, with gentle rise and fall and close partner connection.</p>
+    </styling>
+
+    <music>
+      <record label="Example Label" track="Aalistullaa" medium="record" year="2000" />
+    </music>
+
+    <source title="Aalistullaa – dance notes" author="Unknown" year="2000" publisher="Folk Dance Camp Syllabus" />
+
+    <difficulty level="intermediate" />
+
+    <tags>
+      <tag>Finnish</tag>
+      <tag>couple</tag>
+      <tag>waltz</tag>
+    </tags>
+  <geometry><formation kind="couple" womanSide="left" /><hold kind="palmToPalm" /><roles><role id="all" /><role id="man" /><role id="woman" /><role id="followers" /><role id="leaders" /></roles></geometry></meta>
+
+  <body>
+
+    <geometry><couples><pair a="man" b="woman" /></couples></geometry><section id="s-notes" type="notes">
+      <p>Finnish couple dance in waltz time. The dance travels around the room in line of dance and uses turning waltz patterns combined with small setting steps.</p>
+    </section>
+
+    <section id="s-setup" type="setup">
+      <p>Couples face line of dance in closed position. Leader faces line of dance, follower faces against line of dance. The dance begins with a setting pattern before travelling waltz steps.</p>
+    </section>
+
+    
+    <part id="p-I" label="Part I – Setting" repeat="1">
+      <figure id="f-f-i" name="Setting in place" formation="couple">
+        <measureRange from="1" to="2">
+          <step who="leaders" action="Step L slightly forward, close R to L, step L in place" beats="3" startFoot="L" direction="On the spot" facing="Along the line"><geo><primitive kind="move" who="leaders" /></geo></step>
+        </measureRange>
+        <measureRange from="3" to="4">
+          <step who="followers" action="Step R slightly back, close L to R, step R in place" beats="3" startFoot="R" direction="On the spot" facing="Against the line"><geo><primitive kind="move" who="followers" /></geo></step>
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <part id="p-II" label="Part II – Travelling waltz" repeat="1">
+      <figure id="f-f-ii" name="Turning waltz travelling" formation="couple">
+        <measureRange from="1" to="4">
+          <step who="all" action="Turning waltz forward around the room for four measures" beats="12" startFoot="L" direction="Along the line" facing="Turning"><geo><primitive kind="turn" who="all" /><primitive kind="move" who="all" /></geo></step>
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <part id="p-III" label="Part III – Balances" repeat="1">
+      <figure id="f-f-iii" name="Balances and turn" formation="couple">
+        <measureRange from="1" to="2">
+          <step who="all" action="Balance in place towards partner and away" beats="6" startFoot="L" direction="On the spot" facing="Partner"><geo><primitive kind="move" who="all" /></geo></step>
+        </measureRange>
+        <measureRange from="3" to="4">
+          <step who="all" action="Half turn with waltz step to change places" beats="6" startFoot="L" direction="Turning" facing="Partner"><geo><primitive kind="turn" who="all" /><primitive kind="move" who="all" /></geo></step>
+        </measureRange>
+      </figure>
+    </part>
+
+    
+    <sequence id="seq-main">
+      <use figure="f-f-i" repeat="1" />
+      <use figure="f-f-ii" repeat="1" />
+      <use figure="f-f-iii" repeat="1" />
+    </sequence>
+
+  </body>
+</fdml>
