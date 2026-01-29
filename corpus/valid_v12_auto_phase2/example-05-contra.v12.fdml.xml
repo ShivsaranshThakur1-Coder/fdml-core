@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Contra — Longways Set</title>
+    <dance name="Contra" />
+    <meter value="4/4" />
+    <tempo bpm="112" />
+  <geometry><formation kind="line" /><roles><role id="all" /><role id="both" /></roles></geometry></meta>
+  <body>
+    <geometry><line id="line1" /></geometry><figure id="f-forward" name="Forward &amp; Back" formation="longways">
+      <step who="both" action="Forward" beats="2" count="1-2" startFoot="L" facing="Partner"><geo><primitive kind="move" who="both" /></geo></step>
+      <step who="both" action="Back" beats="2" count="3-4" startFoot="R" facing="Partner"><geo><primitive kind="move" who="both" /></geo></step>
+    </figure>
+    <figure id="f-dosido" name="Do-si-do" formation="longways">
+      <step who="both" action="Pass R shoulders" beats="2" count="1-2" startFoot="R" direction="CW"><geo><primitive kind="move" who="both" dir="clockwise" /></geo></step>
+      <step who="both" action="Return" beats="2" count="3-4" startFoot="L" direction="CW"><geo><primitive kind="turn" who="both" dir="clockwise" /><primitive kind="move" who="both" dir="clockwise" /></geo></step>
+    </figure>
+    <sequence name="A1">
+      <use figure="f-forward" />
+      <use figure="f-dosido" />
+    </sequence>
+  </body>
+</fdml>
