@@ -331,16 +331,27 @@
       <xs:enumeration value="move"/>
       <xs:enumeration value="face"/>
       <xs:enumeration value="turn"/>
+      <xs:enumeration value="twirl"/>
       <xs:enumeration value="approach"/>
       <xs:enumeration value="retreat"/>
+      <xs:enumeration value="swapPlaces"/>
       <xs:enumeration value="pass"/>
       <xs:enumeration value="weave"/>
-      <xs:enumeration value="hold"/>
-      <xs:enumeration value="release"/>
       <xs:enumeration value="releaseHold"/>
-      <xs:enumeration value="swapPlaces"/>
-      <xs:enumeration value="progress"/>
-      <xs:enumeration value="twirl"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GeoDir">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="clockwise"/>
+      <xs:enumeration value="counterclockwise"/>
+      <xs:enumeration value="left"/>
+      <xs:enumeration value="right"/>
+      <xs:enumeration value="center"/>
+      <xs:enumeration value="inward"/>
+      <xs:enumeration value="outward"/>
+      <xs:enumeration value="forward"/>
+      <xs:enumeration value="backward"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -371,7 +382,7 @@
     <xs:attribute name="holdKind" type="xs:string" use="optional"/>
     <xs:attribute name="frame" type="GeoFrame" use="optional"/>
     <xs:attribute name="axis" type="xs:string" use="optional"/>
-    <xs:attribute name="dir" type="xs:string" use="optional"/>
+    <xs:attribute name="dir" type="GeoDir" use="optional"/>
     <xs:attribute name="amount" type="xs:decimal" use="optional"/>
     <xs:attribute name="unit" type="GeoUnit" use="optional"/>
     <xs:attribute name="preserveOrder" type="xs:boolean" use="optional"/>
