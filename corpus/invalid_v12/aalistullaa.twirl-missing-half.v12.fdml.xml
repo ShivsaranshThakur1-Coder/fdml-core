@@ -10,7 +10,7 @@
     <formation text="couple" />
 
     <geometry>
-      <formation kind="couple" womanSide="left" />
+      <formation kind="couple" />
       <hold kind="palmToPalm" />
       <roles>
         <role id="all" />
