@@ -29,3 +29,11 @@ docs/progress-report/*.log
 docs/progress-report/*.out
 docs/progress-report/*.fdb_latexmk
 docs/progress-report/*.fls
+
+.clawdbot_context/
+TerminalLineCommands/
+*.aux
+*.log
+*.out
+tutor_brief*.pdf
+tutor_brief_explained*.pdf
