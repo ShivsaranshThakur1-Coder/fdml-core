@@ -193,6 +193,24 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void aalistullaaRelposContradictionFails() {
+    var p = Paths.get("corpus/invalid_v12/aalistullaa.relpos-contradiction.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("relpos_contradiction")),
+      "Expected relpos_contradiction");
+  }
+
+  @Test
+  public void aalistullaaRelposFlipMissingSwapFails() {
+    var p = Paths.get("corpus/invalid_v12/aalistullaa.relpos-flip-missing-swap.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("relpos_contradiction")),
+      "Expected relpos_contradiction");
+  }
+
+  @Test
   public void progressMissingDeltaTriggersProgressMissingDelta() throws Exception {
     String xml = """
       <?xml version=\"1.0\" encoding=\"UTF-8\"?>

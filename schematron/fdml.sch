@@ -101,6 +101,22 @@
        XSD enforces presence of attributes; Schematron checks their referents if roles are declared.
   -->
   <pattern id="v12-body-geometry">
+    <!-- Ontology Batch 4B: primitive structural requirements for stateful semantics. -->
+    <rule context="fdml[@version = '1.2']//step/geo/primitive[@kind='relpos']">
+      <assert test="@a and @b">
+        relpos primitive must declare @a and @b
+      </assert>
+      <assert test="@relation">
+        relpos primitive must declare @relation
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2']//step/geo/primitive[@kind='swapPlaces']">
+      <assert test="@a and @b">
+        swapPlaces primitive must declare @a and @b
+      </assert>
+    </rule>
+
     <!-- Ontology Batch 4A: line progression requires explicit line order slots and progress deltas. -->
     <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'line'][.//step/geo/primitive[@kind='progress']]">
       <assert test="count(body/geometry/line/order/slot) &gt;= 2">
@@ -136,13 +152,23 @@
       </assert>
     </rule>
 
-    <!-- Ontology Batch 1: couple formation with womanSide needs canonical man/woman roles and a pair. -->
+    <!-- Ontology Batch 4B: couple formation with womanSide needs explicit relative-position evidence. -->
     <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'couple'][meta/geometry/formation/@womanSide]">
       <assert test="meta/geometry/roles/role[@id = 'man'] and meta/geometry/roles/role[@id = 'woman']">
         couple formation with womanSide must declare roles 'man' and 'woman'
       </assert>
       <assert test="body/geometry/couples/pair[(@a='man' and @b='woman') or (@a='woman' and @b='man')]">
         couple formation with womanSide must include body/geometry/couples/pair linking man and woman
+      </assert>
+
+      <!-- Evidence of partner-side semantics: at least one relpos assertion consistent with womanSide. -->
+      <let name="ws" value="normalize-space(meta/geometry/formation/@womanSide)"/>
+      <assert test="
+        ($ws = 'left' and (.//step/geo/primitive[@kind='relpos'][(@a='woman' and @b='man' and @relation='leftOf') or (@a='man' and @b='woman' and @relation='rightOf')]))
+        or
+        ($ws = 'right' and (.//step/geo/primitive[@kind='relpos'][(@a='woman' and @b='man' and @relation='rightOf') or (@a='man' and @b='woman' and @relation='leftOf')]))
+      ">
+        couple formation with womanSide must include at least one relpos primitive asserting the correct side between man and woman
       </assert>
     </rule>
 

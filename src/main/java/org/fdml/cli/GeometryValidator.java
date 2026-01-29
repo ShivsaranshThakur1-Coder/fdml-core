@@ -355,6 +355,63 @@ class GeometryValidator {
               "couple formation with womanSide requires roles man+woman and a couples/pair linking them"
             ));
           }
+
+          // Ontology Batch 4B: stateful side semantics using relpos + swap tracking.
+          if (hasMan && hasWoman) {
+            String sideState = "left".equals(womanSide) ? "left" : ("right".equals(womanSide) ? "right" : "");
+            boolean sawRelposEvidence = false;
+
+            if (!sideState.isEmpty()) {
+              for (XdmItem it : prims) {
+                XdmNode p = (XdmNode) it;
+                String kind = str(xpc, "string(@kind)", p);
+                if (kind == null) kind = "";
+                String k = kind.toLowerCase(Locale.ROOT);
+
+                String a = str(xpc, "string(@a)", p);
+                String b = str(xpc, "string(@b)", p);
+                boolean isManWomanPair = ("man".equals(a) && "woman".equals(b)) || ("woman".equals(a) && "man".equals(b));
+
+                if ("swapplaces".equals(k) && isManWomanPair) {
+                  // swapPlaces between man/woman flips the expected side.
+                  sideState = "left".equals(sideState) ? "right" : "left";
+                }
+
+                if ("relpos".equals(k) && isManWomanPair) {
+                  String relation = str(xpc, "string(@relation)", p);
+                  if (relation == null) relation = "";
+
+                  String assertedSide = "";
+                  if ("woman".equals(a) && "man".equals(b)) {
+                    if ("leftOf".equals(relation)) assertedSide = "left";
+                    else if ("rightOf".equals(relation)) assertedSide = "right";
+                  } else if ("man".equals(a) && "woman".equals(b)) {
+                    if ("leftOf".equals(relation)) assertedSide = "right";
+                    else if ("rightOf".equals(relation)) assertedSide = "left";
+                  }
+
+                  if (!assertedSide.isEmpty()) {
+                    sawRelposEvidence = true;
+                    if (!assertedSide.equals(sideState)) {
+                      String figId = str(xpc, "string(ancestor::figure[1]/@id)", p);
+                      issues.add(new Issue(
+                        "relpos_contradiction",
+                        "figure" + (figId.isEmpty() ? "" : " '" + figId + "'")
+                          + " sideState=" + sideState + " but relpos asserts " + relation + " (a='" + a + "', b='" + b + "')"
+                      ));
+                    }
+                  }
+                }
+              }
+
+              if (!sawRelposEvidence) {
+                issues.add(new Issue(
+                  "missing_relpos_evidence",
+                  "couple formation with womanSide cannot be validated without relpos evidence between man and woman"
+                ));
+              }
+            }
+          }
         }
       }
 

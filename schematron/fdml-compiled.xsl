@@ -33,6 +33,12 @@
       <svrl:failed-assert><svrl:text>couple formation with womanSide must include body/geometry/couples/pair linking man and woman</svrl:text></svrl:failed-assert>
     </xsl:if>
 
+    <!-- Ontology Batch 4B: relpos evidence must exist and match womanSide. -->
+    <xsl:variable name="ws" select="normalize-space(meta/geometry/formation/@womanSide)"/>
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'couple' and meta/geometry/formation/@womanSide and not((($ws='left') and (.//step/geo/primitive[@kind='relpos'][(@a='woman' and @b='man' and @relation='leftOf') or (@a='man' and @b='woman' and @relation='rightOf')])) or (($ws='right') and (.//step/geo/primitive[@kind='relpos'][(@a='woman' and @b='man' and @relation='rightOf') or (@a='man' and @b='woman' and @relation='leftOf')])))">
+      <svrl:failed-assert><svrl:text>couple formation with womanSide must include at least one relpos primitive asserting the correct side between man and woman</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
     <xsl:if test="@version = '1.2' and contains(meta/meter/@value, '9/16') and not(meta/meter/@rhythmPattern = '2+2+2+3')">
       <svrl:failed-assert><svrl:text>v1.2 dances with meter 9/16 must specify meter/@rhythmPattern='2+2+2+3'</svrl:text></svrl:failed-assert>
     </xsl:if>
@@ -63,6 +69,15 @@
   </xsl:template>
 
   <xsl:template match="body">
+    <!-- Ontology Batch 4B: relpos + swapPlaces attribute requirements (FDML v1.2 only). -->
+    <xsl:for-each select=".//step/geo/primitive[@kind='relpos']">
+      <xsl:if test="not(@a) or not(@b)"><svrl:failed-assert><svrl:text>relpos primitive must declare @a and @b</svrl:text></svrl:failed-assert></xsl:if>
+      <xsl:if test="not(@relation)"><svrl:failed-assert><svrl:text>relpos primitive must declare @relation</svrl:text></svrl:failed-assert></xsl:if>
+    </xsl:for-each>
+    <xsl:for-each select=".//step/geo/primitive[@kind='swapPlaces']">
+      <xsl:if test="not(@a) or not(@b)"><svrl:failed-assert><svrl:text>swapPlaces primitive must declare @a and @b</svrl:text></svrl:failed-assert></xsl:if>
+    </xsl:for-each>
+
     <xsl:for-each select="figure">
       <xsl:if test="not(@id)"><svrl:failed-assert><svrl:text>figure must have @id</svrl:text></svrl:failed-assert></xsl:if>
       <xsl:if test="@id and not(matches(@id, '^f-[a-z0-9-]+$'))"><svrl:failed-assert><svrl:text>figure/@id must match pattern 'f-[a-z0-9-]+'</svrl:text></svrl:failed-assert></xsl:if>

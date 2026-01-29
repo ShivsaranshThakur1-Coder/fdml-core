@@ -353,6 +353,16 @@
       <xs:enumeration value="weave"/>
       <xs:enumeration value="releaseHold"/>
       <xs:enumeration value="progress"/>
+      <xs:enumeration value="relpos"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GeoRelation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="leftOf"/>
+      <xs:enumeration value="rightOf"/>
+      <xs:enumeration value="inFrontOf"/>
+      <xs:enumeration value="behind"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -399,6 +409,7 @@
     <xs:attribute name="frame" type="GeoFrame" use="optional"/>
     <xs:attribute name="axis" type="xs:string" use="optional"/>
     <xs:attribute name="dir" type="GeoDir" use="optional"/>
+    <xs:attribute name="relation" type="GeoRelation" use="optional"/>
     <xs:attribute name="amount" type="xs:decimal" use="optional"/>
     <xs:attribute name="unit" type="GeoUnit" use="optional"/>
     <xs:attribute name="preserveOrder" type="xs:boolean" use="optional"/>
