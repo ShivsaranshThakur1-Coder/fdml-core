@@ -200,9 +200,24 @@
   <xs:complexType name="MetaGeometryType">
     <xs:sequence>
       <xs:element name="formation" type="GeoFormationType"/>
+      <xs:element name="hold" type="GeoHoldType" minOccurs="0"/>
       <xs:element name="dancers" type="GeoDancersType" minOccurs="0"/>
       <xs:element name="roles" type="GeoRolesType" minOccurs="0"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="GeoHoldKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="vPosition"/>
+      <xs:enumeration value="beltHold"/>
+      <xs:enumeration value="armenianHold"/>
+      <xs:enumeration value="palmToPalm"/>
+      <xs:enumeration value="none"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="GeoHoldType">
+    <xs:attribute name="kind" type="GeoHoldKind" use="required"/>
   </xs:complexType>
 
   <xs:simpleType name="GeoFormationKind">
@@ -322,8 +337,10 @@
       <xs:enumeration value="weave"/>
       <xs:enumeration value="hold"/>
       <xs:enumeration value="release"/>
+      <xs:enumeration value="releaseHold"/>
       <xs:enumeration value="swapPlaces"/>
       <xs:enumeration value="progress"/>
+      <xs:enumeration value="twirl"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -351,6 +368,7 @@
     <xs:attribute name="who" type="xs:string" use="optional"/>
     <xs:attribute name="a" type="xs:string" use="optional"/>
     <xs:attribute name="b" type="xs:string" use="optional"/>
+    <xs:attribute name="holdKind" type="xs:string" use="optional"/>
     <xs:attribute name="frame" type="GeoFrame" use="optional"/>
     <xs:attribute name="axis" type="xs:string" use="optional"/>
     <xs:attribute name="dir" type="xs:string" use="optional"/>

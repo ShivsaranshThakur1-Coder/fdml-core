@@ -37,6 +37,14 @@
       <svrl:failed-assert><svrl:text>v1.2 dances with meter 9/16 must specify meter/@rhythmPattern='2+2+2+3'</svrl:text></svrl:failed-assert>
     </xsl:if>
 
+    <!-- Ontology Batch 2 (FDML v1.2 only) -->
+    <xsl:if test="@version = '1.2' and meta/geometry/hold and not(meta/geometry/hold/@kind = 'vPosition' or meta/geometry/hold/@kind = 'beltHold' or meta/geometry/hold/@kind = 'armenianHold' or meta/geometry/hold/@kind = 'palmToPalm' or meta/geometry/hold/@kind = 'none')">
+      <svrl:failed-assert><svrl:text>v1.2 meta/geometry/hold/@kind must be one of: vPosition|beltHold|armenianHold|palmToPalm|none</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version = '1.2' and meta/geometry/hold and not(meta/geometry/hold/@kind = 'none') and .//step/geo/primitive[@kind = 'releaseHold']">
+      <svrl:failed-assert><svrl:text>v1.2 dances with hold/@kind != 'none' must not use primitive kind='releaseHold'</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
     <xsl:apply-templates select="body"/>
   </xsl:template>
 

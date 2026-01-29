@@ -102,6 +102,8 @@ class GeometryValidator {
       boolean sawApproach = false;
       boolean sawRetreat = false;
 
+      boolean sawReleaseHold = false;
+
       for (XdmItem it : prims) {
         XdmNode p = (XdmNode) it;
         String kind = str(xpc, "string(@kind)", p);
@@ -134,6 +136,8 @@ class GeometryValidator {
         // Track approach / retreat presence for twoLinesFacing numeric check.
         if ("approach".equals(kind)) sawApproach = true;
         if ("retreat".equals(kind)) sawRetreat = true;
+
+        if ("releaseHold".equals(kind)) sawReleaseHold = true;
 
         // Formation-specific primitive checks
         if (("approach".equals(kind) || "retreat".equals(kind)) && !"twoLinesFacing".equals(formationKind)) {
@@ -254,6 +258,46 @@ class GeometryValidator {
           issues.add(new Issue(
             "missing_two_lines_facing",
             "twoLinesFacing formation must declare body/geometry/twoLines/facing"
+          ));
+        }
+      }
+
+      // Ontology Batch 2: hold integrity.
+      String holdKind = str(xpc, "string(/fdml/meta/geometry/hold/@kind)", doc);
+      if (holdKind != null && !holdKind.isBlank() && !"none".equals(holdKind) && sawReleaseHold) {
+        issues.add(new Issue(
+          "hold_broken",
+          "meta/geometry/hold/@kind='" + holdKind + "' but a primitive uses kind='releaseHold'"
+        ));
+      }
+
+      // Ontology Batch 2: twirl primitives must contain both halves (cw + ccw) within each figure.
+      XdmValue figs = xpc.evaluate("/fdml/body//figure", doc);
+      for (XdmItem fit : figs) {
+        XdmNode fig = (XdmNode) fit;
+        String figId = str(xpc, "string(@id)", fig);
+
+        boolean figSawTwirl = false;
+        boolean figSawCw = false;
+        boolean figSawCcw = false;
+
+        XdmValue figPrims = xpc.evaluate(".//step/geo/primitive", fig);
+        for (XdmItem pit : figPrims) {
+          XdmNode p = (XdmNode) pit;
+          String k = str(xpc, "string(@kind)", p);
+          if (k == null) k = "";
+          if (!"twirl".equals(k.toLowerCase(Locale.ROOT))) continue;
+
+          figSawTwirl = true;
+          String dir = str(xpc, "string(@dir)", p);
+          if (isCw(dir)) figSawCw = true;
+          if (isCcw(dir)) figSawCcw = true;
+        }
+
+        if (figSawTwirl && !(figSawCw && figSawCcw)) {
+          issues.add(new Issue(
+            "twirl_missing_half",
+            "figure" + (figId.isEmpty() ? "" : " '" + figId + "'") + " contains twirl but is missing cw or ccw half"
           ));
         }
       }

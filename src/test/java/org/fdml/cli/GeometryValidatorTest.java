@@ -166,6 +166,24 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void aalistullaaTwirlMissingHalfFails() {
+    var p = Paths.get("corpus/invalid_v12/aalistullaa.twirl-missing-half.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("twirl_missing_half")),
+      "Expected twirl_missing_half");
+  }
+
+  @Test
+  public void aalistullaaHoldBrokenFails() {
+    var p = Paths.get("corpus/invalid_v12/aalistullaa.hold-broken.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("hold_broken")),
+      "Expected hold_broken");
+  }
+
+  @Test
   public void validateGeoCollectSkipsNonXmlFiles() throws Exception {
     Path dir = Files.createTempDirectory("fdml-geo-dir");
     Files.writeString(dir.resolve("note.txt"), "hi");

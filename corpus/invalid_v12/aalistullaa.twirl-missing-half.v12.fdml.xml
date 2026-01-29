@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Aalistullaa (v1.2 couple + hold + twirl missing half)</title>
+    <dance name="Aalistullaa" />
+    <origin country="UNKNOWN" />
+    <type genre="couple" />
+    <meter value="4/4" />
+    <tempo bpm="120" />
+    <formation text="couple" />
+
+    <geometry>
+      <formation kind="couple" womanSide="left" />
+      <hold kind="palmToPalm" />
+      <roles>
+        <role id="all" />
+        <role id="man" />
+        <role id="woman" />
+      </roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <couples>
+        <pair a="man" b="woman" />
+      </couples>
+    </geometry>
+
+    <figure id="f-aalistullaa" name="Twirl example">
+      <step who="man" action="twirl" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="twirl" frame="partner" dir="clockwise" />
+        </geo>
+      </step>
+    </figure>
+  </body>
+</fdml>

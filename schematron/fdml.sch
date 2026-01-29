@@ -54,6 +54,16 @@
       <assert test="not(contains(meta/meter/@value, '9/16')) or meta/meter/@rhythmPattern = '2+2+2+3'">
         v1.2 dances with meter 9/16 must specify meter/@rhythmPattern='2+2+2+3'
       </assert>
+
+      <!-- Ontology Batch 2: hold kind should be a known value (XSD enforces; Schematron provides message). -->
+      <assert test="not(meta/geometry/hold) or meta/geometry/hold/@kind = 'vPosition' or meta/geometry/hold/@kind = 'beltHold' or meta/geometry/hold/@kind = 'armenianHold' or meta/geometry/hold/@kind = 'palmToPalm' or meta/geometry/hold/@kind = 'none'">
+        v1.2 meta/geometry/hold/@kind must be one of: vPosition|beltHold|armenianHold|palmToPalm|none
+      </assert>
+
+      <!-- Ontology Batch 2: releaseHold only allowed when declared hold kind is none. -->
+      <assert test="not(meta/geometry/hold) or meta/geometry/hold/@kind = 'none' or count(.//step/geo/primitive[@kind = 'releaseHold']) = 0">
+        v1.2 dances with hold/@kind != 'none' must not use primitive kind='releaseHold'
+      </assert>
     </rule>
   </pattern>
 
