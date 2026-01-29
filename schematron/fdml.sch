@@ -117,6 +117,20 @@
       </assert>
     </rule>
 
+    <!-- Ontology Batch 4C: any primitive with @dir must declare a disambiguating @frame. -->
+    <rule context="fdml[@version = '1.2']//step/geo/primitive[@dir]">
+      <assert test="@frame">
+        geo/primitive with @dir must declare @frame
+      </assert>
+      <let name="d" value="normalize-space(@dir)"/>
+      <assert test="not($d = 'clockwise' or $d = 'counterclockwise' or $d = 'inward' or $d = 'outward' or $d = 'center') or @frame = 'formation'">
+        geo/primitive with formation-frame dir must use frame='formation'
+      </assert>
+      <assert test="not($d = 'forward' or $d = 'backward' or $d = 'left' or $d = 'right') or @frame = 'dancer'">
+        geo/primitive with dancer-frame dir must use frame='dancer'
+      </assert>
+    </rule>
+
     <!-- Ontology Batch 4A: line progression requires explicit line order slots and progress deltas. -->
     <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'line'][.//step/geo/primitive[@kind='progress']]">
       <assert test="count(body/geometry/line/order/slot) &gt;= 2">

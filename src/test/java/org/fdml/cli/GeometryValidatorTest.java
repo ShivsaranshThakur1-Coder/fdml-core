@@ -211,6 +211,24 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void mayimBadFrameTriggersFrameDirMismatch() {
+    var p = Paths.get("corpus/invalid_v12/mayim-mayim.bad-frame.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("frame_dir_mismatch")),
+      "Expected frame_dir_mismatch");
+  }
+
+  @Test
+  public void mayimMissingFrameTriggersMissingPrimitiveFrame() {
+    var p = Paths.get("corpus/invalid_v12/mayim-mayim.missing-frame.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("missing_primitive_frame")),
+      "Expected missing_primitive_frame");
+  }
+
+  @Test
   public void progressMissingDeltaTriggersProgressMissingDelta() throws Exception {
     String xml = """
       <?xml version=\"1.0\" encoding=\"UTF-8\"?>

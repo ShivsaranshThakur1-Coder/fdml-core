@@ -383,9 +383,6 @@
   <xs:simpleType name="GeoFrame">
     <xs:restriction base="xs:string">
       <xs:enumeration value="formation"/>
-      <xs:enumeration value="line"/>
-      <xs:enumeration value="partner"/>
-      <xs:enumeration value="opposite"/>
       <xs:enumeration value="dancer"/>
     </xs:restriction>
   </xs:simpleType>

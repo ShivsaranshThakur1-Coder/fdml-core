@@ -128,11 +128,37 @@ class GeometryValidator {
           hasCrossingPrimitive = true;
         }
 
+        // Ontology Batch 4C: direction must be disambiguated by explicit frame.
+        String dir = str(xpc, "string(@dir)", p);
+        if (dir != null && !dir.isBlank()) {
+          String frame = str(xpc, "string(@frame)", p);
+          if (frame == null || frame.isBlank()) {
+            issues.add(new Issue(
+              "missing_primitive_frame",
+              "geo/primitive with dir='" + dir + "' is missing required @frame"
+            ));
+          } else {
+            String d = dir.trim();
+            boolean formationDir = "clockwise".equals(d) || "counterclockwise".equals(d) || "inward".equals(d) || "outward".equals(d) || "center".equals(d);
+            boolean dancerDir = "forward".equals(d) || "backward".equals(d) || "left".equals(d) || "right".equals(d);
+            if (formationDir && !"formation".equals(frame)) {
+              issues.add(new Issue(
+                "frame_dir_mismatch",
+                "dir='" + dir + "' requires frame='formation' (found frame='" + frame + "')"
+              ));
+            } else if (dancerDir && !"dancer".equals(frame)) {
+              issues.add(new Issue(
+                "frame_dir_mismatch",
+                "dir='" + dir + "' requires frame='dancer' (found frame='" + frame + "')"
+              ));
+            }
+          }
+        }
+
         // A) circle: detect travel direction ambiguity
         // Scan all primitive @dir (and also @axis if present) for cw/ccw markers.
-        String dir = str(xpc, "string(@dir)", p);
         String axis = str(xpc, "string(@axis)", p);
-        String dirAxis = (dir + " " + axis).toLowerCase(Locale.ROOT);
+        String dirAxis = ((dir == null ? "" : dir) + " " + axis).toLowerCase(Locale.ROOT);
         if (isCcw(dirAxis)) sawCounterClockwiseTravel = true;
         if (isCw(dirAxis)) sawClockwiseTravel = true;
 

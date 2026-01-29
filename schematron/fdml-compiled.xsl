@@ -78,6 +78,14 @@
       <xsl:if test="not(@a) or not(@b)"><svrl:failed-assert><svrl:text>swapPlaces primitive must declare @a and @b</svrl:text></svrl:failed-assert></xsl:if>
     </xsl:for-each>
 
+    <!-- Ontology Batch 4C: any primitive with @dir must declare a disambiguating @frame. -->
+    <xsl:for-each select=".//step/geo/primitive[@dir]">
+      <xsl:variable name="d" select="normalize-space(@dir)"/>
+      <xsl:if test="not(@frame)"><svrl:failed-assert><svrl:text>geo/primitive with @dir must declare @frame</svrl:text></svrl:failed-assert></xsl:if>
+      <xsl:if test="($d='clockwise' or $d='counterclockwise' or $d='inward' or $d='outward' or $d='center') and not(@frame='formation')"><svrl:failed-assert><svrl:text>geo/primitive with formation-frame dir must use frame='formation'</svrl:text></svrl:failed-assert></xsl:if>
+      <xsl:if test="($d='forward' or $d='backward' or $d='left' or $d='right') and not(@frame='dancer')"><svrl:failed-assert><svrl:text>geo/primitive with dancer-frame dir must use frame='dancer'</svrl:text></svrl:failed-assert></xsl:if>
+    </xsl:for-each>
+
     <xsl:for-each select="figure">
       <xsl:if test="not(@id)"><svrl:failed-assert><svrl:text>figure must have @id</svrl:text></svrl:failed-assert></xsl:if>
       <xsl:if test="@id and not(matches(@id, '^f-[a-z0-9-]+$'))"><svrl:failed-assert><svrl:text>figure/@id must match pattern 'f-[a-z0-9-]+'</svrl:text></svrl:failed-assert></xsl:if>
