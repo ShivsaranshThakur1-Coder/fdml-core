@@ -158,10 +158,10 @@
     </rule>
 
     <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'twoLinesFacing'][meta/geometry/roles/role]//body/geometry/twoLines/facing">
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @a]) &gt; 0">
+      <assert test="count(/fdml/body/geometry/twoLines/line[@id = normalize-space(/fdml/body/geometry/twoLines/facing/@a)]) > 0">
         twoLines/facing/@a must reference a declared role id
       </assert>
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @b]) &gt; 0">
+      <assert test="count(/fdml/body/geometry/twoLines/line[@id = normalize-space(/fdml/body/geometry/twoLines/facing/@b)]) > 0">
         twoLines/facing/@b must reference a declared role id
       </assert>
     </rule>
@@ -221,10 +221,10 @@
     </rule>
 
     <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/facing">
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @a]) &gt; 0">
+      <assert test="count(/fdml/body/geometry/twoLines/line[@id = normalize-space(/fdml/body/geometry/twoLines/facing/@a)]) > 0">
         twoLines/facing/@a must reference a declared role id
       </assert>
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @b]) &gt; 0">
+      <assert test="count(/fdml/body/geometry/twoLines/line[@id = normalize-space(/fdml/body/geometry/twoLines/facing/@b)]) > 0">
         twoLines/facing/@b must reference a declared role id
       </assert>
     </rule>
