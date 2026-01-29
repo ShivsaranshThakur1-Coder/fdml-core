@@ -14,6 +14,29 @@
     <xsl:variable name="email" select="normalize-space(meta/author/@email)"/>
     <xsl:if test="meta/author/@email and not(matches($email, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'))"><svrl:failed-assert><svrl:text>meta/author/@email is not a valid email</svrl:text></svrl:failed-assert></xsl:if>
     <xsl:if test="body and not(body/section or body/figure or body/sequence)"><svrl:failed-assert><svrl:text>body must contain at least one &lt;section&gt; or &lt;figure&gt; or &lt;sequence&gt;</svrl:text></svrl:failed-assert></xsl:if>
+
+    <!-- Ontology Batch 1 (FDML v1.2 only) -->
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'twoLinesFacing' and not(body/geometry/twoLines/facing)">
+      <svrl:failed-assert><svrl:text>twoLinesFacing formation must declare body/geometry/twoLines/facing</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'twoLinesFacing' and meta/geometry/roles/role and body/geometry/twoLines/facing and not(meta/geometry/roles/role[@id = body/geometry/twoLines/facing/@a])">
+      <svrl:failed-assert><svrl:text>twoLines/facing/@a must reference a declared role id</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'twoLinesFacing' and meta/geometry/roles/role and body/geometry/twoLines/facing and not(meta/geometry/roles/role[@id = body/geometry/twoLines/facing/@b])">
+      <svrl:failed-assert><svrl:text>twoLines/facing/@b must reference a declared role id</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'couple' and meta/geometry/formation/@womanSide and not(meta/geometry/roles/role[@id='man'] and meta/geometry/roles/role[@id='woman'])">
+      <svrl:failed-assert><svrl:text>couple formation with womanSide must declare roles 'man' and 'woman'</svrl:text></svrl:failed-assert>
+    </xsl:if>
+    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'couple' and meta/geometry/formation/@womanSide and not(body/geometry/couples/pair[(@a='man' and @b='woman') or (@a='woman' and @b='man')])">
+      <svrl:failed-assert><svrl:text>couple formation with womanSide must include body/geometry/couples/pair linking man and woman</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
+    <xsl:if test="@version = '1.2' and contains(meta/meter/@value, '9/16') and not(meta/meter/@rhythmPattern = '2+2+2+3')">
+      <svrl:failed-assert><svrl:text>v1.2 dances with meter 9/16 must specify meter/@rhythmPattern='2+2+2+3'</svrl:text></svrl:failed-assert>
+    </xsl:if>
+
     <xsl:apply-templates select="body"/>
   </xsl:template>
 

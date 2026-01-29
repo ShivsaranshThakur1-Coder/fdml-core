@@ -49,6 +49,11 @@
       <assert test="not(.//step/geo) or meta/geometry/roles/role">
         v1.2 dances that use step/geo should declare meta/geometry/roles/role
       </assert>
+
+      <!-- Ontology Batch 1: meter rhythm pattern for 9/16. -->
+      <assert test="not(contains(meta/meter/@value, '9/16')) or meta/meter/@rhythmPattern = '2+2+2+3'">
+        v1.2 dances with meter 9/16 must specify meter/@rhythmPattern='2+2+2+3'
+      </assert>
     </rule>
   </pattern>
 
@@ -86,6 +91,32 @@
        XSD enforces presence of attributes; Schematron checks their referents if roles are declared.
   -->
   <pattern id="v12-body-geometry">
+    <!-- Ontology Batch 1: twoLinesFacing must declare which lines face each other. -->
+    <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'twoLinesFacing']">
+      <assert test="body/geometry/twoLines/facing">
+        twoLinesFacing formation must declare body/geometry/twoLines/facing
+      </assert>
+    </rule>
+
+    <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'twoLinesFacing'][meta/geometry/roles/role]//body/geometry/twoLines/facing">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @a]) &gt; 0">
+        twoLines/facing/@a must reference a declared role id
+      </assert>
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = @b]) &gt; 0">
+        twoLines/facing/@b must reference a declared role id
+      </assert>
+    </rule>
+
+    <!-- Ontology Batch 1: couple formation with womanSide needs canonical man/woman roles and a pair. -->
+    <rule context="fdml[@version = '1.2'][meta/geometry/formation/@kind = 'couple'][meta/geometry/formation/@womanSide]">
+      <assert test="meta/geometry/roles/role[@id = 'man'] and meta/geometry/roles/role[@id = 'woman']">
+        couple formation with womanSide must declare roles 'man' and 'woman'
+      </assert>
+      <assert test="body/geometry/couples/pair[(@a='man' and @b='woman') or (@a='woman' and @b='man')]">
+        couple formation with womanSide must include body/geometry/couples/pair linking man and woman
+      </assert>
+    </rule>
+
     <rule context="fdml[@version = '1.2']/body/geometry/circle/order">
       <assert test="@role">
         body/geometry/circle/order must have @role

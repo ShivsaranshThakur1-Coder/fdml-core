@@ -82,6 +82,90 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void coupleWomanSideMissingPartnerPairingFails() throws Exception {
+    String xml = """
+      <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+      <fdml version=\"1.2\">
+        <meta>
+          <title>Bad couple pairing</title>
+          <type genre=\"couple\"/>
+          <meter value=\"4/4\"/>
+          <tempo bpm=\"120\"/>
+          <formation text=\"couple\"/>
+          <geometry>
+            <formation kind=\"couple\" womanSide=\"left\"/>
+            <roles>
+              <role id=\"man\"/>
+              <role id=\"woman\"/>
+            </roles>
+          </geometry>
+        </meta>
+        <body>
+          <geometry>
+            <couples>
+              <!-- missing man/woman pair -->
+            </couples>
+          </geometry>
+          <figure id=\"f\" name=\"x\">
+            <step who=\"man\" action=\"hold\" beats=\"1\"><geo><primitive kind=\"hold\"/></geo></step>
+          </figure>
+        </body>
+      </fdml>
+      """;
+
+    Path tmp = Files.createTempFile("fdml-bad-couple", ".fdml.xml");
+    Files.writeString(tmp, xml);
+
+    var r = GeometryValidator.validateOne(tmp);
+    assertFalse(r.ok, "Expected geometry validation to fail");
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("missing_partner_pairing")),
+      "Expected missing_partner_pairing");
+  }
+
+  @Test
+  public void twoLinesFacingMissingFacingFails() throws Exception {
+    String xml = """
+      <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+      <fdml version=\"1.2\">
+        <meta>
+          <title>Bad twoLinesFacing missing facing</title>
+          <type genre=\"line\"/>
+          <meter value=\"4/4\"/>
+          <tempo bpm=\"120\"/>
+          <formation text=\"two lines\"/>
+          <geometry>
+            <formation kind=\"twoLinesFacing\"/>
+            <roles>
+              <role id=\"a\"/>
+              <role id=\"b\"/>
+            </roles>
+          </geometry>
+        </meta>
+        <body>
+          <geometry>
+            <twoLines>
+              <line id=\"L1\" role=\"a\"/>
+              <line id=\"L2\" role=\"b\"/>
+              <!-- facing missing -->
+            </twoLines>
+          </geometry>
+          <figure id=\"f\" name=\"x\">
+            <step who=\"a\" action=\"approach\" beats=\"2\"><geo><primitive kind=\"approach\"/></geo></step>
+          </figure>
+        </body>
+      </fdml>
+      """;
+
+    Path tmp = Files.createTempFile("fdml-bad-twolines", ".fdml.xml");
+    Files.writeString(tmp, xml);
+
+    var r = GeometryValidator.validateOne(tmp);
+    assertFalse(r.ok, "Expected geometry validation to fail");
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("missing_two_lines_facing")),
+      "Expected missing_two_lines_facing");
+  }
+
+  @Test
   public void validateGeoCollectSkipsNonXmlFiles() throws Exception {
     Path dir = Files.createTempDirectory("fdml-geo-dir");
     Files.writeString(dir.resolve("note.txt"), "hi");

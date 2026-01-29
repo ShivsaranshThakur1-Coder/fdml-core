@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Abdala (v1.2 minimal 9/16 example)</title>
+    <dance name="Abdala" />
+    <origin country="UNKNOWN" />
+    <type genre="line" />
+    <meter value="9/16" rhythmPattern="2+2+2+3" />
+    <tempo bpm="120" />
+    <formation text="line" />
+
+    <geometry>
+      <formation kind="line" />
+      <roles>
+        <role id="all" />
+      </roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <figure id="f-abdala" name="Example">
+      <step who="all" action="walk" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="formation" dir="right" amount="1" unit="steps" />
+        </geo>
+      </step>
+    </figure>
+  </body>
+</fdml>

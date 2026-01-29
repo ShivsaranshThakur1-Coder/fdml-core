@@ -214,8 +214,16 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="GeoWomanSide">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left"/>
+      <xs:enumeration value="right"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:complexType name="GeoFormationType">
     <xs:attribute name="kind" type="GeoFormationKind" use="required"/>
+    <xs:attribute name="womanSide" type="GeoWomanSide" use="optional"/>
     <xs:attribute name="notes" type="xs:string" use="optional"/>
   </xs:complexType>
 

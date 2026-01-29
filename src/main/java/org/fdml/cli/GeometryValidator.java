@@ -247,6 +247,37 @@ class GeometryValidator {
         ));
       }
 
+      // Ontology Batch 1: twoLinesFacing should declare which roles/lines face each other.
+      if ("twoLinesFacing".equals(formationKind)) {
+        boolean hasFacing = bool(xpc, "exists(/fdml/body/geometry/twoLines/facing)", doc);
+        if (!hasFacing) {
+          issues.add(new Issue(
+            "missing_two_lines_facing",
+            "twoLinesFacing formation must declare body/geometry/twoLines/facing"
+          ));
+        }
+      }
+
+      // Ontology Batch 1: couple formation with womanSide should declare canonical partner roles + pairing.
+      if ("couple".equals(formationKind)) {
+        String womanSide = str(xpc, "string(/fdml/meta/geometry/formation/@womanSide)", doc);
+        if (womanSide != null && !womanSide.isBlank()) {
+          boolean hasMan = roles.contains("man");
+          boolean hasWoman = roles.contains("woman");
+          boolean hasPartnerPair = bool(xpc,
+            "exists(/fdml/body/geometry/couples/pair[(@a='man' and @b='woman') or (@a='woman' and @b='man')])",
+            doc
+          );
+
+          if (!hasMan || !hasWoman || !hasPartnerPair) {
+            issues.add(new Issue(
+              "missing_partner_pairing",
+              "couple formation with womanSide requires roles man+woman and a couples/pair linking them"
+            ));
+          }
+        }
+      }
+
       // Circle order preservation (true / explicit role order slots)
       if ("circle".equals(formationKind) && hasPreserveOrder) {
         XdmValue slots = xpc.evaluate("/fdml/body/geometry/circle/order/slot/@who", doc);
