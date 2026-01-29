@@ -22,7 +22,7 @@
     <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'twoLinesFacing' and meta/geometry/roles/role and body/geometry/twoLines/facing and not(meta/geometry/roles/role[@id = body/geometry/twoLines/facing/@a])">
       <svrl:failed-assert><svrl:text>twoLines/facing/@a must reference a declared role id</svrl:text></svrl:failed-assert>
     </xsl:if>
-    <xsl:if test="@version = '1.2' and meta/geometry/formation/@kind = 'twoLinesFacing' and meta/geometry/roles/role and body/geometry/twoLines/facing and not(meta/geometry/roles/role[@id = body/geometry/twoLines/facing/@b])">
+    <xsl:if test="not(count(/fdml/body/geometry/twoLines/line[@id = normalize-space(/fdml/body/geometry/twoLines/facing/@b)]) > 0)">
       <svrl:failed-assert><svrl:text>twoLines/facing/@b must reference a declared role id</svrl:text></svrl:failed-assert>
     </xsl:if>
 
