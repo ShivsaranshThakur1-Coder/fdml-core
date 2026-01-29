@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Cobankat (v1.2 geometry example)</title>
+    <dance name="Mayim Mayim" />
+    <origin country="UNKNOWN" />
+    <type genre="circle" />
+    <meter value="2/4" />
+    <tempo bpm="120" />
+    <formation text="circle" />
+
+    <geometry>
+      <formation kind="line" />
+      <roles>
+        <role id="all" /></roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <line id="line1" /></geometry>
+
+    <figure id="f-cobankat-v12" name="Travel right then left"><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="right" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="R"><geo><primitive kind="move" dir="right" who="all" /></geo></step><step who="all" action="travel" beats="2" startFoot="L"><geo><primitive kind="move" dir="right" who="all" /></geo></step></figure></body>
+</fdml>

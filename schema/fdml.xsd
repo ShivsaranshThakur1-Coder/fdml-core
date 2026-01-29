@@ -240,7 +240,13 @@
       <xs:element name="circle" type="BodyCircleType"/>
       <xs:element name="twoLines" type="BodyTwoLinesType"/>
       <xs:element name="couples" type="BodyCouplesType"/>
-    </xs:choice>
+    
+      <xs:element name="line">
+        <xs:complexType>
+          <xs:attribute name="id" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+</xs:choice>
   </xs:complexType>
 
   <xs:complexType name="BodyCircleType">
