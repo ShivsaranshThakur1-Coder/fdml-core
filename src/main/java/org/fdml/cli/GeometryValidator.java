@@ -95,6 +95,13 @@ class GeometryValidator {
       boolean hasCrossingPrimitive = false;
       boolean hasPreserveOrder = false;
 
+      // New numeric / computed checks need some file-wide signals.
+      boolean sawClockwiseTravel = false;
+      boolean sawCounterClockwiseTravel = false;
+
+      boolean sawApproach = false;
+      boolean sawRetreat = false;
+
       for (XdmItem it : prims) {
         XdmNode p = (XdmNode) it;
         String kind = str(xpc, "string(@kind)", p);
@@ -116,11 +123,98 @@ class GeometryValidator {
           hasCrossingPrimitive = true;
         }
 
+        // A) circle: detect travel direction ambiguity
+        // Scan all primitive @dir (and also @axis if present) for cw/ccw markers.
+        String dir = str(xpc, "string(@dir)", p);
+        String axis = str(xpc, "string(@axis)", p);
+        String dirAxis = (dir + " " + axis).toLowerCase(Locale.ROOT);
+        if (isCcw(dirAxis)) sawCounterClockwiseTravel = true;
+        if (isCw(dirAxis)) sawClockwiseTravel = true;
+
+        // Track approach / retreat presence for twoLinesFacing numeric check.
+        if ("approach".equals(kind)) sawApproach = true;
+        if ("retreat".equals(kind)) sawRetreat = true;
+
         // Formation-specific primitive checks
         if (("approach".equals(kind) || "retreat".equals(kind)) && !"twoLinesFacing".equals(formationKind)) {
           issues.add(new Issue(
             "bad_formation_for_approach_retreat",
             "primitive kind='" + kind + "' requires formation kind='twoLinesFacing' (found '" + formationKind + "')"
+          ));
+        }
+      }
+
+      if ("circle".equals(formationKind) && sawClockwiseTravel && sawCounterClockwiseTravel) {
+        issues.add(new Issue(
+          "circle_travel_ambiguous",
+          "circle formation includes both clockwise and counterclockwise travel markers across step/geo/primitive/@dir (or @axis)"
+        ));
+      }
+
+      // B) twoLinesFacing: enforce approach/retreat pair + separation dip (numeric)
+      if ("twoLinesFacing".equals(formationKind) && (sawApproach || sawRetreat)) {
+        if (!sawApproach || !sawRetreat) {
+          issues.add(new Issue(
+            "missing_approach_retreat_pair",
+            "twoLinesFacing formation includes approach/retreat primitives but does not include both an approach and a retreat"
+          ));
+        }
+
+        double sep = 2.0;
+        double minSep = sep;
+        double maxSep = sep;
+
+        XdmValue steps = xpc.evaluate("//step", doc);
+        for (XdmItem it : steps) {
+          XdmNode step = (XdmNode) it;
+          double beats = dbl(xpc, "number(@beats)", step);
+
+          boolean stepHasApproach = bool(xpc, "exists(geo/primitive[@kind='approach'])", step);
+          boolean stepHasRetreat = bool(xpc, "exists(geo/primitive[@kind='retreat'])", step);
+
+          if (stepHasApproach) sep -= 0.12 * (beats / 2.0);
+          if (stepHasRetreat) sep += 0.12 * (beats / 2.0);
+
+          minSep = Math.min(minSep, sep);
+          maxSep = Math.max(maxSep, sep);
+        }
+
+        if ((maxSep - minSep) < 0.3) {
+          issues.add(new Issue(
+            "two_lines_no_sep_dip",
+            "twoLinesFacing approach/retreat sequence does not vary separation enough (max-min < 0.3)"
+          ));
+        }
+      }
+
+      // C) line: travel direction presence check (numeric)
+      if ("line".equals(formationKind)) {
+        double totalDx = 0.0;
+        boolean sawTravelDir = false;
+
+        XdmValue steps = xpc.evaluate("//step", doc);
+        for (XdmItem it : steps) {
+          XdmNode step = (XdmNode) it;
+          double beats = dbl(xpc, "number(@beats)", step);
+
+          XdmValue stepPrims = xpc.evaluate("geo/primitive", step);
+          for (XdmItem pit : stepPrims) {
+            XdmNode p = (XdmNode) pit;
+            String dir = str(xpc, "string(@dir)", p).toLowerCase(Locale.ROOT);
+            if (dir.contains("right") || isCw(dir)) {
+              sawTravelDir = true;
+              totalDx += 0.10 * (beats / 4.0);
+            } else if (dir.contains("left") || isCcw(dir)) {
+              sawTravelDir = true;
+              totalDx -= 0.10 * (beats / 4.0);
+            }
+          }
+        }
+
+        if (sawTravelDir && Math.abs(totalDx) < 0.05) {
+          issues.add(new Issue(
+            "line_travel_too_small",
+            "line formation includes travel direction primitives but computed total travel is too small (abs(dx) < 0.05)"
           ));
         }
       }
@@ -168,6 +262,59 @@ class GeometryValidator {
     } catch (SaxonApiException e) {
       return "";
     }
+  }
+
+  private static boolean bool(XPathCompiler xpc, String expr, XdmNode node) {
+    try {
+      XdmItem i = xpc.evaluateSingle(expr, node);
+      if (i == null) return false;
+      String v = i.getStringValue();
+      // Saxon represents xs:boolean as "true"/"false".
+      return "true".equalsIgnoreCase(v) || "1".equals(v);
+    } catch (SaxonApiException e) {
+      return false;
+    }
+  }
+
+  private static double dbl(XPathCompiler xpc, String expr, XdmNode node) {
+    try {
+      XdmItem i = xpc.evaluateSingle(expr, node);
+      if (i == null) return 0.0;
+      String v = i.getStringValue();
+      if (v == null || v.isBlank()) return 0.0;
+      // XPath number() can produce NaN. Treat that as 0.
+      double d = Double.parseDouble(v);
+      return Double.isFinite(d) ? d : 0.0;
+    } catch (Exception e) {
+      return 0.0;
+    }
+  }
+
+  private static boolean isCcw(String s) {
+    if (s == null) return false;
+    String t = s.toLowerCase(Locale.ROOT);
+    return t.contains("counterclockwise") || containsToken(t, "ccw");
+  }
+
+  private static boolean isCw(String s) {
+    if (s == null) return false;
+    String t = s.toLowerCase(Locale.ROOT);
+    // Avoid treating "counterclockwise" as clockwise.
+    if (t.contains("counterclockwise") || containsToken(t, "ccw")) return false;
+    return t.contains("clockwise") || containsToken(t, "cw");
+  }
+
+  private static boolean containsToken(String haystack, String token) {
+    if (haystack == null || token == null || token.isEmpty()) return false;
+    // Token boundary: non-letter on both sides (or start/end).
+    int idx = -1;
+    while ((idx = haystack.indexOf(token, idx + 1)) >= 0) {
+      boolean leftOk = idx == 0 || !Character.isLetter(haystack.charAt(idx - 1));
+      int r = idx + token.length();
+      boolean rightOk = r == haystack.length() || !Character.isLetter(haystack.charAt(r));
+      if (leftOk && rightOk) return true;
+    }
+    return false;
   }
 
   private static boolean looksLikeXml(Path p) {
