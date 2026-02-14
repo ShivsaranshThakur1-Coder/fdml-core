@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FDML Demo</title>
+  <link rel="stylesheet" href="style.css?v=@@CSSV@@"/>
+</head>
+<body>
+<header class="site-head">
+  <div class="container">
+    <a class="brand" href="./index.html">FDML</a>
+    <nav class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./search.html">Search</a>
+      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <div class="hero">
+    <h1>FDML Demo</h1>
+    <p class="sub">
+      FDML (Folk Dance Markup Language) is a structured format and toolchain for modeling dance metadata, figures,
+      timing, and geometry, then validating and publishing that content through a reproducible CLI + site pipeline.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>3-Step Demo</h2>
+
+    <h3>1) Init</h3>
+    <pre><code>./bin/fdml init out/demo.fdml.xml \
+  --title "Demo Dance" \
+  --meter 3/4 \
+  --tempo 96 \
+  --figure-id f-demo \
+  --figure-name "Basic"</code></pre>
+
+    <h3>2) Validate With Strict Doctor</h3>
+    <pre><code>./bin/fdml doctor out/demo.fdml.xml --strict</code></pre>
+
+    <h3>3) Render + Explore Search</h3>
+    <pre><code>./bin/fdml render out/demo.fdml.xml --out out/demo.html
+make html
+open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line</code></pre>
+  </div>
+
+  <div class="card">
+    <h2>Specs</h2>
+    <ul>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/FDML-SPEC.md">FDML-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/GEOMETRY-SPEC.md">GEOMETRY-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/TIMING-SPEC.md">TIMING-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/TOPOLOGY-SPEC.md">TOPOLOGY-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/COVERAGE.md">COVERAGE</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Example Cards</h2>
+    <ul>
+      <li><a href="cards/example-03.fdml.html">cards/example-03.fdml.html</a></li>
+      <li><a href="cards/abdala.fdml.html">cards/abdala.fdml.html</a></li>
+      <li><a href="cards/mayim-mayim.fdml.html">cards/mayim-mayim.fdml.html</a></li>
+    </ul>
+
+    <h2>Prefilled Search Links</h2>
+    <ul>
+      <li><a href="search.html?q=Abdala">search.html?q=Abdala</a></li>
+      <li><a href="search.html?meter=9%2F16">search.html?meter=9/16</a></li>
+      <li><a href="search.html?genre=line">search.html?genre=line</a></li>
+      <li><a href="search.html?q=Mayim&amp;meter=4%2F4&amp;genre=circle">search.html?q=Mayim&amp;meter=4/4&amp;genre=circle</a></li>
+    </ul>
+  </div>
+</main>
+</body>
+</html>

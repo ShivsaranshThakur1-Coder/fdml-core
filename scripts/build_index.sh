@@ -20,6 +20,10 @@ bin/fdml index corpus/valid --out site/index.json
 cp -f docs/search.html site/search.html
 perl -pi -e "s/@@CSSV@@/${V}/g" site/search.html
 
+# Copy Demo page and thread cache-buster
+cp -f docs/DEMO.html site/demo.html
+perl -pi -e "s/@@CSSV@@/${V}/g" site/demo.html
+
 # Build homepage
 cat > site/index.html <<HTML
 <!doctype html>
@@ -36,6 +40,7 @@ cat > site/index.html <<HTML
     <a class="brand" href="./">FDML</a>
     <nav class="nav">
       <a href="./index.html">Home</a>
+      <a href="./demo.html">Demo</a>
       <a href="./search.html">Search</a>
       <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
     </nav>
@@ -45,6 +50,7 @@ cat > site/index.html <<HTML
   <div class="hero">
     <h1>Folk Dance Markup Library</h1>
     <p class="sub">Curated, validated examples rendered as clean, printable cards.</p>
+    <p><a class="cta" href="./demo.html">Demo</a></p>
   </div>
   <ul class="grid">
 HTML
@@ -64,4 +70,4 @@ cat >> site/index.html <<'HTML'
 </body></html>
 HTML
 
-echo "Site built → site/ (cards/, index.html, search.html, index.json)"
+echo "Site built → site/ (cards/, index.html, demo.html, search.html, index.json)"
