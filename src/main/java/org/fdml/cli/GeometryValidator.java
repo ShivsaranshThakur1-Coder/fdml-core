@@ -295,6 +295,109 @@ class GeometryValidator {
             "twoLinesFacing formation must declare body/geometry/twoLines/facing"
           ));
         }
+
+        // Optional per-line dancer order in twoLines/line/order.
+        Map<String, List<String>> twoLineOrders = new LinkedHashMap<>();
+        Set<String> orderedDancers = new LinkedHashSet<>();
+        boolean hasBlankInOrder = false;
+
+        XdmValue twoLineNodes = xpc.evaluate("/fdml/body/geometry/twoLines/line[@id]", doc);
+        for (XdmItem lit : twoLineNodes) {
+          XdmNode lineNode = (XdmNode) lit;
+          String lineId = str(xpc, "string(@id)", lineNode);
+          XdmValue orderWho = xpc.evaluate("order[1]/slot/@who", lineNode);
+          if (orderWho == null || orderWho.size() == 0) continue;
+
+          List<String> slots = new ArrayList<>();
+          for (XdmItem sit : orderWho) {
+            String who = sit.getStringValue();
+            if (who == null || who.isBlank()) {
+              hasBlankInOrder = true;
+              issues.add(new Issue(
+                "unknown_dancer_in_order",
+                "twoLines line id='" + lineId + "' has blank order slot who value"
+              ));
+              continue;
+            }
+            String w = who.trim();
+            slots.add(w);
+            orderedDancers.add(w);
+          }
+          twoLineOrders.put(lineId, slots);
+        }
+
+        Map<String, String> inferredOpposite = new HashMap<>();
+        List<String> orderLineIds = new ArrayList<>(twoLineOrders.keySet());
+        if (orderLineIds.size() >= 2) {
+          String facingA = str(xpc, "string(/fdml/body/geometry/twoLines/facing[1]/@a)", doc);
+          String facingB = str(xpc, "string(/fdml/body/geometry/twoLines/facing[1]/@b)", doc);
+
+          String lineA = null;
+          String lineB = null;
+          if (twoLineOrders.containsKey(facingA) && twoLineOrders.containsKey(facingB)) {
+            lineA = facingA;
+            lineB = facingB;
+          } else {
+            lineA = orderLineIds.get(0);
+            lineB = orderLineIds.get(1);
+          }
+
+          List<String> aOrder = twoLineOrders.get(lineA);
+          List<String> bOrder = twoLineOrders.get(lineB);
+          if (aOrder != null && bOrder != null) {
+            if (aOrder.size() != bOrder.size()) {
+              issues.add(new Issue(
+                "two_lines_order_length_mismatch",
+                "twoLines line orders for '" + lineA + "' and '" + lineB + "' must have equal length"
+              ));
+            } else if (!hasBlankInOrder) {
+              for (int i = 0; i < aOrder.size(); i++) {
+                String a = aOrder.get(i);
+                String b = bOrder.get(i);
+                inferredOpposite.put(a, b);
+                inferredOpposite.put(b, a);
+              }
+            }
+          }
+        }
+
+        // If orders exist, validate primitive a/b references and opposite-frame swap rules.
+        if (!twoLineOrders.isEmpty()) {
+          for (XdmItem pit : prims) {
+            XdmNode p = (XdmNode) pit;
+            String a = str(xpc, "string(@a)", p);
+            String b = str(xpc, "string(@b)", p);
+
+            if (a != null && !a.isBlank() && !orderedDancers.contains(a.trim())) {
+              issues.add(new Issue(
+                "unknown_dancer_in_order",
+                "primitive references @a='" + a + "' not present in twoLines line orders"
+              ));
+            }
+            if (b != null && !b.isBlank() && !orderedDancers.contains(b.trim())) {
+              issues.add(new Issue(
+                "unknown_dancer_in_order",
+                "primitive references @b='" + b + "' not present in twoLines line orders"
+              ));
+            }
+
+            String kind = str(xpc, "string(@kind)", p);
+            String frame = str(xpc, "string(@frame)", p);
+            if ("swapPlaces".equals(kind) && "opposite".equals(frame) && a != null && b != null && !a.isBlank() && !b.isBlank()) {
+              String aa = a.trim();
+              String bb = b.trim();
+              if (inferredOpposite.containsKey(aa) && inferredOpposite.containsKey(bb)) {
+                String expected = inferredOpposite.get(aa);
+                if (!bb.equals(expected)) {
+                  issues.add(new Issue(
+                    "not_opposites",
+                    "swapPlaces frame='opposite' expects opposite pair, but got a='" + aa + "', b='" + bb + "'"
+                  ));
+                }
+              }
+            }
+          }
+        }
       }
 
       // Ontology Batch 2: hold integrity.

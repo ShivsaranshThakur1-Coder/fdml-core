@@ -294,6 +294,9 @@
   </xs:complexType>
 
   <xs:complexType name="BodyTwoLinesLineType">
+    <xs:sequence>
+      <xs:element name="order" type="BodyLineOrderType" minOccurs="0"/>
+    </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
     <xs:attribute name="role" type="xs:string" use="required"/>
   </xs:complexType>
@@ -385,6 +388,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="formation"/>
       <xs:enumeration value="dancer"/>
+      <xs:enumeration value="opposite"/>
     </xs:restriction>
   </xs:simpleType>
 

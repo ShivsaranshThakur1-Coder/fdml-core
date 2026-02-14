@@ -166,6 +166,22 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void twoLinesFacingOppositesFixturePasses() {
+    var p = Paths.get("corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertTrue(r.ok, "Expected geometry validation to pass for " + p + ": " + r.issues);
+  }
+
+  @Test
+  public void twoLinesFacingOppositesBadFixtureTriggersNotOpposites() {
+    var p = Paths.get("corpus/invalid_v12/haire-mamougeh.opposites-bad.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("not_opposites")),
+      "Expected not_opposites");
+  }
+
+  @Test
   public void aalistullaaTwirlMissingHalfFails() {
     var p = Paths.get("corpus/invalid_v12/aalistullaa.twirl-missing-half.v12.fdml.xml");
     var r = GeometryValidator.validateOne(p);
