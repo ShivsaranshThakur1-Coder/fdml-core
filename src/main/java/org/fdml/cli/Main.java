@@ -13,6 +13,10 @@ public class Main {
   public static void main(String[] args) {
     if (args.length < 1) { usage(); System.exit(EXIT_IO_ERR); }
     String cmd = args[0];
+    if ("--help".equals(cmd) || "-h".equals(cmd)) {
+      usage();
+      System.exit(EXIT_OK);
+    }
     try {
       switch (cmd) {
         case "validate": {
