@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron coverage ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron coverage site-check ci clean
 
 html:
 	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
@@ -8,7 +8,7 @@ html:
 			echo "HTML  $$out/$$stem.html"; \
 			xsltproc --stringparam cssVersion $$TS xslt/card.xsl "$$f" > "$$out/$$stem.html"; \
 		done < $$tmp; rm -f $$tmp; \
-		mkdir -p site; cp -f docs/style.css site/style.css; cp -f $$out/*.html site/; \
+		mkdir -p site; cp -f docs/style.css site/style.css; find site -maxdepth 1 -type f -name '*.fdml.html' -delete; \
 	scripts/build_index.sh $$TS \
 	bin/fdml index corpus/valid --out site/index.json; \
 
@@ -46,7 +46,11 @@ check-schematron:
 coverage:
 	@python3 scripts/coverage_report.py
 
-ci: check-schematron validate-valid validate-invalid html
+site-check:
+	@$(MAKE) html
+	@python3 scripts/site_smoke.py
+
+ci: check-schematron validate-valid validate-invalid site-check
 
 clean:
 	rm -rf out site
