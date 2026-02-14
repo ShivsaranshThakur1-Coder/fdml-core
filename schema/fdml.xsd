@@ -389,6 +389,7 @@
       <xs:enumeration value="formation"/>
       <xs:enumeration value="dancer"/>
       <xs:enumeration value="opposite"/>
+      <xs:enumeration value="neighbor"/>
     </xs:restriction>
   </xs:simpleType>
 

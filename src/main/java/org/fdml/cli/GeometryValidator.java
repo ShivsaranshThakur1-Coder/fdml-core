@@ -299,6 +299,8 @@ class GeometryValidator {
         // Optional per-line dancer order in twoLines/line/order.
         Map<String, List<String>> twoLineOrders = new LinkedHashMap<>();
         Set<String> orderedDancers = new LinkedHashSet<>();
+        Map<String, String> dancerToLine = new HashMap<>();
+        Map<String, Map<String, Integer>> lineSlotIndex = new HashMap<>();
         boolean hasBlankInOrder = false;
 
         XdmValue twoLineNodes = xpc.evaluate("/fdml/body/geometry/twoLines/line[@id]", doc);
@@ -309,6 +311,8 @@ class GeometryValidator {
           if (orderWho == null || orderWho.size() == 0) continue;
 
           List<String> slots = new ArrayList<>();
+          Map<String, Integer> idx = new HashMap<>();
+          int pos = 0;
           for (XdmItem sit : orderWho) {
             String who = sit.getStringValue();
             if (who == null || who.isBlank()) {
@@ -322,8 +326,11 @@ class GeometryValidator {
             String w = who.trim();
             slots.add(w);
             orderedDancers.add(w);
+            dancerToLine.put(w, lineId);
+            idx.put(w, pos++);
           }
           twoLineOrders.put(lineId, slots);
+          lineSlotIndex.put(lineId, idx);
         }
 
         Map<String, String> inferredOpposite = new HashMap<>();
@@ -392,6 +399,28 @@ class GeometryValidator {
                   issues.add(new Issue(
                     "not_opposites",
                     "swapPlaces frame='opposite' expects opposite pair, but got a='" + aa + "', b='" + bb + "'"
+                  ));
+                }
+              }
+            }
+
+            if ("swapPlaces".equals(kind) && "neighbor".equals(frame) && a != null && b != null && !a.isBlank() && !b.isBlank()) {
+              String aa = a.trim();
+              String bb = b.trim();
+              if (orderedDancers.contains(aa) && orderedDancers.contains(bb)) {
+                boolean okNeighbors = false;
+                String la = dancerToLine.get(aa);
+                String lb = dancerToLine.get(bb);
+                if (la != null && la.equals(lb)) {
+                  Map<String, Integer> idx = lineSlotIndex.get(la);
+                  if (idx != null && idx.containsKey(aa) && idx.containsKey(bb)) {
+                    okNeighbors = Math.abs(idx.get(aa) - idx.get(bb)) == 1;
+                  }
+                }
+                if (!okNeighbors) {
+                  issues.add(new Issue(
+                    "not_neighbors",
+                    "swapPlaces frame='neighbor' expects adjacent dancers in same line, but got a='" + aa + "', b='" + bb + "'"
                   ));
                 }
               }

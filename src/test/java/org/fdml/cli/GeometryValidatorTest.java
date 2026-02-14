@@ -182,6 +182,22 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void twoLinesFacingNeighborsFixturePasses() {
+    var p = Paths.get("corpus/valid_v12/haire-mamougeh.neighbors.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertTrue(r.ok, "Expected geometry validation to pass for " + p + ": " + r.issues);
+  }
+
+  @Test
+  public void twoLinesFacingNeighborsBadFixtureTriggersNotNeighbors() {
+    var p = Paths.get("corpus/invalid_v12/haire-mamougeh.neighbors-bad.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("not_neighbors")),
+      "Expected not_neighbors");
+  }
+
+  @Test
   public void aalistullaaTwirlMissingHalfFails() {
     var p = Paths.get("corpus/invalid_v12/aalistullaa.twirl-missing-half.v12.fdml.xml");
     var r = GeometryValidator.validateOne(p);

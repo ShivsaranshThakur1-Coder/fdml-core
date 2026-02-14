@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Haire Mamougeh (v1.2 neighbors example)</title>
+    <dance name="Haire Mamougeh" />
+    <origin country="UNKNOWN" />
+    <type genre="line" />
+    <meter value="2/4" />
+    <tempo bpm="120" />
+    <formation text="two lines facing" />
+
+    <geometry>
+      <formation kind="twoLinesFacing" />
+      <roles>
+        <role id="all" />
+        <role id="bride_line" />
+        <role id="groom_line" />
+        <role id="b1" />
+        <role id="b2" />
+        <role id="g1" />
+        <role id="g2" />
+      </roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <twoLines>
+        <line id="bride_line" role="bride_line">
+          <order>
+            <slot who="b1" />
+            <slot who="b2" />
+          </order>
+        </line>
+        <line id="groom_line" role="groom_line">
+          <order>
+            <slot who="g1" />
+            <slot who="g2" />
+          </order>
+        </line>
+        <facing a="bride_line" b="groom_line" />
+      </twoLines>
+    </geometry>
+
+    <figure id="f-haire-neighbors" name="Approach retreat with neighbor swap">
+      <step who="all" action="approach" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="approach" who="bride_line" />
+          <primitive kind="approach" who="groom_line" />
+          <primitive kind="swapPlaces" frame="neighbor" a="b1" b="b2" />
+        </geo>
+      </step>
+      <step who="all" action="approach" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="approach" who="bride_line" />
+          <primitive kind="approach" who="groom_line" />
+        </geo>
+      </step>
+      <step who="all" action="retreat" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="retreat" who="bride_line" />
+          <primitive kind="retreat" who="groom_line" />
+        </geo>
+      </step>
+      <step who="all" action="retreat" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="retreat" who="bride_line" />
+          <primitive kind="retreat" who="groom_line" />
+        </geo>
+      </step>
+    </figure>
+  </body>
+</fdml>
