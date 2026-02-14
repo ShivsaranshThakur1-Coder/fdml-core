@@ -13,6 +13,9 @@ Scope note:
 - If `meta/geometry/formation/@kind = "twoLinesFacing"`, then `body/geometry/twoLines/facing` is required.
 - Issue code on violation: `missing_two_lines_facing`.
 
+### GeoFrame values used here
+- `GeoFrame` supports `opposite` and `neighbor` for two-lines relationship checks.
+
 ### Approach/retreat formation compatibility
 - `geo/primitive kind="approach"|"retreat"` is only allowed when formation kind is `twoLinesFacing`.
 - Issue code on violation: `bad_formation_for_approach_retreat`.
@@ -24,9 +27,33 @@ When formation kind is `twoLinesFacing` and approach/retreat primitives are pres
 - A simple numeric separation model must show enough variation (`maxSep - minSep >= 0.3`).
 - Issue code: `two_lines_no_sep_dip`.
 
+### Per-line order and inferred opposite pairs
+- Optional per-line dancer order is read from:
+  - `body/geometry/twoLines/line[@id]/order/slot/@who`
+- If both facing lines declare orders:
+  - lengths must match, otherwise `two_lines_order_length_mismatch`
+  - blank / unknown slot references are reported as `unknown_dancer_in_order`
+  - opposite pairs are inferred by index (`lineA[i]` opposite `lineB[i]`)
+
+### `frame="opposite"` swap rule
+- For `geo/primitive kind="swapPlaces"` with `frame="opposite"` and attributes `a`,`b`:
+  - `a` and `b` must be an inferred opposite pair
+  - otherwise: `not_opposites`
+  - if `a`/`b` are missing from declared per-line orders: `unknown_dancer_in_order`
+
+### `frame="neighbor"` swap rule
+- For `geo/primitive kind="swapPlaces"` with `frame="neighbor"` and attributes `a`,`b`:
+  - `a` and `b` must be adjacent indices in the **same** `twoLines/line/order`
+  - otherwise: `not_neighbors`
+  - if `a`/`b` are missing from declared per-line orders: `unknown_dancer_in_order`
+
 ### Minimal corpus examples
 - Passing: `corpus/valid_v12/haire-mamougeh.v12.fdml.xml`
 - Failing: `corpus/invalid_v12/haire-mamougeh.bad-formation.v12.fdml.xml` (`bad_formation_for_approach_retreat`)
+- Passing (opposites): `corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml`
+- Failing (opposites): `corpus/invalid_v12/haire-mamougeh.opposites-bad.v12.fdml.xml` (`not_opposites`)
+- Passing (neighbors): `corpus/valid_v12/haire-mamougeh.neighbors.v12.fdml.xml`
+- Failing (neighbors): `corpus/invalid_v12/haire-mamougeh.neighbors-bad.v12.fdml.xml` (`not_neighbors`)
 
 ## 2) line Formation Progression Rules
 
@@ -102,4 +129,4 @@ The following additional formation-topology-adjacent codes are implemented in `G
 - `unknown_role`
 - `circle_travel_ambiguous`
 - `line_travel_too_small`
-
+- `not_neighbors`
