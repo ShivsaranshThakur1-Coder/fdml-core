@@ -129,6 +129,24 @@ Legend: `M = Must`, `S = Should`, `C = Could`, `W = Won't (now)`.
 
 ### Phase 1: Submission demo ready (low-risk, keep CI green)
 
+Phase 1 complete status:
+- Status: `COMPLETE`
+- Date: `2026-02-14`
+- Verification command: `make ci && mvn test`
+
+DONE items (implemented):
+1. `DONE` Faceted search in site UI:
+   - meter / genre / formationKind dropdown filters.
+   - URL params supported: `q`, `meter`, `genre`, `formationKind`.
+2. `DONE` Demo entrypoint page:
+   - `site/demo.html` generated from `docs/DEMO.html`.
+3. `DONE` Card navigation continuity:
+   - Prev/Next + Back to Search + Demo injected per card from index order.
+4. `DONE` Site smoke checks in CI path:
+   - required site artifacts, index->card mapping, filter controls, link integrity, card-nav presence.
+5. `DONE` Rendering polish:
+   - `.fdml-card-nav` styling and print-focused CSS in `docs/style.css`.
+
 Scope principles:
 - Avoid high-risk architecture shifts.
 - Prefer additive changes with fixture-backed tests.
