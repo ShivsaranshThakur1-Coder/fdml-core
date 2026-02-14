@@ -93,6 +93,10 @@ def main() -> int:
             fail(f"missing timeline container in {card.relative_to(site_dir)}")
         if "timeline.js" not in body:
             fail(f"missing timeline script include in {card.relative_to(site_dir)}")
+        if 'id="fdml-diagram"' not in body:
+            fail(f"missing diagram container in {card.relative_to(site_dir)}")
+        if "diagram.js" not in body:
+            fail(f"missing diagram script include in {card.relative_to(site_dir)}")
 
         stem = card.name[:-5]  # drop .html
         timeline_json = card.with_name(f"{stem}.json")

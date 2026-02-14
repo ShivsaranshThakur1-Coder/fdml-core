@@ -85,6 +85,43 @@ h2{font-size:20px}
   z-index:5;
 }
 .timeline-seg:hover::after{opacity:1}
+.diagram-panel{
+  margin:10px 0 16px;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:color-mix(in srgb, var(--muted) 8%, transparent);
+}
+.diagram-panel h2{margin:0 0 8px}
+.fdml-diagram-svg{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--panel);
+}
+.diagram-line{
+  stroke:color-mix(in srgb, var(--accent) 45%, var(--ink));
+  stroke-width:2.5;
+  stroke-linecap:round;
+}
+.diagram-ring{
+  fill:none;
+  stroke:color-mix(in srgb, var(--accent) 45%, var(--ink));
+  stroke-width:2.5;
+}
+.diagram-node{
+  fill:color-mix(in srgb, var(--accent) 55%, #fff);
+  stroke:color-mix(in srgb, var(--accent) 30%, var(--ink));
+  stroke-width:1.5;
+}
+.diagram-label{
+  font-size:12px;
+  text-anchor:middle;
+  fill:var(--ink);
+}
+.diagram-label-small{font-size:11px; fill:var(--muted)}
 .table{width:100%; border-collapse:separate; border-spacing:0; margin-top:12px}
 .table thead th{background:color-mix(in srgb, var(--muted) 12%, transparent); color:var(--ink); text-align:left; font-weight:600; padding:12px; border-bottom:1px solid var(--border)}
 .table tbody td{padding:12px; border-bottom:1px solid var(--border)}
@@ -100,6 +137,7 @@ footer .container{padding:18px 24px}
   html, body{background:#fff !important; color:#000 !important}
   .site-head, footer, .fdml-card-nav{display:none !important}
   #fdml-timeline{display:none !important}
+  #fdml-diagram{display:none !important}
   .container{max-width:none; margin:0; padding:0}
   .hero, .card{
     background:#fff !important;

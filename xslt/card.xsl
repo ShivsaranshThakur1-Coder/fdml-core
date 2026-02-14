@@ -31,6 +31,7 @@
             <!-- Title -->
             <h1><xsl:value-of select="/fdml/meta/title"/></h1>
             <div id="fdml-timeline"></div>
+            <div id="fdml-diagram"></div>
 
             <!-- High-level meta chips -->
             <p class="sub">
@@ -150,6 +151,9 @@
         </footer>
         <script>
           <xsl:attribute name="src">./timeline.js?<xsl:value-of select="$cssVersion"/></xsl:attribute>
+        </script>
+        <script>
+          <xsl:attribute name="src">./diagram.js?<xsl:value-of select="$cssVersion"/></xsl:attribute>
         </script>
       </body>
     </html>
