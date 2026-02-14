@@ -9,9 +9,20 @@ mkdir -p site site/cards
 # Ship CSS
 cp -f docs/style.css site/style.css
 cp -f docs/style.css site/cards/style.css
+cp -f docs/timeline.js site/cards/timeline.js
 
 # Copy generated cards
 cp -f out/html/*.html site/cards/
+
+# Emit per-card export-json payloads for timeline renderer
+tmp_cards="$(mktemp)"
+find corpus/valid -type f -name '*.xml' | sort > "$tmp_cards"
+while IFS= read -r f; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
+done < "$tmp_cards"
+rm -f "$tmp_cards"
 
 # Emit index.json for Search
 bin/fdml index corpus/valid --out site/index.json

@@ -89,6 +89,15 @@ def main() -> int:
         body = card.read_text(encoding="utf-8")
         if 'class="fdml-card-nav"' not in body:
             fail(f"missing card navigation wrapper in {card.relative_to(site_dir)}")
+        if 'id="fdml-timeline"' not in body:
+            fail(f"missing timeline container in {card.relative_to(site_dir)}")
+        if "timeline.js" not in body:
+            fail(f"missing timeline script include in {card.relative_to(site_dir)}")
+
+        stem = card.name[:-5]  # drop .html
+        timeline_json = card.with_name(f"{stem}.json")
+        if not timeline_json.exists():
+            fail(f"missing timeline JSON for card {card.relative_to(site_dir)} -> {timeline_json.relative_to(site_dir)}")
 
     broken: list[str] = []
     for html in sorted(site_dir.rglob("*.html")):

@@ -30,6 +30,7 @@
           <div class="card">
             <!-- Title -->
             <h1><xsl:value-of select="/fdml/meta/title"/></h1>
+            <div id="fdml-timeline"></div>
 
             <!-- High-level meta chips -->
             <p class="sub">
@@ -147,8 +148,10 @@
         <footer>
           <div class="container">© FDML</div>
         </footer>
+        <script>
+          <xsl:attribute name="src">./timeline.js?<xsl:value-of select="$cssVersion"/></xsl:attribute>
+        </script>
       </body>
     </html>
   </xsl:template>
 </xsl:stylesheet>
-
