@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron coverage site-check ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check coverage site-check ci clean
 
 html:
 	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
@@ -43,6 +43,11 @@ check-schematron:
 	rm -f "$$tmp"; \
 	echo "Schematron compiled output is up to date."
 
+export-json-check:
+	@set -e; mkdir -p site; \
+	bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml --out site/export-json-sample.json > /dev/null; \
+	python3 scripts/validate_json_schema.py schema/export-json.schema.json site/export-json-sample.json
+
 coverage:
 	@python3 scripts/coverage_report.py
 
@@ -50,7 +55,7 @@ site-check:
 	@$(MAKE) html
 	@python3 scripts/site_smoke.py
 
-ci: check-schematron validate-valid validate-invalid site-check
+ci: check-schematron validate-valid validate-invalid export-json-check site-check
 
 clean:
 	rm -rf out site

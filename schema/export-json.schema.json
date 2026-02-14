@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fdml.local/schema/export-json.schema.json",
+  "title": "FDML export-json contract (v1)",
+  "description": "Schema for `fdml export-json` output. Top-level may be a single payload object or an array of payload objects.",
+  "oneOf": [
+    { "$ref": "#/$defs/payload" },
+    {
+      "type": "array",
+      "items": { "$ref": "#/$defs/payload" }
+    }
+  ],
+  "$defs": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "title",
+        "meter",
+        "tempoBpm",
+        "originCountry",
+        "typeGenre",
+        "formationText",
+        "formationKind"
+      ],
+      "properties": {
+        "version": { "type": "string" },
+        "title": { "type": "string" },
+        "meter": { "type": "string" },
+        "tempoBpm": { "type": "string" },
+        "originCountry": { "type": "string" },
+        "typeGenre": { "type": "string" },
+        "formationText": { "type": "string" },
+        "formationKind": { "type": "string" }
+      }
+    },
+    "primitive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "who", "frame", "dir", "a", "b", "delta"],
+      "properties": {
+        "kind": { "type": "string" },
+        "who": { "type": "string" },
+        "frame": { "type": "string" },
+        "dir": { "type": "string" },
+        "a": { "type": "string" },
+        "b": { "type": "string" },
+        "delta": { "type": "string" },
+        "preserveOrder": { "type": "string" }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "who",
+        "action",
+        "beats",
+        "count",
+        "direction",
+        "facing",
+        "startFoot",
+        "endFoot",
+        "text",
+        "primitives"
+      ],
+      "properties": {
+        "who": { "type": "string" },
+        "action": { "type": "string" },
+        "beats": { "type": "string" },
+        "count": { "type": "string" },
+        "direction": { "type": "string" },
+        "facing": { "type": "string" },
+        "startFoot": { "type": "string" },
+        "endFoot": { "type": "string" },
+        "text": { "type": "string" },
+        "primitives": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/primitive" }
+        }
+      }
+    },
+    "figure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "steps"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/step" }
+        }
+      }
+    },
+    "circleOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "slots"],
+      "properties": {
+        "role": { "type": "string" },
+        "slots": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "lineOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase", "slots"],
+      "properties": {
+        "phase": { "type": "string" },
+        "slots": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "lineEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "orders"],
+      "properties": {
+        "id": { "type": "string" },
+        "orders": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/lineOrder" }
+        }
+      }
+    },
+    "twoLinesOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slots"],
+      "properties": {
+        "slots": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "twoLinesLineEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "orders"],
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "type": "string" },
+        "orders": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/twoLinesOrder" }
+        }
+      }
+    },
+    "twoLinesFacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a", "b"],
+      "properties": {
+        "a": { "type": "string" },
+        "b": { "type": "string" }
+      }
+    },
+    "pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a", "b"],
+      "properties": {
+        "a": { "type": "string" },
+        "b": { "type": "string" }
+      }
+    },
+    "neighbor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line", "a", "b"],
+      "properties": {
+        "line": { "type": "string" },
+        "a": { "type": "string" },
+        "b": { "type": "string" }
+      }
+    },
+    "topology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["circle", "line", "twoLines"],
+      "properties": {
+        "circle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["orders"],
+          "properties": {
+            "orders": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/circleOrder" }
+            }
+          }
+        },
+        "line": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lines"],
+          "properties": {
+            "lines": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/lineEntry" }
+            }
+          }
+        },
+        "twoLines": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lines", "facing", "opposites", "neighbors"],
+          "properties": {
+            "lines": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/twoLinesLineEntry" }
+            },
+            "facing": { "$ref": "#/$defs/twoLinesFacing" },
+            "opposites": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/pair" }
+            },
+            "neighbors": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/neighbor" }
+            }
+          }
+        }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "meta", "figures", "topology"],
+      "properties": {
+        "file": { "type": "string" },
+        "meta": { "$ref": "#/$defs/meta" },
+        "figures": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/figure" }
+        },
+        "topology": { "$ref": "#/$defs/topology" }
+      }
+    }
+  }
+}

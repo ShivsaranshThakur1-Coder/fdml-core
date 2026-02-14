@@ -1,0 +1,14 @@
+{
+  "file": "corpus/valid/example-03.fdml.xml",
+  "figures": [],
+  "topology": {
+    "circle": { "orders": [] },
+    "line": { "lines": [] },
+    "twoLines": {
+      "lines": [],
+      "facing": { "a": "", "b": "" },
+      "opposites": [],
+      "neighbors": []
+    }
+  }
+}

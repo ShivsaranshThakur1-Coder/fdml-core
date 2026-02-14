@@ -2,9 +2,12 @@ package org.fdml.cli;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,6 +72,30 @@ public class ExportJsonTest {
     assertEquals(expected, actual, "export-json output drifted from golden payload");
   }
 
+  @Test
+  public void generatedPayloadConformsToSchema() throws Exception {
+    String payload = ExportJson.export(Path.of("corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml"));
+    Path out = Files.createTempFile("fdml-export-json-", ".json");
+    Files.writeString(out, payload, StandardCharsets.UTF_8);
+
+    ProcessResult r = runSchemaValidator(
+      Path.of("schema/export-json.schema.json"),
+      out
+    );
+    assertEquals(0, r.exitCode, "Expected schema validation to pass, output:\n" + r.output);
+  }
+
+  @Test
+  public void invalidFixtureFailsSchemaValidation() throws Exception {
+    ProcessResult r = runSchemaValidator(
+      Path.of("schema/export-json.schema.json"),
+      Path.of("src/test/resources/export-json/invalid/missing-meta.json")
+    );
+    assertTrue(r.exitCode != 0, "Expected invalid JSON fixture to fail schema validation");
+    assertTrue(r.output.contains("required") || r.output.contains("missing"),
+      "Expected missing-required-field signal in output:\n" + r.output);
+  }
+
   private static void assertContainsInOrder(String text, String... snippets) {
     int idx = -1;
     for (String s : snippets) {
@@ -81,5 +108,37 @@ public class ExportJsonTest {
 
   private static String jsonEsc(String s) {
     return s.replace("\\", "\\\\").replace("\"", "\\\"");
+  }
+
+  private static ProcessResult runSchemaValidator(Path schema, Path instance) throws Exception {
+    List<String> cmd = new ArrayList<>();
+    cmd.add("python3");
+    cmd.add("scripts/validate_json_schema.py");
+    cmd.add(schema.toString());
+    cmd.add(instance.toString());
+
+    Process p = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+    String output;
+    try (InputStream in = p.getInputStream()) {
+      output = readAll(in);
+    }
+    int exit = p.waitFor();
+    return new ProcessResult(exit, output);
+  }
+
+  private static String readAll(InputStream in) throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    in.transferTo(out);
+    return out.toString(StandardCharsets.UTF_8);
+  }
+
+  private static final class ProcessResult {
+    final int exitCode;
+    final String output;
+
+    ProcessResult(int exitCode, String output) {
+      this.exitCode = exitCode;
+      this.output = output;
+    }
   }
 }

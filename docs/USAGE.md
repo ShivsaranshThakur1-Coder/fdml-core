@@ -74,3 +74,24 @@ validate-geo prints either GEO OK or GEO FAIL plus issue codes like:
 - unknown_role
 - bad_formation_for_approach_retreat
 - circle_order_violation
+
+## Export JSON Contract (v1)
+
+Generate export JSON for a file or directory:
+
+```bash
+./bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml --out out/export.json
+./bin/fdml export-json corpus/valid --out out/export-batch.json
+```
+
+Contract schema:
+- `schema/export-json.schema.json`
+
+Validate any export artifact against the contract:
+
+```bash
+python3 scripts/validate_json_schema.py schema/export-json.schema.json out/export.json
+```
+
+CI/local gate:
+- `make export-json-check` regenerates `site/export-json-sample.json` and validates it against the v1 contract schema.
