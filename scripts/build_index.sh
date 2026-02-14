@@ -16,6 +16,9 @@ cp -f out/html/*.html site/cards/
 # Emit index.json for Search
 bin/fdml index corpus/valid --out site/index.json
 
+# Emit export-json sample for demo page
+bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml --out site/export-json-sample.json >/dev/null
+
 # Inject per-card navigation continuity links
 python3 scripts/patch_card_nav.py
 

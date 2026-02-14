@@ -145,6 +145,27 @@ public class Main {
           System.exit(EXIT_OK);
         }
 
+        case "export-json": {
+          List<String> rest = new ArrayList<>();
+          Path out = null;
+          for (int i = 1; i < args.length; i++) {
+            if ("--out".equals(args[i]) && i + 1 < args.length) out = Paths.get(args[++i]);
+            else rest.add(args[i]);
+          }
+          if (rest.size() != 1) { System.err.println("export-json: provide exactly one <file-or-dir> [--out out.json]"); System.exit(EXIT_IO_ERR); }
+          Path target = Paths.get(rest.get(0));
+          String payload = ExportJson.export(target);
+          System.out.println(payload);
+          if (out != null) {
+            try {
+              Path parent = out.getParent();
+              if (parent != null) Files.createDirectories(parent);
+            } catch (Exception ignored) {}
+            Files.writeString(out, payload, StandardCharsets.UTF_8);
+          }
+          System.exit(EXIT_OK);
+        }
+
         case "lint": {
           boolean json = hasFlag(args, "--json");
           String jsonOut = flagValue(args, "--json-out");
@@ -317,6 +338,7 @@ public class Main {
     System.out.println("  render <fdml-file> [--out out.html]");
     System.out.println("  export-pdf <fdml-file> [--out out.pdf]");
     System.out.println("  index  <path> [...] [--out out.json]");
+    System.out.println("  export-json <file-or-dir> [--out out.json]");
     System.out.println("  lint   <path> [...] [--json] [--json-out file] [--strict]");
     System.out.println("  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM]");
     System.out.println("  doctor <path> [...] [--json] [--strict]");
