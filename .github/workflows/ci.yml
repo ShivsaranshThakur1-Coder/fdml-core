@@ -18,6 +18,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Schematron compiled output is up to date
+        run: make check-schematron
+        shell: bash
+
       - name: Build shaded jar
         run: mvn -q -DskipTests package
         shell: bash

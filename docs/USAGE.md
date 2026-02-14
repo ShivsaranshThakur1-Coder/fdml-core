@@ -33,6 +33,22 @@ Invalid (intentionally fails GEO validation):
 - corpus/invalid_v12/haire-mamougeh.bad-formation.v12.fdml.xml
 - corpus/invalid_v12/mayim-mayim.order-broken.v12.fdml.xml
 
+### Regenerate compiled Schematron
+
+`schematron/fdml-compiled.xsl` is generated from `schematron/fdml.sch` using a pinned, vendored compiler jar in `tools/`.
+
+Regenerate it after any Schematron rule changes:
+
+```bash
+make schematron
+```
+
+Validate that the committed compiled output is up to date:
+
+```bash
+make check-schematron
+```
+
 ### v1.2 structure (minimum required)
 
 For fdml version="1.2" the geometry validator requires:

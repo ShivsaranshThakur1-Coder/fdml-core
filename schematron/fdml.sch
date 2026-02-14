@@ -242,7 +242,8 @@
   <!-- Sequence/use must reference existing figure ids -->
   <pattern id="sequence-refs">
     <rule context="sequence/use[@figure]">
-      <assert test="count(/fdml/body//figure[@id = @figure]) &gt; 0">
+      <let name="targetFigure" value="normalize-space(@figure)"/>
+      <assert test="count(/fdml/body//figure[@id = $targetFigure]) &gt; 0">
         sequence/use/@figure must reference an existing figure id
       </assert>
     </rule>

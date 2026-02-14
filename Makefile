@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron ci clean
 
 html:
 	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
@@ -28,7 +28,22 @@ json:
 			echo "JSON  $$out/$$stem.json"; ./bin/fdml validate "$$f" --json --json-out "$$out/$$stem.json"; \
 		done < $$tmp; rm -f $$tmp
 
-ci: validate-valid validate-invalid html
+schematron:
+	@./scripts/compile_schematron.sh
+
+check-schematron:
+	@set -e; tmp=$$(mktemp); \
+	./scripts/compile_schematron.sh schematron/fdml.sch "$$tmp" > /dev/null; \
+	if ! cmp -s "$$tmp" schematron/fdml-compiled.xsl; then \
+		echo "Schematron compiled output is stale. Run: make schematron"; \
+		diff -u schematron/fdml-compiled.xsl "$$tmp" || true; \
+		rm -f "$$tmp"; \
+		exit 1; \
+	fi; \
+	rm -f "$$tmp"; \
+	echo "Schematron compiled output is up to date."
+
+ci: check-schematron validate-valid validate-invalid html
 
 clean:
 	rm -rf out site
@@ -38,5 +53,4 @@ serve:
 
 report:
 	cd docs/progress-report && latexmk -pdf -silent progress_2025-10-28_v2.tex
-
 
