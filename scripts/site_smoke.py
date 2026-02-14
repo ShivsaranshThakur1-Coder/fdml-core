@@ -85,6 +85,11 @@ def main() -> int:
         if f'id="{required_id}"' not in search_html:
             fail(f"search.html missing filter element #{required_id}")
 
+    for card in sorted((site_dir / "cards").glob("*.html")):
+        body = card.read_text(encoding="utf-8")
+        if 'class="fdml-card-nav"' not in body:
+            fail(f"missing card navigation wrapper in {card.relative_to(site_dir)}")
+
     broken: list[str] = []
     for html in sorted(site_dir.rglob("*.html")):
         parser = LinkParser()

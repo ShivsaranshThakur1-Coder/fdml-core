@@ -16,6 +16,9 @@ cp -f out/html/*.html site/cards/
 # Emit index.json for Search
 bin/fdml index corpus/valid --out site/index.json
 
+# Inject per-card navigation continuity links
+python3 scripts/patch_card_nav.py
+
 # Copy Search and thread cache-buster
 cp -f docs/search.html site/search.html
 perl -pi -e "s/@@CSSV@@/${V}/g" site/search.html
