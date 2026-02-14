@@ -144,7 +144,17 @@ Note: `make validate-*` uses `fdml` in PATH (not `./bin/fdml`).
 - Unknown whether you expect Homebrew-installed `fdml` or want to use the local wrapper.
 - To resolve: clarify in docs (candidate path: `docs/USAGE.md`).
 
-## 11) Release (tag-driven)
+## 11) Coverage report
+Generate the engineering coverage report (matrix integrity + repo counts):
+```bash
+make coverage
+```
+
+Implementation:
+- matrix source: `docs/COVERAGE.md`
+- report script: `scripts/coverage_report.py`
+
+## 12) Release (tag-driven)
 Automated release:
 - Trigger: Git tag `v*`
 - Workflow: `.github/workflows/release.yml`
@@ -164,7 +174,7 @@ Unknown:
 - Whether you want `homebrew-fdml/` as a submodule or kept in-sync as a directory.
 - To resolve: document in `docs/CONTRIBUTING.md` or `README.md`.
 
-## 12) Troubleshooting
+## 13) Troubleshooting
 
 ### “Building fdml-core.jar…” happens every time
 Cause: `target/fdml-core.jar` missing.
@@ -192,7 +202,7 @@ Then fix meter/beat consistency or add missing meter.
 Install libxslt:
 - See `.github/workflows/render-test.yml` which installs `libxslt` via brew on macOS runners.
 
-## 13) Repo hygiene (current state)
+## 14) Repo hygiene (current state)
 Per `.clawdbot_context/01_git_status.txt`, the following are currently untracked locally:
 - `.clawdbot_context/`
 - `TerminalLineCommands/`

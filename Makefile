@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron coverage ci clean
 
 html:
 	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
@@ -43,6 +43,9 @@ check-schematron:
 	rm -f "$$tmp"; \
 	echo "Schematron compiled output is up to date."
 
+coverage:
+	@python3 scripts/coverage_report.py
+
 ci: check-schematron validate-valid validate-invalid html
 
 clean:
@@ -53,4 +56,3 @@ serve:
 
 report:
 	cd docs/progress-report && latexmk -pdf -silent progress_2025-10-28_v2.tex
-
