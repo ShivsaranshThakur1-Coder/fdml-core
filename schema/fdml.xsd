@@ -301,7 +301,7 @@
   <!-- body/geometry/line -->
   <xs:complexType name="BodyLineType">
     <xs:sequence>
-      <xs:element name="order" type="BodyLineOrderType" minOccurs="0"/>
+      <xs:element name="order" type="BodyLineOrderType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
@@ -310,6 +310,7 @@
     <xs:sequence>
       <xs:element name="slot" type="BodyLineSlotType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
+    <xs:attribute name="phase" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <xs:complexType name="BodyLineSlotType">

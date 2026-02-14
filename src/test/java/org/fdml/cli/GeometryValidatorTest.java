@@ -193,6 +193,22 @@ public class GeometryValidatorTest {
   }
 
   @Test
+  public void progressOrderFixturePassesStatefulLineOrderCheck() {
+    var p = Paths.get("corpus/valid_v12/example-05-contra.progress-order.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertTrue(r.ok, "Expected geometry validation to pass for " + p + ": " + r.issues);
+  }
+
+  @Test
+  public void progressOrderBadFixtureTriggersLineOrderMismatch() {
+    var p = Paths.get("corpus/invalid_v12/example-05-contra.progress-order-bad.v12.fdml.xml");
+    var r = GeometryValidator.validateOne(p);
+    assertFalse(r.ok, "Expected geometry validation to fail for " + p);
+    assertTrue(r.issues.stream().anyMatch(i -> i.code.equals("line_order_mismatch")),
+      "Expected line_order_mismatch");
+  }
+
+  @Test
   public void aalistullaaRelposContradictionFails() {
     var p = Paths.get("corpus/invalid_v12/aalistullaa.relpos-contradiction.v12.fdml.xml");
     var r = GeometryValidator.validateOne(p);

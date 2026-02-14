@@ -171,7 +171,7 @@ class GeometryValidator {
         if ("progress".equals(kind)) {
           sawProgress = true;
           String delta = str(xpc, "string(@delta)", p);
-          if (delta == null || delta.isBlank()) sawProgressMissingDelta = true;
+          if (delta == null || delta.isBlank() || parseInt(delta.trim()) == null) sawProgressMissingDelta = true;
         }
 
         // Formation-specific primitive checks
@@ -308,17 +308,60 @@ class GeometryValidator {
 
       // Ontology Batch 4A: line progression requires explicit line order slots and progress delta.
       if ("line".equals(formationKind) && sawProgress) {
-        XdmValue lineSlots = xpc.evaluate("/fdml/body/geometry/line/order/slot/@who", doc);
-        boolean hasLineSlots = false;
-        for (XdmItem it : lineSlots) {
-          String who = it.getStringValue();
-          if (who != null && !who.isBlank()) {
-            hasLineSlots = true;
-            break;
+        XdmValue lineNodes = xpc.evaluate("/fdml/body/geometry/line[@id]", doc);
+        boolean hasAnyLineSlots = false;
+        boolean checkedAnyLineOrder = false;
+
+        for (XdmItem lit : lineNodes) {
+          XdmNode lineNode = (XdmNode) lit;
+          String lineId = str(xpc, "string(@id)", lineNode);
+          XdmValue orderNodes = xpc.evaluate("order", lineNode);
+          if (orderNodes == null || orderNodes.size() == 0) continue;
+
+          List<XdmNode> orders = new ArrayList<>();
+          for (XdmItem oit : orderNodes) orders.add((XdmNode) oit);
+          checkedAnyLineOrder = true;
+
+          XdmNode initialOrderNode = selectInitialOrder(orders, xpc);
+          List<String> currentOrder = readOrderSlots(initialOrderNode, xpc);
+          if (!currentOrder.isEmpty()) hasAnyLineSlots = true;
+
+          XdmNode expectedOrderNode = selectExpectedAfterOrder(orders, xpc);
+          List<String> expectedOrder = readOrderSlots(expectedOrderNode, xpc);
+
+          if (currentOrder.isEmpty()) continue;
+
+          for (XdmItem pit : prims) {
+            XdmNode p = (XdmNode) pit;
+            String kind = str(xpc, "string(@kind)", p);
+            if (!"progress".equals(kind)) continue;
+
+            String deltaRaw = str(xpc, "string(@delta)", p);
+            Integer delta = parseInt(deltaRaw);
+            if (delta == null) continue; // Already reported as progress_missing_delta.
+            currentOrder = rotateForward(currentOrder, delta);
+          }
+
+          if (!expectedOrder.isEmpty() && !currentOrder.equals(expectedOrder)) {
+            issues.add(new Issue(
+              "line_order_mismatch",
+              "line id='" + lineId + "' expected order " + expectedOrder + " but computed " + currentOrder
+            ));
           }
         }
 
-        if (!hasLineSlots) {
+        if (!checkedAnyLineOrder) {
+          XdmValue lineSlots = xpc.evaluate("/fdml/body/geometry/line/order/slot/@who", doc);
+          for (XdmItem it : lineSlots) {
+            String who = it.getStringValue();
+            if (who != null && !who.isBlank()) {
+              hasAnyLineSlots = true;
+              break;
+            }
+          }
+        }
+
+        if (!hasAnyLineSlots) {
           issues.add(new Issue(
             "missing_line_order_slots",
             "line formation includes progress primitives but body/geometry/line/order/slot list is missing"
@@ -555,6 +598,67 @@ class GeometryValidator {
       if (leftOk && rightOk) return true;
     }
     return false;
+  }
+
+  private static Integer parseInt(String s) {
+    if (s == null) return null;
+    String t = s.trim();
+    if (t.isEmpty()) return null;
+    try {
+      return Integer.parseInt(t);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  private static XdmNode selectInitialOrder(List<XdmNode> orders, XPathCompiler xpc) {
+    if (orders == null || orders.isEmpty()) return null;
+    for (XdmNode o : orders) {
+      String phase = str(xpc, "string(@phase)", o);
+      if ("initial".equalsIgnoreCase(phase)) return o;
+    }
+    return orders.get(0);
+  }
+
+  private static XdmNode selectExpectedAfterOrder(List<XdmNode> orders, XPathCompiler xpc) {
+    if (orders == null || orders.isEmpty()) return null;
+    for (XdmNode o : orders) {
+      String phase = str(xpc, "string(@phase)", o);
+      if ("after".equalsIgnoreCase(phase)) return o;
+    }
+    if (orders.size() >= 2) return orders.get(orders.size() - 1);
+    return null;
+  }
+
+  private static List<String> readOrderSlots(XdmNode orderNode, XPathCompiler xpc) {
+    List<String> out = new ArrayList<>();
+    if (orderNode == null) return out;
+    XdmValue slots = eval(xpc, "slot/@who", orderNode);
+    for (XdmItem it : slots) {
+      String who = it.getStringValue();
+      if (who != null && !who.isBlank()) out.add(who);
+    }
+    return out;
+  }
+
+  private static List<String> rotateForward(List<String> in, int delta) {
+    if (in == null || in.isEmpty()) return in == null ? new ArrayList<>() : new ArrayList<>(in);
+    int n = in.size();
+    int shift = delta % n;
+    if (shift < 0) shift += n;
+    if (shift == 0) return new ArrayList<>(in);
+
+    List<String> out = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) out.add(in.get((i + shift) % n));
+    return out;
+  }
+
+  private static XdmValue eval(XPathCompiler xpc, String expr, XdmNode node) {
+    try {
+      return xpc.evaluate(expr, node);
+    } catch (SaxonApiException e) {
+      return XdmEmptySequence.getInstance();
+    }
   }
 
   private static boolean looksLikeXml(Path p) {
