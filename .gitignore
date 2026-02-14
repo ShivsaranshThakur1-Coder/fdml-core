@@ -37,3 +37,9 @@ TerminalLineCommands/
 *.out
 tutor_brief*.pdf
 tutor_brief_explained*.pdf
+
+# local diagnostics
+fdml_context_pack.txt
+fdml_state_pack_2.txt
+fdml_verify_*.txt
+.codex/
