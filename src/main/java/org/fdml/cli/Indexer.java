@@ -31,6 +31,14 @@ class Indexer {
 
         String title = evalString(xpc, doc, "normalize-space(/fdml/meta/title)");
         String email = evalString(xpc, doc, "normalize-space(/fdml/meta/author/@email)");
+        String version = evalString(xpc, doc, "normalize-space(/fdml/@version)");
+        String meter = evalString(xpc, doc, "normalize-space(/fdml/meta/meter/@value)");
+        String tempoBpm = evalString(xpc, doc, "normalize-space(/fdml/meta/tempo/@bpm)");
+        String genre = evalString(xpc, doc, "normalize-space(/fdml/meta/type/@genre)");
+        String formationText = evalString(xpc, doc, "normalize-space(/fdml/meta/formation/@text)");
+        String formationKind = evalString(xpc, doc, "normalize-space(/fdml/meta/geometry/formation/@kind)");
+        String originCountry = evalString(xpc, doc, "normalize-space(/fdml/meta/origin/@country)");
+        boolean hasGeometry = evalBoolean(xpc, doc, "boolean(/fdml/meta/geometry)");
 
         XdmValue secVals = eval(xpc, doc, "/fdml/body/section/@id/string()");
         List<String> sections = new ArrayList<>();
@@ -39,6 +47,14 @@ class Indexer {
         sb.append("{\"file\":\"").append(esc(f.toString())).append("\"");
         if (!isEmpty(title)) sb.append(",\"title\":\"").append(esc(title)).append("\"");
         if (!isEmpty(email)) sb.append(",\"authorEmail\":\"").append(esc(email)).append("\"");
+        sb.append(",\"version\":\"").append(esc(version)).append("\"");
+        sb.append(",\"meter\":\"").append(esc(meter)).append("\"");
+        sb.append(",\"tempoBpm\":\"").append(esc(tempoBpm)).append("\"");
+        sb.append(",\"genre\":\"").append(esc(genre)).append("\"");
+        sb.append(",\"formationText\":\"").append(esc(formationText)).append("\"");
+        sb.append(",\"formationKind\":\"").append(esc(formationKind)).append("\"");
+        sb.append(",\"originCountry\":\"").append(esc(originCountry)).append("\"");
+        sb.append(",\"hasGeometry\":").append(hasGeometry);
         sb.append(",\"sections\":[");
         for (int j = 0; j < sections.size(); j++) {
           sb.append("\"").append(esc(sections.get(j))).append("\"");
@@ -65,6 +81,16 @@ class Indexer {
       return item == null ? "" : item.getStringValue();
     } catch (SaxonApiException e) {
       return "";
+    }
+  }
+
+  private static boolean evalBoolean(XPathCompiler xpc, XdmNode doc, String expr) {
+    try {
+      XdmItem item = xpc.evaluateSingle(expr, doc);
+      if (item == null) return false;
+      return "true".equalsIgnoreCase(item.getStringValue()) || "1".equals(item.getStringValue());
+    } catch (SaxonApiException e) {
+      return false;
     }
   }
 

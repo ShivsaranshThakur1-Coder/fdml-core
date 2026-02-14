@@ -8,9 +8,14 @@
   <div class="wrap">
     <div class="nav"><a class="cta" href="index.html">← Home</a></div>
     <h1>Search</h1>
-    <div class="searchbar" style="display:flex;gap:10px;margin:14px 0 18px">
+    <div class="searchbar" style="display:flex;gap:10px;margin:14px 0 10px">
       <input id="q" type="search" placeholder="Search title, file, or section id…" style="flex:1;padding:10px 12px">
       <button id="clear">Clear</button>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px">
+      <select id="meter" style="padding:8px 10px"><option value="">Any meter</option></select>
+      <select id="genre" style="padding:8px 10px"><option value="">Any genre</option></select>
+      <select id="formationKind" style="padding:8px 10px"><option value="">Any formation kind</option></select>
     </div>
     <div id="meta" class="muted" style="margin:8px 0 12px"></div>
     <ul id="results" class="grid"></ul>
@@ -20,34 +25,107 @@
   const res = await fetch("index.json");
   const data = await res.json().catch(()=>({items:[]}));
   const items = (data.items||[]).map(it=>({
-    file:String(it.file||""), title:String(it.title||"").trim(),
+    file:String(it.file||""),
+    title:String(it.title||"").trim(),
+    meter:String(it.meter||"").trim(),
+    genre:String(it.genre||"").trim(),
+    formationKind:String(it.formationKind||"").trim(),
     sections:Array.isArray(it.sections)? it.sections.map(String):[]
   }));
-  const Q=document.getElementById("q"), R=document.getElementById("results"), M=document.getElementById("meta");
-  document.getElementById("clear").onclick = ()=>{ Q.value=""; render(); Q.focus(); };
+  const Q=document.getElementById("q");
+  const FM=document.getElementById("meter");
+  const FG=document.getElementById("genre");
+  const FK=document.getElementById("formationKind");
+  const R=document.getElementById("results");
+  const M=document.getElementById("meta");
+  const params = new URLSearchParams(window.location.search);
+
+  function uniqSorted(values){
+    return Array.from(new Set(values.filter(v=>v))).sort((a,b)=>a.localeCompare(b));
+  }
+  function loadOptions(el, values, label){
+    el.innerHTML = `<option value="">${label}</option>`;
+    values.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      el.appendChild(opt);
+    });
+  }
+
+  loadOptions(FM, uniqSorted(items.map(i=>i.meter)), "Any meter");
+  loadOptions(FG, uniqSorted(items.map(i=>i.genre)), "Any genre");
+  loadOptions(FK, uniqSorted(items.map(i=>i.formationKind)), "Any formation kind");
+
+  Q.value = params.get("q") || "";
+  FM.value = params.get("meter") || "";
+  FG.value = params.get("genre") || "";
+  FK.value = params.get("formationKind") || "";
+
+  document.getElementById("clear").onclick = ()=>{
+    Q.value = "";
+    FM.value = "";
+    FG.value = "";
+    FK.value = "";
+    render();
+    Q.focus();
+  };
 
   function toHref(file){
     // corpus/valid/example-01.fdml.xml -> cards/example-01.fdml.html
-    let base = String(file).replace(/^corpus\/valid\//,"");
+    let base = String(file)
+      .replace(/^corpus\/valid\//,"")
+      .replace(/^corpus\/valid_v12\//,"");
     base = base.replace(/\.fdml\.xml$/i, ".fdml.html").replace(/\.xml$/i, ".html");
     return "cards/" + base;
   }
-  function match(it,q){
-    if(!q) return true; q=q.toLowerCase();
-    return it.title.toLowerCase().includes(q) || it.file.toLowerCase().includes(q) ||
+  function matchText(it,q){
+    if(!q) return true;
+    q=q.toLowerCase();
+    return it.title.toLowerCase().includes(q) ||
+           it.file.toLowerCase().includes(q) ||
            it.sections.some(s=>s.toLowerCase().includes(q));
+  }
+  function matchesFilters(it){
+    if (FM.value && it.meter !== FM.value) return false;
+    if (FG.value && it.genre !== FG.value) return false;
+    if (FK.value && it.formationKind !== FK.value) return false;
+    return true;
+  }
+  function syncUrl(){
+    const p = new URLSearchParams();
+    if (Q.value.trim()) p.set("q", Q.value.trim());
+    if (FM.value) p.set("meter", FM.value);
+    if (FG.value) p.set("genre", FG.value);
+    if (FK.value) p.set("formationKind", FK.value);
+    const query = p.toString();
+    const next = query ? `?${query}` : window.location.pathname.split("/").pop();
+    window.history.replaceState({}, "", next);
   }
   function card(it){
     const href = toHref(it.file);
-    return `<li><a class="card" href="${href}"><strong>${it.title||href}</strong><div class="sub">${href}</div></a></li>`;
+    const facets = [it.meter, it.genre, it.formationKind].filter(Boolean).join(" · ");
+    return `<li><a class="card" href="${href}"><strong>${it.title||href}</strong><div class="sub">${href}</div><div class="sub">${facets}</div></a></li>`;
   }
   function render(){
     const q = Q.value.trim();
-    const hits = items.filter(it=>match(it,q));
+    const hits = items
+      .filter(it=>matchText(it,q))
+      .filter(matchesFilters)
+      .sort((a,b)=>{
+        const at = (a.title || a.file).toLowerCase();
+        const bt = (b.title || b.file).toLowerCase();
+        return at.localeCompare(bt);
+      });
+    syncUrl();
     M.textContent = `${hits.length} of ${items.length} item(s)`;
     R.innerHTML = hits.length ? hits.map(card).join("") : `<li class="card"><div>No matches.</div></li>`;
   }
-  Q.addEventListener("input", render); render();
+  Q.addEventListener("input", render);
+  FM.addEventListener("change", render);
+  FG.addEventListener("change", render);
+  FK.addEventListener("change", render);
+  render();
 })();
 </script>
 </body></html>
