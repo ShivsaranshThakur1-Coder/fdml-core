@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.1">
+  <meta>
+    <title>Timing Invalid Example</title>
+    <origin country="Testland"/>
+    <type genre="line"/>
+    <meter value="2+2+2+3/16"/>
+    <tempo bpm="120"/>
+    <formation text="line"/>
+  </meta>
+  <body>
+    <section id="s-notes" type="notes"><p>Timing fixture</p></section>
+    <section id="s-setup" type="setup"><p>Timing fixture</p></section>
+    <figure id="f-off" name="Off meter">
+      <step who="all" action="step one" beats="3" startFoot="R"/>
+      <step who="all" action="step two" beats="6" startFoot="L"/>
+    </figure>
+    <sequence id="seq-main">
+      <use figure="f-off" repeat="1"/>
+    </sequence>
+  </body>
+</fdml>

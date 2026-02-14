@@ -23,7 +23,8 @@ class MainJson {
 
   static String toJsonDoctor(java.util.List<FdmlValidator.Result> rX,
                              java.util.List<SchematronValidator.Result> rS,
-                             java.util.List<Linter.FileResult> rL){
+                             java.util.List<Linter.FileResult> rL,
+                             java.util.List<TimingValidator.FileResult> rT){
     StringBuilder sb=new StringBuilder();
     sb.append("{\"command\":\"doctor\",\"xsd\":[");
     for(int i=0;i<rX.size();i++){ var r=rX.get(i);
@@ -50,6 +51,18 @@ class MainJson {
         sb.append("}"); if(j<fr.warnings.size()-1) sb.append(",");
       }
       sb.append("]}"); if(i<rL.size()-1) sb.append(",");
+    }
+    sb.append("],\"timing\":[");
+    for(int i=0;i<rT.size();i++){ var tr=rT.get(i);
+      sb.append("{\"file\":\"").append(esc(tr.file.toString())).append("\",\"ok\":").append(tr.ok()).append(",\"issues\":[");
+      for(int j=0;j<tr.issues.size();j++){ var is=tr.issues.get(j);
+        sb.append("{\"code\":\"").append(esc(is.code)).append("\",\"beats\":").append(is.beats);
+        if(is.figureId!=null) sb.append(",\"figure\":\"").append(esc(is.figureId)).append("\"");
+        if(is.meter!=null) sb.append(",\"meter\":\"").append(esc(is.meter)).append("\"");
+        if(is.message!=null) sb.append(",\"message\":\"").append(esc(is.message)).append("\"");
+        sb.append("}"); if(j<tr.issues.size()-1) sb.append(",");
+      }
+      sb.append("]}"); if(i<rT.size()-1) sb.append(",");
     }
     sb.append("]}");
     return sb.toString();

@@ -21,16 +21,18 @@ class Doctor {
     var rX = v.validateCollect(targets);
     var rS = s.validateCollect(targets);
     var rL = Linter.lintCollect(targets);
+    var rT = TimingValidator.validateCollect(targets);
 
     var rG = GeometryValidator.validateCollect(targets);
 
     boolean okX = allOkX(rX);
     boolean okS = allOkS(rS);
     boolean okL = allOkL(rL);
+    boolean okT = allOkT(rT);
     boolean okG = allOkG(rG);
 
     if (json) {
-      System.out.println(MainJson.toJsonDoctor(rX, rS, rL));
+      System.out.println(MainJson.toJsonDoctor(rX, rS, rL, rT));
     } else {
       System.out.println("DOCTOR SUMMARY");
       System.out.println("  XSD       : " + (okX ? "OK" : "FAILED"));
@@ -38,10 +40,12 @@ class Doctor {
       System.out.println("  GEO       : " + (okG ? "OK" : "FAILED"));
       long warns = rL.stream().filter(fr -> !fr.ok()).count();
       System.out.println("  Lint      : " + (warns == 0 ? "OK" : (warns + " file(s) with warnings")));
+      long timing = rT.stream().filter(fr -> !fr.ok()).count();
+      System.out.println("  Timing    : " + (timing == 0 ? "OK" : (timing + " file(s) with issues")));
     }
 
     if (strict) {
-      if (!okX || !okS || !okL || !okG) return 2;
+      if (!okX || !okS || !okL || !okT || !okG) return 2;
     }
     return 0;
   }
@@ -56,5 +60,6 @@ class Doctor {
   private static boolean allOkX(java.util.List<FdmlValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
   private static boolean allOkS(java.util.List<SchematronValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
   private static boolean allOkL(java.util.List<Linter.FileResult> xs){ for (var r: xs) if(!r.ok()) return false; return true; }
+  private static boolean allOkT(java.util.List<TimingValidator.FileResult> xs){ for (var r: xs) if(!r.ok()) return false; return true; }
   private static boolean allOkG(java.util.List<GeometryValidator.Result> xs){ for (var r: xs) if(!r.ok) return false; return true; }
 }
