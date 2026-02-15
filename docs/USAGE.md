@@ -95,3 +95,27 @@ python3 scripts/validate_json_schema.py schema/export-json.schema.json out/expor
 
 CI/local gate:
 - `make export-json-check` regenerates `site/export-json-sample.json` and validates it against the v1 contract schema.
+
+## Init Profiles
+
+`fdml init` supports profile templates:
+
+- `v1-basic`
+- `v12-circle`
+- `v12-line`
+- `v12-twoLinesFacing`
+- `v12-couple`
+
+Examples:
+
+```bash
+./bin/fdml init out/basic.fdml.xml --profile v1-basic --title "Basic"
+./bin/fdml init out/circle.v12.fdml.xml --profile v12-circle --title "Circle v1.2"
+./bin/fdml init out/twolines.v12.fdml.xml --profile v12-twoLinesFacing --title "Two Lines v1.2"
+```
+
+Validate generated output with strict doctor:
+
+```bash
+./bin/fdml doctor out/twolines.v12.fdml.xml --strict
+```

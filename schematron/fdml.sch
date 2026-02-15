@@ -209,13 +209,13 @@
     </rule>
 
     <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/circle/order/slot[@who]">
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @who]) &gt; 0">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = current()/@who]) &gt; 0">
         circle/order/slot/@who must reference a declared role id
       </assert>
     </rule>
 
     <rule context="fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/line[@role]">
-      <assert test="count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0">
+      <assert test="count(/fdml/meta/geometry/roles/role[@id = current()/@role]) &gt; 0">
         twoLines/line/@role must reference a declared role id
       </assert>
     </rule>

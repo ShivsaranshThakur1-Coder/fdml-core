@@ -773,7 +773,7 @@
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
          <xsl:attribute name="context">fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/circle/order/slot[@who]</xsl:attribute>
       </svrl:fired-rule>
-      <xsl:if test="not(count(/fdml/meta/geometry/roles/role[@id = @who]) &gt; 0)">
+      <xsl:if test="not(count(/fdml/meta/geometry/roles/role[@id = current()/@who]) &gt; 0)">
          <xsl:variable xmlns:svrl="http://purl.oclc.org/dsdl/svrl" name="location">
             <xsl:call-template name="schxslt:location">
                <xsl:with-param name="node" select="."/>
@@ -781,7 +781,7 @@
          </xsl:variable>
          <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                              location="{normalize-space($location)}">
-            <xsl:attribute name="test">count(/fdml/meta/geometry/roles/role[@id = @who]) &gt; 0</xsl:attribute>
+            <xsl:attribute name="test">count(/fdml/meta/geometry/roles/role[@id = current()/@who]) &gt; 0</xsl:attribute>
             <svrl:text>
         circle/order/slot/@who must reference a declared role id
       </svrl:text>
@@ -795,7 +795,7 @@
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
          <xsl:attribute name="context">fdml[@version = '1.2'][/fdml/meta/geometry/roles/role]//body/geometry/twoLines/line[@role]</xsl:attribute>
       </svrl:fired-rule>
-      <xsl:if test="not(count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0)">
+      <xsl:if test="not(count(/fdml/meta/geometry/roles/role[@id = current()/@role]) &gt; 0)">
          <xsl:variable xmlns:svrl="http://purl.oclc.org/dsdl/svrl" name="location">
             <xsl:call-template name="schxslt:location">
                <xsl:with-param name="node" select="."/>
@@ -803,7 +803,7 @@
          </xsl:variable>
          <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                              location="{normalize-space($location)}">
-            <xsl:attribute name="test">count(/fdml/meta/geometry/roles/role[@id = @role]) &gt; 0</xsl:attribute>
+            <xsl:attribute name="test">count(/fdml/meta/geometry/roles/role[@id = current()/@role]) &gt; 0</xsl:attribute>
             <svrl:text>
         twoLines/line/@role must reference a declared role id
       </svrl:text>
