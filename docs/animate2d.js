@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var FORMATIONS = { line: true, twoLinesFacing: true };
+  var FORMATIONS = { line: true, twoLinesFacing: true, circle: true };
   var EPS = 1e-9;
 
   function clamp(v, lo, hi) {
@@ -38,6 +38,62 @@
     order[ia] = order[ib];
     order[ib] = tmp;
     return true;
+  }
+
+  function isTruthy(value) {
+    var raw = String(value == null ? "" : value).toLowerCase();
+    return raw === "true" || raw === "1" || raw === "yes";
+  }
+
+  function isCyclicEquivalent(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    if (!a.length) return true;
+    var n = a.length;
+    var start = b.indexOf(a[0]);
+    if (start < 0) return false;
+    for (var i = 0; i < n; i++) {
+      if (a[i] !== b[(start + i) % n]) return false;
+    }
+    return true;
+  }
+
+  function sameArray(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
+  function rotateTargetsInOrder(order, targets, deltaStep) {
+    var out = Array.isArray(order) ? order.slice() : [];
+    if (!out.length) return out;
+    var targetSet = {};
+    (targets || []).forEach(function (id) {
+      if (id) targetSet[id] = true;
+    });
+    var indices = [];
+    for (var i = 0; i < out.length; i++) {
+      if (targetSet[out[i]]) indices.push(i);
+    }
+    if (indices.length < 2) return out;
+
+    var src = out.slice();
+    if (deltaStep > 0) {
+      for (i = 0; i < indices.length; i++) {
+        out[indices[i]] = src[indices[(i + 1) % indices.length]];
+      }
+      return out;
+    }
+
+    if (deltaStep < 0) {
+      for (i = 0; i < indices.length; i++) {
+        out[indices[i]] = src[indices[(i - 1 + indices.length) % indices.length]];
+      }
+    }
+    return out;
   }
 
   function dirToDeltaX(dir) {
@@ -139,6 +195,11 @@
       ids: [],
       positions: {},
       separation: 0.8,
+      circle: {
+        order: [],
+        radius: 0.85,
+        angleOffset: -Math.PI / 2
+      },
       line: {
         lineId: "",
         order: []
@@ -157,6 +218,13 @@
         state.line.lineId = String(first.id || "line");
         state.line.order = firstOrderSlots(first.orders, "initial");
       }
+      assignPositionsFromStructure(state);
+      return state;
+    }
+
+    if (formationKind === "circle") {
+      var circleOrders = topology.circle && Array.isArray(topology.circle.orders) ? topology.circle.orders : [];
+      state.circle.order = firstOrderSlots(circleOrders, "initial");
       assignPositionsFromStructure(state);
       return state;
     }
@@ -193,6 +261,22 @@
 
   function assignPositionsFromStructure(state) {
     state.positions = {};
+
+    if (state.formationKind === "circle") {
+      var orderCircle = Array.isArray(state.circle.order) ? state.circle.order : [];
+      var radius = Number(state.circle.radius || 0.85);
+      var offset = Number(state.circle.angleOffset || (-Math.PI / 2));
+      var n = orderCircle.length;
+      for (var k = 0; k < n; k++) {
+        var angle = offset + (2 * Math.PI * k) / Math.max(1, n);
+        state.positions[orderCircle[k]] = {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius
+        };
+      }
+      state.ids = sortUnique(orderCircle);
+      return;
+    }
 
     if (state.formationKind === "line") {
       var order = Array.isArray(state.line.order) ? state.line.order : [];
@@ -242,6 +326,7 @@
 
   function applyEvent(state, event) {
     var kind = String(event.kind || "").toLowerCase();
+    var preserveOrder = isTruthy(event.preserveOrder);
 
     if (kind === "approach") {
       state.separation = clamp(state.separation - 0.1, 0.25, 1.4);
@@ -275,6 +360,16 @@
       var b = String(event.b || "");
       if (!a || !b) return;
 
+      if (state.formationKind === "circle") {
+        var beforeCircleSwap = state.circle.order.slice();
+        var afterCircleSwap = beforeCircleSwap.slice();
+        if (!swapInOrder(afterCircleSwap, a, b)) return;
+        if (preserveOrder && !isCyclicEquivalent(beforeCircleSwap, afterCircleSwap)) return;
+        state.circle.order = afterCircleSwap;
+        assignPositionsFromStructure(state);
+        return;
+      }
+
       var swappedInOrder = false;
       if (state.formationKind === "line") {
         swappedInOrder = swapInOrder(state.line.order, a, b);
@@ -303,6 +398,30 @@
 
     if (kind === "move") {
       if (String(event.frame || "") !== "formation") return;
+
+      if (state.formationKind === "circle") {
+        var dirCircle = String(event.dir || "").toLowerCase();
+        var deltaStep = 0;
+        if (dirCircle === "counterclockwise" || dirCircle === "ccw") deltaStep = 1;
+        else if (dirCircle === "clockwise" || dirCircle === "cw") deltaStep = -1;
+        if (!deltaStep) return;
+
+        var beforeCircleMove = state.circle.order.slice();
+        if (!beforeCircleMove.length) return;
+        var targetsCircle = resolveWhoTargets(event.who, state);
+        var afterCircleMove;
+        if (!targetsCircle.length || targetsCircle.length === beforeCircleMove.length) {
+          afterCircleMove = rotateForward(beforeCircleMove, deltaStep);
+        } else {
+          afterCircleMove = rotateTargetsInOrder(beforeCircleMove, targetsCircle, deltaStep);
+        }
+        if (preserveOrder && !isCyclicEquivalent(beforeCircleMove, afterCircleMove)) return;
+        if (sameArray(beforeCircleMove, afterCircleMove)) return;
+        state.circle.order = afterCircleMove;
+        assignPositionsFromStructure(state);
+        return;
+      }
+
       var dx = dirToDeltaX(event.dir);
       if (Math.abs(dx) < EPS) return;
       var targets = resolveWhoTargets(event.who, state);
@@ -335,7 +454,8 @@
             who: p.who || step.who || "",
             a: p.a || "",
             b: p.b || "",
-            delta: p.delta || ""
+            delta: p.delta || "",
+            preserveOrder: p.preserveOrder || ""
           });
         });
       });
@@ -406,7 +526,7 @@
 
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("class", "fdml-diagram-svg");
-    svg.setAttribute("viewBox", "-1.4 -1.1 2.8 2.2");
+    svg.setAttribute("viewBox", frame.formationKind === "circle" ? "-1.2 -1.2 2.4 2.4" : "-1.4 -1.1 2.8 2.2");
 
     function line(x1, y1, x2, y2) {
       var el = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -435,7 +555,18 @@
       svg.appendChild(t);
     }
 
-    if (frame.formationKind === "line") {
+    function ring(cx, cy, r) {
+      var el = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      el.setAttribute("cx", String(cx));
+      el.setAttribute("cy", String(cy));
+      el.setAttribute("r", String(r));
+      el.setAttribute("class", "diagram-ring");
+      svg.appendChild(el);
+    }
+
+    if (frame.formationKind === "circle") {
+      ring(0, 0, 0.92);
+    } else if (frame.formationKind === "line") {
       line(-1.1, 0, 1.1, 0);
     } else if (frame.formationKind === "twoLinesFacing") {
       line(-1.1, frame.separation, 1.1, frame.separation);

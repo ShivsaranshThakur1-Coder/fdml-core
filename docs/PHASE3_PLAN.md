@@ -6,6 +6,10 @@ Engineering method:
 
 `Spec -> Impl -> Test -> Fixture -> CI -> Demo`
 
+## 0) Progress
+
+- 2026-02-15: DONE: P3-2 circle 2D kinematics + order-preserving swaps
+
 ## 1) Scope
 
 - Build a 2D kinematic engine on card pages.
@@ -27,7 +31,7 @@ Engineering method:
 | ID | Status | Deliverable |
 | --- | --- | --- |
 | P3-1 | NOW | 2D positions + smooth interpolation for `line` and `twoLinesFacing` |
-| P3-2 | TODO | Circle positions + order-preserving swaps |
+| P3-2 | DONE | Circle positions + order-preserving swaps |
 | P3-3 | TODO | Couple twirl/hold kinematics |
 | P3-4 | TODO | Motion mapping for `move`/`turn`/`pass`/`weave` |
 | P3-5 | TODO | Collision-lite soft constraints |
