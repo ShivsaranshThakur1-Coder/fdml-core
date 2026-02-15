@@ -50,6 +50,11 @@
   --meter 4/4 \
   --tempo 112 \
   --profile v1-basic</code></pre>
+    <p class="sub">With provenance sidecar:</p>
+    <pre><code>./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --provenance-out out/provenance_minimal.json</code></pre>
 
     <h3>2) Validate With Strict Doctor</h3>
     <pre><code>./bin/fdml doctor out/demo.fdml.xml --strict</code></pre>

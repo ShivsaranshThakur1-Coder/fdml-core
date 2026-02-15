@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fdml.local/schema/provenance.schema.json",
+  "title": "FDML ingest provenance sidecar",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sourcePath", "sourceSha256", "steps"],
+  "properties": {
+    "sourcePath": {
+      "type": "string"
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "figureId",
+          "stepIndex",
+          "action",
+          "beats",
+          "sourceSpan",
+          "sourceSnippet"
+        ],
+        "properties": {
+          "figureId": { "type": "string" },
+          "stepIndex": { "type": "integer", "minimum": 1 },
+          "action": { "type": "string" },
+          "beats": { "type": "integer", "minimum": 1 },
+          "sourceSpan": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start", "end"],
+            "properties": {
+              "start": { "type": "integer", "minimum": 0 },
+              "end": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "sourceSnippet": { "type": "string" }
+        }
+      }
+    }
+  }
+}

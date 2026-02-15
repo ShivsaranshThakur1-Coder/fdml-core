@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -203,6 +204,82 @@ def _fallback_validate_export_json(instance: Any) -> list[str]:
     return errs
 
 
+def _fallback_validate_provenance(instance: Any) -> list[str]:
+    """Fallback validator for schema/provenance.schema.json when jsonschema is unavailable."""
+    errs: list[str] = []
+
+    def expect_type(path: str, val: Any, kind: type) -> bool:
+      if not isinstance(val, kind):
+        errs.append(f"{path}: expected {kind.__name__}, got {type(val).__name__}")
+        return False
+      return True
+
+    def expect_keys(path: str, obj: dict[str, Any], required: list[str], optional: list[str] | None = None) -> None:
+      optional = optional or []
+      missing = [k for k in required if k not in obj]
+      if missing:
+        errs.append(f"{path}: missing required keys {missing}")
+      allow = set(required + optional)
+      extra = [k for k in obj.keys() if k not in allow]
+      if extra:
+        errs.append(f"{path}: unexpected keys {extra}")
+
+    if not expect_type("/", instance, dict):
+      return errs
+
+    expect_keys("/", instance, ["sourcePath", "sourceSha256", "steps"], ["generatedAt"])
+    if "sourcePath" in instance and not isinstance(instance["sourcePath"], str):
+      errs.append("/sourcePath: expected str")
+    if "sourceSha256" in instance:
+      if not isinstance(instance["sourceSha256"], str):
+        errs.append("/sourceSha256: expected str")
+      elif re.fullmatch(r"[0-9a-f]{64}", instance["sourceSha256"]) is None:
+        errs.append("/sourceSha256: expected 64 lowercase hex chars")
+    if "generatedAt" in instance and not isinstance(instance["generatedAt"], str):
+      errs.append("/generatedAt: expected str")
+
+    steps = instance.get("steps")
+    if not expect_type("/steps", steps, list):
+      return errs
+
+    for i, step in enumerate(steps):
+      sp = f"/steps/{i}"
+      if not expect_type(sp, step, dict):
+        continue
+      expect_keys(sp, step, ["figureId", "stepIndex", "action", "beats", "sourceSpan", "sourceSnippet"])
+      if "figureId" in step and not isinstance(step["figureId"], str):
+        errs.append(f"{sp}/figureId: expected str")
+      if "stepIndex" in step:
+        if not isinstance(step["stepIndex"], int):
+          errs.append(f"{sp}/stepIndex: expected int")
+        elif step["stepIndex"] < 1:
+          errs.append(f"{sp}/stepIndex: expected >= 1")
+      if "action" in step and not isinstance(step["action"], str):
+        errs.append(f"{sp}/action: expected str")
+      if "beats" in step:
+        if not isinstance(step["beats"], int):
+          errs.append(f"{sp}/beats: expected int")
+        elif step["beats"] < 1:
+          errs.append(f"{sp}/beats: expected >= 1")
+      if "sourceSnippet" in step and not isinstance(step["sourceSnippet"], str):
+        errs.append(f"{sp}/sourceSnippet: expected str")
+      if "sourceSpan" in step:
+        ss = step["sourceSpan"]
+        if expect_type(f"{sp}/sourceSpan", ss, dict):
+          expect_keys(f"{sp}/sourceSpan", ss, ["start", "end"])
+          if "start" in ss:
+            if not isinstance(ss["start"], int):
+              errs.append(f"{sp}/sourceSpan/start: expected int")
+            elif ss["start"] < 0:
+              errs.append(f"{sp}/sourceSpan/start: expected >= 0")
+          if "end" in ss:
+            if not isinstance(ss["end"], int):
+              errs.append(f"{sp}/sourceSpan/end: expected int")
+            elif ss["end"] < 0:
+              errs.append(f"{sp}/sourceSpan/end: expected >= 0")
+    return errs
+
+
 def main() -> int:
     if len(sys.argv) != 3:
         print("Usage: validate_json_schema.py <schema.json> <instance.json>")
@@ -228,13 +305,21 @@ def main() -> int:
         return 0
     except ModuleNotFoundError:
         # Minimal fallback for environments without jsonschema.
-        errors = _fallback_validate_export_json(instance)
+        if schema_path.name == "export-json.schema.json":
+            errors = _fallback_validate_export_json(instance)
+            label = "fallback export-json checks"
+        elif schema_path.name == "provenance.schema.json":
+            errors = _fallback_validate_provenance(instance)
+            label = "fallback provenance checks"
+        else:
+            errors = [f"unsupported fallback schema: {schema_path.name}"]
+            label = "fallback checks"
         if errors:
-            print(f"FAIL: {instance_path} violates fallback export-json checks")
+            print(f"FAIL: {instance_path} violates {label}")
             for e in errors:
                 print(f"  - {e}")
             return 1
-        print(f"OK: {instance_path} matches fallback export-json checks")
+        print(f"OK: {instance_path} matches {label}")
         return 0
 
 

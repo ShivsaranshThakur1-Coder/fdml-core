@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.regex.Pattern;
 
 class Ingest {
   private static final int NOTES_PREVIEW_CHARS = 200;
-  private static final Pattern STEP_LINE = Pattern.compile("^\\s*(?:\\d+\\.\\s+|-\\s+)(.+?)\\s*$");
+  private static final Pattern STEP_LINE = Pattern.compile("^\\s*(?:\\d+\\.\\s+|-\\s+)(.+?)\\s*$", Pattern.MULTILINE);
+  private static final Pattern FIRST_NON_EMPTY_LINE = Pattern.compile("^\\s*\\S.*$", Pattern.MULTILINE);
   private static final List<String> SUPPORTED_PROFILES = List.of(
     "v1-basic",
     "v12-circle",
@@ -23,12 +25,26 @@ class Ingest {
     "v12-couple"
   );
 
+  private static final class ExtractedStep {
+    final String normalizedText;
+    final String sourceSnippet;
+    final int sourceStart;
+    final int sourceEnd;
+
+    ExtractedStep(String normalizedText, String sourceSnippet, int sourceStart, int sourceEnd) {
+      this.normalizedText = normalizedText;
+      this.sourceSnippet = sourceSnippet;
+      this.sourceStart = sourceStart;
+      this.sourceEnd = sourceEnd;
+    }
+  }
+
   static int run(String[] args) {
     Map<String, String> kv = parseFlags(args, 1);
     String sourceArg = kv.getOrDefault("--source", "").trim();
     String outArg = kv.getOrDefault("--out", "").trim();
     if (sourceArg.isEmpty() || outArg.isEmpty()) {
-      System.err.println("ingest: provide --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile " + String.join("|", SUPPORTED_PROFILES) + "]");
+      System.err.println("ingest: provide --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile " + String.join("|", SUPPORTED_PROFILES) + "] [--provenance-out file.json]");
       return 4;
     }
 
@@ -55,8 +71,12 @@ class Ingest {
     String title = kv.getOrDefault("--title", "Ingested Routine");
     String meter = kv.getOrDefault("--meter", "4/4");
     String tempo = kv.getOrDefault("--tempo", "112");
+    String provenanceOutArg = kv.getOrDefault("--provenance-out", "").trim();
 
-    List<String> stepTexts = deriveStepTexts(sourceText);
+    List<ExtractedStep> extractedSteps = deriveExtractedSteps(sourceText);
+
+    List<String> stepTexts = new ArrayList<>();
+    for (ExtractedStep s : extractedSteps) stepTexts.add(s.normalizedText);
     int minSteps = "v12-twoLinesFacing".equals(profile) ? 6 : 1;
     ensureMinSteps(stepTexts, minSteps);
     int barLengthCounts = parseBarLengthCounts(meter);
@@ -73,7 +93,94 @@ class Ingest {
       System.err.println("ingest: failed to write output file: " + out + " (" + e.getMessage() + ")");
       return 4;
     }
+
+    if (!provenanceOutArg.isBlank()) {
+      Path provenanceOut = Paths.get(provenanceOutArg);
+      String provenanceJson = buildProvenanceJson(source.toString(), sourceText, extractedSteps);
+      try {
+        Path parent = provenanceOut.getParent();
+        if (parent != null) Files.createDirectories(parent);
+        Files.writeString(provenanceOut, provenanceJson, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        System.out.println("Created: " + provenanceOut);
+      } catch (Exception e) {
+        System.err.println("ingest: failed to write provenance file: " + provenanceOut + " (" + e.getMessage() + ")");
+        return 4;
+      }
+    }
     return 0;
+  }
+
+  private static List<ExtractedStep> deriveExtractedSteps(String sourceText) {
+    List<ExtractedStep> out = new ArrayList<>();
+
+    Matcher m = STEP_LINE.matcher(sourceText);
+    while (m.find()) {
+      int start = m.start(1);
+      int end = m.end(1);
+      if (start < 0 || end < start || end > sourceText.length()) continue;
+      String snippet = sourceText.substring(start, end);
+      String normalized = collapseWhitespace(snippet);
+      if (!normalized.isEmpty()) out.add(new ExtractedStep(normalized, snippet, start, end));
+    }
+    if (!out.isEmpty()) return out;
+
+    Matcher first = FIRST_NON_EMPTY_LINE.matcher(sourceText);
+    if (first.find()) {
+      int start = first.start();
+      int end = first.end();
+      String snippet = sourceText.substring(start, end);
+      String normalized = collapseWhitespace(snippet);
+      if (!normalized.isEmpty()) out.add(new ExtractedStep(normalized, snippet, start, end));
+    }
+
+    if (out.isEmpty()) out.add(new ExtractedStep("Ingested step", "Ingested step", 0, 13));
+    return out;
+  }
+
+  private static String buildProvenanceJson(String sourcePath, String sourceText, List<ExtractedStep> steps) {
+    String sha = sha256Hex(sourceText);
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    sb.append("\"sourcePath\":\"").append(jsonEscape(sourcePath)).append("\",");
+    sb.append("\"sourceSha256\":\"").append(sha).append("\",");
+    sb.append("\"steps\":[");
+    for (int i = 0; i < steps.size(); i++) {
+      ExtractedStep s = steps.get(i);
+      if (i > 0) sb.append(",");
+      sb.append("{");
+      sb.append("\"figureId\":\"f-ingest\",");
+      sb.append("\"stepIndex\":").append(i + 1).append(",");
+      sb.append("\"action\":\"").append(jsonEscape(s.normalizedText)).append("\",");
+      sb.append("\"beats\":1,");
+      sb.append("\"sourceSpan\":{");
+      sb.append("\"start\":").append(s.sourceStart).append(",");
+      sb.append("\"end\":").append(s.sourceEnd);
+      sb.append("},");
+      sb.append("\"sourceSnippet\":\"").append(jsonEscape(s.sourceSnippet)).append("\"");
+      sb.append("}");
+    }
+    sb.append("]}");
+    return sb.toString();
+  }
+
+  private static String sha256Hex(String sourceText) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      byte[] digest = md.digest(sourceText.getBytes(StandardCharsets.UTF_8));
+      StringBuilder sb = new StringBuilder();
+      for (byte b : digest) sb.append(String.format(java.util.Locale.ROOT, "%02x", b));
+      return sb.toString();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to compute SHA-256", e);
+    }
+  }
+
+  private static String jsonEscape(String s) {
+    return s.replace("\\", "\\\\")
+      .replace("\"", "\\\"")
+      .replace("\n", "\\n")
+      .replace("\r", "\\r")
+      .replace("\t", "\\t");
   }
 
   private static void ensureMinSteps(List<String> stepTexts, int minSteps) {
@@ -82,29 +189,6 @@ class Ingest {
 
   private static void padToBarLength(List<String> stepTexts, int barLengthCounts) {
     while (stepTexts.size() % barLengthCounts != 0) stepTexts.add("Ingest filler step " + (stepTexts.size() + 1));
-  }
-
-  private static List<String> deriveStepTexts(String sourceText) {
-    String normalized = sourceText.replace("\r\n", "\n").replace('\r', '\n');
-    String[] lines = normalized.split("\n", -1);
-    List<String> out = new ArrayList<>();
-    for (String line : lines) {
-      Matcher m = STEP_LINE.matcher(line);
-      if (!m.matches()) continue;
-      String snippet = collapseWhitespace(m.group(1));
-      if (!snippet.isEmpty()) out.add(snippet);
-    }
-    if (!out.isEmpty()) return out;
-
-    for (String line : lines) {
-      String t = collapseWhitespace(line);
-      if (!t.isEmpty()) {
-        out.add(t);
-        break;
-      }
-    }
-    if (out.isEmpty()) out.add("Ingested step");
-    return out;
   }
 
   private static String buildXml(String title,

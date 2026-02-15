@@ -1,0 +1,13 @@
+{
+  "sourcePath": "analysis/gold/ingest/source_minimal.txt",
+  "steps": [
+    {
+      "figureId": "f-ingest",
+      "stepIndex": 1,
+      "action": "Step forward",
+      "beats": 1,
+      "sourceSpan": { "start": 65, "end": 77 },
+      "sourceSnippet": "Step forward"
+    }
+  ]
+}

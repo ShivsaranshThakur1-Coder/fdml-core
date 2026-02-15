@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check coverage site-check ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check provenance-check coverage site-check ci clean
 
 html:
 	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
@@ -54,6 +54,12 @@ ingest-check:
 	diff -u corpus/valid_ingest/ingest-minimal.fdml.xml out/ingest-minimal.fdml.xml; \
 	bin/fdml doctor out/ingest-minimal.fdml.xml --strict > /dev/null
 
+provenance-check:
+	@set -e; mkdir -p out; \
+	bin/fdml ingest --source analysis/gold/ingest/source_minimal.txt --out out/ingest-minimal.fdml.xml --title "Ingest Minimal" --meter 4/4 --tempo 112 --profile v1-basic --provenance-out out/provenance_minimal.json > /dev/null; \
+	diff -u analysis/gold/ingest/provenance_minimal.json out/provenance_minimal.json; \
+	python3 scripts/validate_json_schema.py schema/provenance.schema.json out/provenance_minimal.json > /dev/null
+
 coverage:
 	@python3 scripts/coverage_report.py
 
@@ -61,7 +67,7 @@ site-check:
 	@$(MAKE) html
 	@python3 scripts/site_smoke.py
 
-ci: check-schematron validate-valid validate-invalid export-json-check ingest-check site-check
+ci: check-schematron validate-valid validate-invalid export-json-check ingest-check provenance-check site-check
 
 clean:
 	rm -rf out site

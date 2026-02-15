@@ -141,6 +141,16 @@ Generate a deterministic FDML scaffold from local text notes:
   --profile v1-basic
 ```
 
+Emit provenance sidecar JSON:
+
+```bash
+./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --provenance-out out/provenance_minimal.json
+python3 scripts/validate_json_schema.py schema/provenance.schema.json out/provenance_minimal.json
+```
+
 Validate the generated file:
 
 ```bash
