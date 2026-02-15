@@ -126,3 +126,23 @@ Validate generated output with strict doctor:
 ```bash
 ./bin/fdml doctor out/twolines.v12.fdml.xml --strict
 ```
+
+## Ingest Scaffold
+
+Generate a deterministic FDML scaffold from local text notes:
+
+```bash
+./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --title "Ingest Minimal" \
+  --meter 4/4 \
+  --tempo 112 \
+  --profile v1-basic
+```
+
+Validate the generated file:
+
+```bash
+./bin/fdml doctor out/ingest-minimal.fdml.xml --strict
+```

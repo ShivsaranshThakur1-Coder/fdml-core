@@ -42,6 +42,15 @@
   --title "Demo Two Lines" \
   --profile v12-twoLinesFacing</code></pre>
 
+    <p class="sub">Ingest scaffold from notes text:</p>
+    <pre><code>./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --title "Ingest Minimal" \
+  --meter 4/4 \
+  --tempo 112 \
+  --profile v1-basic</code></pre>
+
     <h3>2) Validate With Strict Doctor</h3>
     <pre><code>./bin/fdml doctor out/demo.fdml.xml --strict</code></pre>
     <p class="sub">Need actionable guidance on failures?</p>

@@ -1,0 +1,5 @@
+This source demonstrates deterministic ingest from plain text notes.
+1. Step forward
+- Turn left
+2. Clap once
+- Return home

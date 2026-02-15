@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>Ingest Minimal</title>
+    <meter value="4/4"/>
+    <tempo bpm="112"/>
+  </meta>
+  <body>
+    <section type="notes">
+      <p>This source demonstrates deterministic ingest from plain text notes. 1. Step forward - Turn left 2. Clap once - Return home</p>
+    </section>
+    <figure id="f-ingest" name="Ingested Figure" formation="ingest">
+      <step who="both" action="Step forward" beats="1" count="1">Step forward</step>
+      <step who="both" action="Turn left" beats="1" count="2">Turn left</step>
+      <step who="both" action="Clap once" beats="1" count="3">Clap once</step>
+      <step who="both" action="Return home" beats="1" count="4">Return home</step>
+    </figure>
+  </body>
+</fdml>
