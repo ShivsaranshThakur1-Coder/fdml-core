@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 V="${1:-${V:-0}}"
+V12_DEMO_FILES=(
+  "corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml"
+  "corpus/valid_v12/mayim-mayim.v12.fdml.xml"
+  "corpus/valid_v12/example-05-contra.progress.v12.fdml.xml"
+)
 
 # Rebuild cards only; keep site/ stable
 rm -rf site/cards
@@ -17,6 +22,17 @@ cp -f docs/animate2d.js site/cards/animate2d.js
 # Copy generated cards
 cp -f out/html/*.html site/cards/
 
+# Render curated v1.2 demo cards directly (deterministic explicit list)
+for f in "${V12_DEMO_FILES[@]}"; do
+  if [[ ! -f "$f" ]]; then
+    echo "Missing required v1.2 demo file: $f" >&2
+    exit 1
+  fi
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  xsltproc --stringparam cssVersion "$V" xslt/card.xsl "$f" > "site/cards/${stem}.html"
+done
+
 # Emit per-card export-json payloads for timeline renderer
 tmp_cards="$(mktemp)"
 find corpus/valid -type f -name '*.xml' | sort > "$tmp_cards"
@@ -26,9 +42,14 @@ while IFS= read -r f; do
   bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
 done < "$tmp_cards"
 rm -f "$tmp_cards"
+for f in "${V12_DEMO_FILES[@]}"; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
+done
 
 # Emit index.json for Search
-bin/fdml index corpus/valid --out site/index.json
+bin/fdml index corpus/valid "${V12_DEMO_FILES[@]}" --out site/index.json
 
 # Emit export-json sample for demo page
 bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml --out site/export-json-sample.json >/dev/null

@@ -9,6 +9,12 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
+V12_DEMO_FILES = [
+    "corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml",
+    "corpus/valid_v12/mayim-mayim.v12.fdml.xml",
+    "corpus/valid_v12/example-05-contra.progress.v12.fdml.xml",
+]
+
 
 class LinkParser(HTMLParser):
     def __init__(self) -> None:
@@ -79,6 +85,18 @@ def main() -> int:
         expected = cards_dir / expected_card_name(file_value)
         if not expected.exists():
             fail(f"index.json item file={file_value} does not map to existing card {expected.relative_to(site_dir)}")
+
+    item_files = {str(it.get("file", "")) for it in items if isinstance(it, dict)}
+    for demo_file in V12_DEMO_FILES:
+        if demo_file not in item_files:
+            fail(f"v1.2 demo file missing from site/index.json: {demo_file}")
+        card_name = expected_card_name(demo_file)
+        card_html = cards_dir / card_name
+        card_json = cards_dir / (card_name[:-5] + ".json")
+        if not card_html.exists():
+            fail(f"missing v1.2 demo card html: {card_html.relative_to(site_dir)}")
+        if not card_json.exists():
+            fail(f"missing v1.2 demo card json: {card_json.relative_to(site_dir)}")
 
     search_html = (site_dir / "search.html").read_text(encoding="utf-8")
     for required_id in ("meter", "genre", "formationKind"):
