@@ -1,7 +1,7 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check provenance-check coverage site-check ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check provenance-check site-manifest-check coverage site-check ci clean
 
 html:
-	@set -e; TS=$$(date +%s); out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
+	@set -e; TS=$${V:-0}; out=out/html; mkdir -p $$out; tmp=$$(mktemp); \
 		find corpus/valid -type f -name '*.xml' | sort > $$tmp; \
 		while IFS= read -r f; do \
 			base=$$(basename "$$f"); stem=$${base%.xml}; \
@@ -60,6 +60,16 @@ provenance-check:
 	diff -u analysis/gold/ingest/provenance_minimal.json out/provenance_minimal.json; \
 	python3 scripts/validate_json_schema.py schema/provenance.schema.json out/provenance_minimal.json > /dev/null
 
+site-manifest-check:
+	@set -e; \
+	$(MAKE) html; \
+	python3 scripts/site_manifest.py site --out out/site_manifest.json; \
+	if ! diff -u docs/manifest.expected.json out/site_manifest.json; then \
+		echo "Site manifest drift detected. If intentional, regenerate with:"; \
+		echo "  make html && python3 scripts/site_manifest.py site --out docs/manifest.expected.json"; \
+		exit 1; \
+	fi
+
 coverage:
 	@python3 scripts/coverage_report.py
 
@@ -67,7 +77,7 @@ site-check:
 	@$(MAKE) html
 	@python3 scripts/site_smoke.py
 
-ci: check-schematron validate-valid validate-invalid export-json-check ingest-check provenance-check site-check
+ci: check-schematron validate-valid validate-invalid export-json-check ingest-check provenance-check site-manifest-check site-check
 
 clean:
 	rm -rf out site

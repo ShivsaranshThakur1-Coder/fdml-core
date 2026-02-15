@@ -156,3 +156,25 @@ Validate the generated file:
 ```bash
 ./bin/fdml doctor out/ingest-minimal.fdml.xml --strict
 ```
+
+## Reproducible Site Manifest
+
+Generate the current site manifest:
+
+```bash
+make html
+python3 scripts/site_manifest.py site --out out/site_manifest.json
+```
+
+Check against the committed expected manifest:
+
+```bash
+make site-manifest-check
+```
+
+If site output changed intentionally, regenerate the expected manifest:
+
+```bash
+make html
+python3 scripts/site_manifest.py site --out docs/manifest.expected.json
+```

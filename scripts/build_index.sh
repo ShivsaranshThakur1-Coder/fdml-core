@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-V="${1:-${V:-$EPOCHSECONDS}}"
+V="${1:-${V:-0}}"
 
 # Rebuild cards only; keep site/ stable
 rm -rf site/cards

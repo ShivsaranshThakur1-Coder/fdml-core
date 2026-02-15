@@ -138,7 +138,17 @@ make ci
 Per `Makefile`, this runs:
 - `validate-valid` (calls `fdml validate`)
 - `validate-invalid` (ensures `fdml validate` fails on invalid corpus)
-- `html`
+- `export-json-check`
+- `ingest-check`
+- `provenance-check`
+- `site-manifest-check`
+- `site-check`
+
+Site manifest regeneration when changes are intentional:
+```bash
+make html
+python3 scripts/site_manifest.py site --out docs/manifest.expected.json
+```
 
 Note: `make validate-*` uses `fdml` in PATH (not `./bin/fdml`).
 - Unknown whether you expect Homebrew-installed `fdml` or want to use the local wrapper.
