@@ -15,6 +15,7 @@ This plan uses the repo engineering method:
 - 2026-02-15: DONE: D1 doctor --explain
 - 2026-02-15: DONE: D2 ingest scaffold
 - 2026-02-15: DONE: E1 provenance sidecar
+- 2026-02-15: DONE: E2 publishing manifest gate
 
 ## 2) Phase-2 Scope Map
 
@@ -37,7 +38,7 @@ This plan uses the repo engineering method:
 | D1 | DONE | Authoring | `doctor --explain` with issue remediation guidance and optional `--json --explain` payload | `src/main/java/org/fdml/cli/Doctor.java`, `src/main/java/org/fdml/cli/MainJson.java`, docs in `docs/USAGE.md` | Extend `src/test/java/org/fdml/cli/DoctorTimingTest.java` and add doctor explain tests on `corpus/invalid*` + `corpus/invalid_v12/*` | Add CI snapshot check for explain output (stable issue codes + advice IDs) | `site/demo.html` troubleshooting examples |
 | D2 | DONE | Ingestion | Deterministic ingest CLI scaffold (`fdml ingest --source ... --out ...`) with minimal provenance | new `src/main/java/org/fdml/cli/Ingest.java`, `src/main/java/org/fdml/cli/Main.java`, `analysis/` helper wrappers as needed | One gold fixture in `analysis/gold/` to verify normalized output; one failure fixture for malformed source | Add CI smoke target for ingest on a tiny fixture | `site/demo.html` ingestion quickstart block |
 | E1 | DONE | Ingestion | Provenance sidecar schema (`*.provenance.json`) and validator hook | new `schema/provenance.schema.json`, `analysis/` scripts, `docs/USAGE.md` | Schema validation test + fixture pair under `analysis/gold/` | Add CI check for provenance schema compliance | `site/demo.html` provenance section |
-| E2 | TODO | Publishing | Release-quality publishing hardening: reproducible site manifest + pre-release gate | `scripts/build_index.sh`, new `scripts/site_manifest.py`, `Makefile`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `RUNBOOK.md` | Snapshot fixture for site manifest + reproducibility test (two builds, same checksums) | Extend `make ci`/GH Actions with manifest diff gate before release | `site/index.html` release badge/status note + demo checklist link |
+| E2 | DONE | Publishing | Release-quality publishing hardening: reproducible site manifest + pre-release gate | `scripts/build_index.sh`, new `scripts/site_manifest.py`, `Makefile`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `RUNBOOK.md` | Snapshot fixture for site manifest + reproducibility test (two builds, same checksums) | Extend `make ci`/GH Actions with manifest diff gate before release | `site/index.html` release badge/status note + demo checklist link |
 
 ## 4) Strict Definition-of-Done Checklist
 
@@ -88,3 +89,5 @@ Why this order:
 - Diagrams before animation to avoid debugging visual state and motion simultaneously.
 - Authoring and explainability after data/visual foundations to avoid rework.
 - Ingestion and publishing hardening last so CI/release gates stabilize after feature shape is known.
+
+Phase 2 status: COMPLETE (verify with: `make ci && mvn test`).
