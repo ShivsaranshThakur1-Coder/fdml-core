@@ -159,6 +159,9 @@
         <script>
           <xsl:attribute name="src">./animate.js?<xsl:value-of select="$cssVersion"/></xsl:attribute>
         </script>
+        <script>
+          <xsl:attribute name="src">./animate2d.js?<xsl:value-of select="$cssVersion"/></xsl:attribute>
+        </script>
       </body>
     </html>
   </xsl:template>
