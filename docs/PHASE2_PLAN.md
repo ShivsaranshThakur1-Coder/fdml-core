@@ -14,6 +14,7 @@ This plan uses the repo engineering method:
 - 2026-02-15: DONE: C2 init profiles
 - 2026-02-15: DONE: D1 doctor --explain
 - 2026-02-15: DONE: D2 ingest scaffold
+- 2026-02-15: DONE: E1 provenance sidecar
 
 ## 2) Phase-2 Scope Map
 
@@ -35,7 +36,7 @@ This plan uses the repo engineering method:
 | C2 | DONE | Authoring | Enhanced `init` templates (`--profile`) for common formations + timing-ready skeletons | `src/main/java/org/fdml/cli/Init.java`, `src/main/java/org/fdml/cli/Main.java`, template snippets in `src/main/resources/` if added | New `src/test/java/org/fdml/cli/InitProfileTest.java`; generated outputs validated by `doctor --strict` | Add matrix test in CI for all profiles | `site/demo.html` “Start authoring” section |
 | D1 | DONE | Authoring | `doctor --explain` with issue remediation guidance and optional `--json --explain` payload | `src/main/java/org/fdml/cli/Doctor.java`, `src/main/java/org/fdml/cli/MainJson.java`, docs in `docs/USAGE.md` | Extend `src/test/java/org/fdml/cli/DoctorTimingTest.java` and add doctor explain tests on `corpus/invalid*` + `corpus/invalid_v12/*` | Add CI snapshot check for explain output (stable issue codes + advice IDs) | `site/demo.html` troubleshooting examples |
 | D2 | DONE | Ingestion | Deterministic ingest CLI scaffold (`fdml ingest --source ... --out ...`) with minimal provenance | new `src/main/java/org/fdml/cli/Ingest.java`, `src/main/java/org/fdml/cli/Main.java`, `analysis/` helper wrappers as needed | One gold fixture in `analysis/gold/` to verify normalized output; one failure fixture for malformed source | Add CI smoke target for ingest on a tiny fixture | `site/demo.html` ingestion quickstart block |
-| E1 | TODO | Ingestion | Provenance sidecar schema (`*.provenance.json`) and validator hook | new `schema/provenance.schema.json`, `analysis/` scripts, `docs/USAGE.md` | Schema validation test + fixture pair under `analysis/gold/` | Add CI check for provenance schema compliance | `site/demo.html` provenance section |
+| E1 | DONE | Ingestion | Provenance sidecar schema (`*.provenance.json`) and validator hook | new `schema/provenance.schema.json`, `analysis/` scripts, `docs/USAGE.md` | Schema validation test + fixture pair under `analysis/gold/` | Add CI check for provenance schema compliance | `site/demo.html` provenance section |
 | E2 | TODO | Publishing | Release-quality publishing hardening: reproducible site manifest + pre-release gate | `scripts/build_index.sh`, new `scripts/site_manifest.py`, `Makefile`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `RUNBOOK.md` | Snapshot fixture for site manifest + reproducibility test (two builds, same checksums) | Extend `make ci`/GH Actions with manifest diff gate before release | `site/index.html` release badge/status note + demo checklist link |
 
 ## 4) Strict Definition-of-Done Checklist
