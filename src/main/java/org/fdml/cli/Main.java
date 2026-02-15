@@ -341,6 +341,6 @@ public class Main {
     System.out.println("  export-json <file-or-dir> [--out out.json]");
     System.out.println("  lint   <path> [...] [--json] [--json-out file] [--strict]");
     System.out.println("  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM] [--profile v1-basic|v12-circle|v12-line|v12-twoLinesFacing|v12-couple]");
-    System.out.println("  doctor <path> [...] [--json] [--strict]");
+    System.out.println("  doctor <path> [...] [--json] [--strict] [--explain]");
   }
 }

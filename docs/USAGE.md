@@ -23,6 +23,13 @@ Run the full “doctor” pipeline (XSD + Schematron + GEO + Lint) on the v1.2 e
 ./bin/fdml doctor --strict corpus/valid_v12/haire-mamougeh.v12.fdml.xml
 ```
 
+Show remediation guidance per issue code:
+
+```bash
+./bin/fdml doctor corpus/invalid_timing/example-off-meter.fdml.xml --explain
+./bin/fdml doctor corpus/invalid_timing/example-off-meter.fdml.xml --json --explain
+```
+
 Example v1.2 files in this repo:
 
 Valid:

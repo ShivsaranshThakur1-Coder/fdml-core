@@ -24,7 +24,8 @@ class MainJson {
   static String toJsonDoctor(java.util.List<FdmlValidator.Result> rX,
                              java.util.List<SchematronValidator.Result> rS,
                              java.util.List<Linter.FileResult> rL,
-                             java.util.List<TimingValidator.FileResult> rT){
+                             java.util.List<TimingValidator.FileResult> rT,
+                             java.util.Map<String, String> explain){
     StringBuilder sb=new StringBuilder();
     sb.append("{\"command\":\"doctor\",\"xsd\":[");
     for(int i=0;i<rX.size();i++){ var r=rX.get(i);
@@ -64,7 +65,17 @@ class MainJson {
       }
       sb.append("]}"); if(i<rT.size()-1) sb.append(",");
     }
-    sb.append("]}");
+    sb.append("]");
+    if (explain != null) {
+      sb.append(",\"explain\":{");
+      int i = 0;
+      for (var e : explain.entrySet()) {
+        if (i++ > 0) sb.append(",");
+        sb.append("\"").append(esc(e.getKey())).append("\":\"").append(esc(e.getValue())).append("\"");
+      }
+      sb.append("}");
+    }
+    sb.append("}");
     return sb.toString();
   }
 }

@@ -8,9 +8,10 @@ class Doctor {
   static int run(String[] args) {
     boolean json   = hasFlag(args, "--json");
     boolean strict = hasFlag(args, "--strict");
+    boolean explain = hasFlag(args, "--explain");
     List<Path> targets = collectNonFlagPaths(args, 1);
     if (targets.isEmpty()) {
-      System.err.println("doctor: provide <file-or-dir> [--json] [--strict]");
+      System.err.println("doctor: provide <file-or-dir> [--json] [--strict] [--explain]");
       return 4;
     }
 
@@ -31,8 +32,12 @@ class Doctor {
     boolean okT = allOkT(rT);
     boolean okG = allOkG(rG);
 
+    Map<String, String> explainMap = explain
+      ? DoctorExplain.build(rX, rS, rL, rT, rG)
+      : java.util.Collections.emptyMap();
+
     if (json) {
-      System.out.println(MainJson.toJsonDoctor(rX, rS, rL, rT));
+      System.out.println(MainJson.toJsonDoctor(rX, rS, rL, rT, explain ? explainMap : null));
     } else {
       System.out.println("DOCTOR SUMMARY");
       System.out.println("  XSD       : " + (okX ? "OK" : "FAILED"));
@@ -42,6 +47,16 @@ class Doctor {
       System.out.println("  Lint      : " + (warns == 0 ? "OK" : (warns + " file(s) with warnings")));
       long timing = rT.stream().filter(fr -> !fr.ok()).count();
       System.out.println("  Timing    : " + (timing == 0 ? "OK" : (timing + " file(s) with issues")));
+      if (explain) {
+        System.out.println("EXPLAIN");
+        if (explainMap.isEmpty()) {
+          System.out.println("  no issues");
+        } else {
+          for (Map.Entry<String, String> e : explainMap.entrySet()) {
+            System.out.println("  - " + e.getKey() + ": " + e.getValue());
+          }
+        }
+      }
     }
 
     if (strict) {
