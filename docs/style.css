@@ -94,34 +94,36 @@ h2{font-size:20px}
 }
 .diagram-panel h2{margin:0 0 8px}
 .fdml-diagram-svg{
-  display:block;
   width:100%;
-  height:auto;
+  height:360px;
+  display:block;
   border:1px solid var(--border);
   border-radius:8px;
   background:var(--panel);
 }
 .diagram-line{
-  stroke:color-mix(in srgb, var(--accent) 45%, var(--ink));
-  stroke-width:2.5;
+  stroke:currentColor;
+  opacity:.25;
+  stroke-width:0.03;
   stroke-linecap:round;
 }
 .diagram-ring{
-  fill:none;
-  stroke:color-mix(in srgb, var(--accent) 45%, var(--ink));
-  stroke-width:2.5;
+  fill:none !important;
+  stroke:currentColor;
+  opacity:.35;
+  stroke-width:0.03;
 }
 .diagram-node{
-  fill:color-mix(in srgb, var(--accent) 55%, #fff);
-  stroke:color-mix(in srgb, var(--accent) 30%, var(--ink));
-  stroke-width:1.5;
+  fill:currentColor;
+  stroke:none;
 }
 .diagram-label{
   font-size:12px;
   text-anchor:middle;
-  fill:var(--ink);
+  fill:currentColor;
+  opacity:.9;
 }
-.diagram-label-small{font-size:11px; fill:var(--muted)}
+.diagram-label-small{font-size:11px}
 .anim-controls{
   display:flex;
   align-items:center;
