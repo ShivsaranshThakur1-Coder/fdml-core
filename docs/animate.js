@@ -134,7 +134,7 @@
     var payload = await fetchPayload();
     if (!payload || !payload.meta || !payload.meta.formationKind) return;
     var formationKind = String(payload.meta.formationKind || "");
-    if (formationKind === "line" || formationKind === "twoLinesFacing" || formationKind === "circle") return;
+    if (formationKind === "line" || formationKind === "twoLinesFacing") return;
 
     var baseState = buildState(payload);
     var timeline = buildEvents(payload);
