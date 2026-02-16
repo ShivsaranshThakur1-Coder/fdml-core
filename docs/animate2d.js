@@ -517,79 +517,143 @@
   }
 
   function renderSvg(container, frame) {
-    var sec = document.createElement("section");
-    sec.className = "diagram-panel";
+    var scene = container.__fdmlAnimate2dScene;
+    if (!scene) {
+      var sec = document.createElement("section");
+      sec.className = "diagram-panel";
 
-    var h = document.createElement("h2");
-    h.textContent = "Formation Diagram";
-    sec.appendChild(h);
+      var h = document.createElement("h2");
+      h.textContent = "Formation Diagram";
+      sec.appendChild(h);
 
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "fdml-diagram-svg");
-    svg.setAttribute("viewBox", frame.formationKind === "circle" ? "-1.2 -1.2 2.4 2.4" : "-1.4 -1.1 2.8 2.2");
-    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "fdml-diagram-svg");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-    function line(x1, y1, x2, y2) {
-      var el = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      el.setAttribute("x1", String(x1));
-      el.setAttribute("y1", String(y1));
-      el.setAttribute("x2", String(x2));
-      el.setAttribute("y2", String(y2));
-      el.setAttribute("class", "diagram-line");
-      svg.appendChild(el);
+      var ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      ring.setAttribute("class", "diagram-ring");
+      ring.setAttribute("fill", "none");
+      svg.appendChild(ring);
+
+      var lineA = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      lineA.setAttribute("class", "diagram-line");
+      svg.appendChild(lineA);
+
+      var lineB = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      lineB.setAttribute("class", "diagram-line");
+      svg.appendChild(lineB);
+
+      var facingLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      facingLabel.setAttribute("class", "diagram-label");
+      facingLabel.setAttribute("text-anchor", "middle");
+      facingLabel.textContent = "facing";
+      svg.appendChild(facingLabel);
+
+      var nodes = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      nodes.setAttribute("id", "nodes");
+      svg.appendChild(nodes);
+
+      sec.appendChild(svg);
+      while (container.firstChild) container.removeChild(container.firstChild);
+      container.appendChild(sec);
+
+      scene = {
+        svg: svg,
+        ring: ring,
+        lineA: lineA,
+        lineB: lineB,
+        facingLabel: facingLabel,
+        nodes: nodes,
+        nodeMap: {}
+      };
+      container.__fdmlAnimate2dScene = scene;
     }
 
-    function node(x, y, label) {
-      var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      c.setAttribute("cx", String(x));
-      c.setAttribute("cy", String(y));
-      c.setAttribute("r", "0.07");
-      c.setAttribute("class", "diagram-node");
-      svg.appendChild(c);
+    scene.svg.setAttribute("viewBox", frame.formationKind === "circle" ? "-1.2 -1.2 2.4 2.4" : "-1.4 -1.1 2.8 2.2");
+    scene.svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-      var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      t.setAttribute("x", String(x));
-      t.setAttribute("y", String(y + 0.14));
-      t.setAttribute("class", "diagram-label diagram-label-small");
-      t.setAttribute("text-anchor", "middle");
-      t.textContent = label;
-      svg.appendChild(t);
-    }
-
-    function ring(cx, cy, r) {
-      var el = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      el.setAttribute("cx", String(cx));
-      el.setAttribute("cy", String(cy));
-      el.setAttribute("r", String(r));
-      el.setAttribute("fill", "none");
-      el.setAttribute("class", "diagram-ring");
-      svg.appendChild(el);
+    function setVisible(el, visible) {
+      el.style.display = visible ? "" : "none";
     }
 
     if (frame.formationKind === "circle") {
-      ring(0, 0, 0.92);
+      setVisible(scene.ring, true);
+      setVisible(scene.lineA, false);
+      setVisible(scene.lineB, false);
+      setVisible(scene.facingLabel, false);
+      scene.ring.setAttribute("cx", "0");
+      scene.ring.setAttribute("cy", "0");
+      scene.ring.setAttribute("r", "0.92");
+      scene.ring.setAttribute("fill", "none");
     } else if (frame.formationKind === "line") {
-      line(-1.1, 0, 1.1, 0);
+      setVisible(scene.ring, false);
+      setVisible(scene.lineA, true);
+      setVisible(scene.lineB, false);
+      setVisible(scene.facingLabel, false);
+      scene.lineA.setAttribute("x1", "-1.1");
+      scene.lineA.setAttribute("y1", "0");
+      scene.lineA.setAttribute("x2", "1.1");
+      scene.lineA.setAttribute("y2", "0");
     } else if (frame.formationKind === "twoLinesFacing") {
-      line(-1.1, frame.separation, 1.1, frame.separation);
-      line(-1.1, -frame.separation, 1.1, -frame.separation);
-      var mid = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      mid.setAttribute("x", "0");
-      mid.setAttribute("y", "0.03");
-      mid.setAttribute("class", "diagram-label");
-      mid.setAttribute("text-anchor", "middle");
-      mid.textContent = "facing";
-      svg.appendChild(mid);
+      setVisible(scene.ring, false);
+      setVisible(scene.lineA, true);
+      setVisible(scene.lineB, true);
+      setVisible(scene.facingLabel, true);
+      scene.lineA.setAttribute("x1", "-1.1");
+      scene.lineA.setAttribute("y1", String(frame.separation));
+      scene.lineA.setAttribute("x2", "1.1");
+      scene.lineA.setAttribute("y2", String(frame.separation));
+      scene.lineB.setAttribute("x1", "-1.1");
+      scene.lineB.setAttribute("y1", String(-frame.separation));
+      scene.lineB.setAttribute("x2", "1.1");
+      scene.lineB.setAttribute("y2", String(-frame.separation));
+      scene.facingLabel.setAttribute("x", "0");
+      scene.facingLabel.setAttribute("y", "0.03");
+    } else {
+      setVisible(scene.ring, false);
+      setVisible(scene.lineA, false);
+      setVisible(scene.lineB, false);
+      setVisible(scene.facingLabel, false);
     }
 
-    frame.ids.forEach(function (id) {
-      var p = frame.positions[id];
-      node(p.x, p.y, id);
+    var targetIds = sortUnique(frame.ids || []);
+    var targetSet = {};
+    targetIds.forEach(function (id) {
+      targetSet[id] = true;
     });
 
-    sec.appendChild(svg);
-    container.innerHTML = "";
-    container.appendChild(sec);
+    Object.keys(scene.nodeMap).forEach(function (id) {
+      if (targetSet[id]) return;
+      var stale = scene.nodeMap[id];
+      if (stale.circleEl && stale.circleEl.parentNode) stale.circleEl.parentNode.removeChild(stale.circleEl);
+      if (stale.textEl && stale.textEl.parentNode) stale.textEl.parentNode.removeChild(stale.textEl);
+      delete scene.nodeMap[id];
+    });
+
+    targetIds.forEach(function (id) {
+      var pair = scene.nodeMap[id];
+      if (!pair) {
+        var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("r", "0.07");
+        c.setAttribute("class", "diagram-node");
+        scene.nodes.appendChild(c);
+
+        var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        t.setAttribute("class", "diagram-label diagram-label-small");
+        t.setAttribute("text-anchor", "middle");
+        scene.nodes.appendChild(t);
+
+        pair = { circleEl: c, textEl: t };
+        scene.nodeMap[id] = pair;
+      }
+
+      var p = frame.positions[id] || { x: 0, y: 0 };
+      pair.circleEl.setAttribute("cx", String(p.x));
+      pair.circleEl.setAttribute("cy", String(p.y));
+      pair.textEl.setAttribute("x", String(p.x));
+      pair.textEl.setAttribute("y", String(p.y + 0.14));
+      pair.textEl.textContent = id;
+    });
   }
 
   async function init() {
