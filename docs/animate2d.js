@@ -527,7 +527,6 @@
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("class", "fdml-diagram-svg");
     svg.setAttribute("viewBox", frame.formationKind === "circle" ? "-1.2 -1.2 2.4 2.4" : "-1.4 -1.1 2.8 2.2");
-    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
     function line(x1, y1, x2, y2) {
       var el = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -561,7 +560,6 @@
       el.setAttribute("cx", String(cx));
       el.setAttribute("cy", String(cy));
       el.setAttribute("r", String(r));
-      el.setAttribute("fill", "none");
       el.setAttribute("class", "diagram-ring");
       svg.appendChild(el);
     }
