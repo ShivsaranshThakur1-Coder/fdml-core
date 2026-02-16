@@ -11,83 +11,9 @@
     if (!Array.isArray(orders)) return [];
     for (var i = 0; i < orders.length; i++) {
       var o = orders[i];
-      if (o && Array.isArray(o.slots) && o.slots.length) return o.slots.slice();
+      if (o && Array.isArray(o.slots) && o.slots.length) return o.slots;
     }
     return [];
-  }
-
-  function fetchCardPayload() {
-    if (window.__fdmlPayloadPromise) return window.__fdmlPayloadPromise;
-    var stem = stemFromPathname(window.location.pathname || "");
-    if (!stem) return Promise.resolve(null);
-
-    window.__fdmlPayloadPromise = fetch(stem + ".json", { cache: "no-store" })
-      .then(function (res) {
-        if (!res.ok) return null;
-        return res.json();
-      })
-      .then(function (data) {
-        return Array.isArray(data) ? data[0] : data;
-      })
-      .catch(function () {
-        return null;
-      });
-
-    return window.__fdmlPayloadPromise;
-  }
-
-  function buildState(payload) {
-    var topology = payload && payload.topology ? payload.topology : {};
-    var state = {
-      circleOrder: [],
-      lineIds: [],
-      lineOrders: {},
-      twoLinesLineIds: [],
-      twoLinesOrders: {},
-      twoLinesOpposites: [],
-      twoLinesNeighbors: [],
-      twoLinesSeparation: 0
-    };
-
-    var circleOrders = topology.circle && Array.isArray(topology.circle.orders) ? topology.circle.orders : [];
-    if (circleOrders.length && Array.isArray(circleOrders[0].slots)) {
-      state.circleOrder = circleOrders[0].slots.slice();
-    }
-
-    var lines = topology.line && Array.isArray(topology.line.lines) ? topology.line.lines : [];
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i] || {};
-      var id = line.id || "";
-      if (!id) continue;
-      state.lineIds.push(id);
-      var initial = null;
-      if (Array.isArray(line.orders)) {
-        for (var j = 0; j < line.orders.length; j++) {
-          var order = line.orders[j] || {};
-          if (order.phase === "initial" && Array.isArray(order.slots) && order.slots.length) {
-            initial = order.slots.slice();
-            break;
-          }
-        }
-        if (!initial) initial = firstNonEmptySlots(line.orders);
-      }
-      state.lineOrders[id] = initial || [];
-    }
-
-    var twoLines = topology.twoLines || {};
-    var twoLinesRows = Array.isArray(twoLines.lines) ? twoLines.lines : [];
-    for (var k = 0; k < twoLinesRows.length; k++) {
-      var row = twoLinesRows[k] || {};
-      var rowId = row.id || "";
-      if (!rowId) continue;
-      state.twoLinesLineIds.push(rowId);
-      state.twoLinesOrders[rowId] = firstNonEmptySlots(row.orders || []);
-    }
-
-    state.twoLinesOpposites = Array.isArray(twoLines.opposites) ? twoLines.opposites.slice() : [];
-    state.twoLinesNeighbors = Array.isArray(twoLines.neighbors) ? twoLines.neighbors.slice() : [];
-
-    return state;
   }
 
   function makeSvg(viewBox) {
@@ -106,6 +32,7 @@
     el.setAttribute("y2", String(y2));
     el.setAttribute("class", "diagram-line");
     svg.appendChild(el);
+    return el;
   }
 
   function circle(svg, cx, cy, r, cls) {
@@ -115,6 +42,7 @@
     el.setAttribute("r", String(r));
     el.setAttribute("class", cls || "diagram-node");
     svg.appendChild(el);
+    return el;
   }
 
   function text(svg, x, y, value, cls) {
@@ -124,22 +52,14 @@
     el.setAttribute("class", cls || "diagram-label");
     el.textContent = value;
     svg.appendChild(el);
+    return el;
   }
 
-  function slotsForLine(state, lineId) {
-    if (!state || !state.lineOrders) return [];
-    var slots = state.lineOrders[lineId];
-    return Array.isArray(slots) ? slots : [];
-  }
+  function drawCircle(svg, topology) {
+    var orders = topology && topology.circle && Array.isArray(topology.circle.orders) ? topology.circle.orders : [];
+    var slots = [];
+    if (orders.length && Array.isArray(orders[0].slots)) slots = orders[0].slots;
 
-  function slotsForTwoLines(state, lineId) {
-    if (!state || !state.twoLinesOrders) return [];
-    var slots = state.twoLinesOrders[lineId];
-    return Array.isArray(slots) ? slots : [];
-  }
-
-  function drawCircle(svg, state) {
-    var slots = Array.isArray(state.circleOrder) ? state.circleOrder : [];
     circle(svg, 160, 95, 56, "diagram-ring");
 
     if (!slots.length) return;
@@ -152,13 +72,19 @@
     }
   }
 
-  function drawLineFormation(svg, state) {
-    var firstId = state.lineIds.length ? state.lineIds[0] : "";
-    var slots = firstId ? slotsForLine(state, firstId) : [];
+  function drawLineFormation(svg, topology) {
+    var lines = topology && topology.line && Array.isArray(topology.line.lines) ? topology.line.lines : [];
+    var slots = [];
+    if (lines.length) {
+      var chosen = lines[0];
+      if (chosen && Array.isArray(chosen.orders)) {
+        var initial = chosen.orders.find(function (o) { return o && o.phase === "initial"; });
+        slots = initial && Array.isArray(initial.slots) ? initial.slots : firstNonEmptySlots(chosen.orders);
+      }
+    }
 
     line(svg, 44, 92, 276, 92);
     if (!slots.length) return;
-
     var span = 220;
     var left = 50;
     for (var i = 0; i < slots.length; i++) {
@@ -168,20 +94,16 @@
     }
   }
 
-  function drawTwoLines(svg, state) {
-    var topId = state.twoLinesLineIds.length > 0 ? state.twoLinesLineIds[0] : "";
-    var bottomId = state.twoLinesLineIds.length > 1 ? state.twoLinesLineIds[1] : "";
+  function drawTwoLines(svg, topology) {
+    var linesData = topology && topology.twoLines && Array.isArray(topology.twoLines.lines) ? topology.twoLines.lines : [];
+    var topSlots = [];
+    var bottomSlots = [];
+    if (linesData.length >= 1) topSlots = firstNonEmptySlots(linesData[0].orders);
+    if (linesData.length >= 2) bottomSlots = firstNonEmptySlots(linesData[1].orders);
 
-    var topSlots = topId ? slotsForTwoLines(state, topId) : [];
-    var bottomSlots = bottomId ? slotsForTwoLines(state, bottomId) : [];
-
-    var sep = Number(state.twoLinesSeparation || 0);
-    var yTop = 64 - sep * 4;
-    var yBottom = 122 + sep * 4;
-
-    line(svg, 44, yTop, 276, yTop);
-    line(svg, 44, yBottom, 276, yBottom);
-    text(svg, 160, (yTop + yBottom) / 2, "facing", "diagram-label");
+    line(svg, 44, 64, 276, 64);
+    line(svg, 44, 122, 276, 122);
+    text(svg, 160, 88, "facing", "diagram-label");
 
     function drawSlots(slots, y) {
       if (!slots.length) return;
@@ -194,21 +116,29 @@
       }
     }
 
-    drawSlots(topSlots, yTop);
-    drawSlots(bottomSlots, yBottom);
+    drawSlots(topSlots, 64);
+    drawSlots(bottomSlots, 122);
   }
 
-  function drawCouple(svg, payload) {
-    var man = "dancer A";
-    var woman = "dancer B";
+  function drawCouple(svg, topology) {
+    var man = "man";
+    var woman = "woman";
+    var usedPair = false;
 
-    var topology = payload && payload.topology ? payload.topology : {};
-    if (topology.couples && Array.isArray(topology.couples.pairs) && topology.couples.pairs.length) {
+    if (topology && topology.couples && Array.isArray(topology.couples.pairs) && topology.couples.pairs.length) {
       var pair = topology.couples.pairs[0] || {};
-      if (pair.a && pair.b) {
-        man = String(pair.a);
-        woman = String(pair.b);
+      var a = pair.a || "";
+      var b = pair.b || "";
+      if (a && b) {
+        man = String(a);
+        woman = String(b);
+        usedPair = true;
       }
+    }
+
+    if (!usedPair) {
+      man = "dancer A";
+      woman = "dancer B";
     }
 
     line(svg, 120, 92, 200, 92);
@@ -218,13 +148,9 @@
     text(svg, 200, 115, woman, "diagram-label");
   }
 
-  function renderDiagram(root, payload, stateOverride) {
-    if (!root) return;
+  function renderDiagram(root, payload) {
     var formationKind = payload && payload.meta ? String(payload.meta.formationKind || "") : "";
-    root.innerHTML = "";
     if (!formationKind) return;
-
-    var state = stateOverride || buildState(payload || {});
 
     var wrap = document.createElement("section");
     wrap.className = "diagram-panel";
@@ -234,27 +160,33 @@
     wrap.appendChild(heading);
 
     var svg = makeSvg("0 0 320 160");
-    if (formationKind === "circle") drawCircle(svg, state);
-    else if (formationKind === "line") drawLineFormation(svg, state);
-    else if (formationKind === "twoLinesFacing") drawTwoLines(svg, state);
-    else if (formationKind === "couple") drawCouple(svg, payload || {});
+    var topology = payload && payload.topology ? payload.topology : {};
+    if (formationKind === "circle") drawCircle(svg, topology);
+    else if (formationKind === "line") drawLineFormation(svg, topology);
+    else if (formationKind === "twoLinesFacing") drawTwoLines(svg, topology);
+    else if (formationKind === "couple") drawCouple(svg, topology);
     else return;
 
     wrap.appendChild(svg);
     root.appendChild(wrap);
   }
 
-  window.fdmlStemFromPathname = stemFromPathname;
-  window.fdmlFetchCardPayload = fetchCardPayload;
-  window.fdmlBuildDiagramState = buildState;
-  window.fdmlRenderDiagram = renderDiagram;
-
   async function init() {
     var root = document.getElementById("fdml-diagram");
     if (!root) return;
-    var payload = await fetchCardPayload();
-    if (!payload) return;
-    renderDiagram(root, payload);
+
+    var stem = stemFromPathname(window.location.pathname || "");
+    if (!stem) return;
+
+    try {
+      var res = await fetch(stem + ".json", { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + String(res.status));
+      var data = await res.json();
+      var payload = Array.isArray(data) ? data[0] : data;
+      renderDiagram(root, payload || {});
+    } catch (_err) {
+      // No-op for missing payloads.
+    }
   }
 
   if (document.readyState === "loading") {

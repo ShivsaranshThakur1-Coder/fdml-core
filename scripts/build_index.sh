@@ -16,7 +16,6 @@ cp -f docs/style.css site/style.css
 cp -f docs/style.css site/cards/style.css
 cp -f docs/timeline.js site/cards/timeline.js
 cp -f docs/diagram.js site/cards/diagram.js
-cp -f docs/animate.js site/cards/animate.js
 
 # Copy generated cards
 cp -f out/html/*.html site/cards/

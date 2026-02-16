@@ -122,28 +122,6 @@ h2{font-size:20px}
   fill:var(--ink);
 }
 .diagram-label-small{font-size:11px; fill:var(--muted)}
-.anim-controls{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:8px 0 16px;
-  padding:10px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:color-mix(in srgb, var(--muted) 8%, transparent);
-}
-.anim-btn{
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:var(--panel);
-  color:var(--ink);
-  padding:6px 10px;
-  font-weight:600;
-  cursor:pointer;
-}
-.anim-btn:hover{filter:brightness(1.08)}
-#fdml-scrub{flex:1; min-width:120px}
-.anim-time{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:var(--muted); font-size:12px}
 .table{width:100%; border-collapse:separate; border-spacing:0; margin-top:12px}
 .table thead th{background:color-mix(in srgb, var(--muted) 12%, transparent); color:var(--ink); text-align:left; font-weight:600; padding:12px; border-bottom:1px solid var(--border)}
 .table tbody td{padding:12px; border-bottom:1px solid var(--border)}
@@ -160,7 +138,6 @@ footer .container{padding:18px 24px}
   .site-head, footer, .fdml-card-nav{display:none !important}
   #fdml-timeline{display:none !important}
   #fdml-diagram{display:none !important}
-  #fdml-anim-controls{display:none !important}
   .container{max-width:none; margin:0; padding:0}
   .hero, .card{
     background:#fff !important;
