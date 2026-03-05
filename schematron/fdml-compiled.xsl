@@ -526,7 +526,7 @@
       </svrl:text>
          </svrl:failed-assert>
       </xsl:if>
-      <xsl:if test="not(count(body/geometry/line/order/slot/@who) = count(distinct-values(body/geometry/line/order/slot/@who)))">
+      <xsl:if test="not(count(body/geometry/line/order[count(slot/@who) = count(distinct-values(slot/@who))]) = count(body/geometry/line/order))">
          <xsl:variable xmlns:svrl="http://purl.oclc.org/dsdl/svrl" name="location">
             <xsl:call-template name="schxslt:location">
                <xsl:with-param name="node" select="."/>
@@ -534,7 +534,7 @@
          </xsl:variable>
          <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                              location="{normalize-space($location)}">
-            <xsl:attribute name="test">count(body/geometry/line/order/slot/@who) = count(distinct-values(body/geometry/line/order/slot/@who))</xsl:attribute>
+            <xsl:attribute name="test">count(body/geometry/line/order[count(slot/@who) = count(distinct-values(slot/@who))]) = count(body/geometry/line/order)</xsl:attribute>
             <svrl:text>
         line order slot list must not contain duplicate who values
       </svrl:text>

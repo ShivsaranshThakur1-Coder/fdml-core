@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1",
+  "label": "fixture-pass",
+  "rows": [
+    {
+      "file": "corpus/valid/example-01.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 12
+    },
+    {
+      "file": "corpus/valid/example-02.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 10
+    },
+    {
+      "file": "corpus/valid/example-03.fdml.xml",
+      "strictFullDescription": false,
+      "nonPlaceholderSteps": 8
+    }
+  ],
+  "strict": {
+    "fullDescriptionCount": 2
+  }
+}

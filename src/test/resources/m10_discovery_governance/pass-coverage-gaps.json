@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1",
+  "label": "m10-coverage-pass-fixture",
+  "totals": {
+    "files": 3,
+    "unresolvedFiles": 0
+  },
+  "rows": [
+    {
+      "file": "out/m10_discovery/run1/sample_alpha.fdml.xml",
+      "unresolvedCount": 0,
+      "checklist": {
+        "movement": "present",
+        "formation": "present",
+        "role_interaction": "present"
+      }
+    },
+    {
+      "file": "out/m10_discovery/run1/sample_beta.fdml.xml",
+      "unresolvedCount": 0,
+      "checklist": {
+        "movement": "present",
+        "formation": "present",
+        "role_interaction": "present"
+      }
+    },
+    {
+      "file": "out/m10_discovery/run1/sample_gamma.fdml.xml",
+      "unresolvedCount": 0,
+      "checklist": {
+        "movement": "present",
+        "formation": "present",
+        "role_interaction": "present"
+      }
+    }
+  ]
+}

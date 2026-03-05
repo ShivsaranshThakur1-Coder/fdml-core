@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "label": "fixture-fail-passrate",
+  "rows": [
+    {
+      "file": "corpus/valid/example-01.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 12
+    },
+    {
+      "file": "corpus/invalid/example-01-invalid.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 11
+    }
+  ],
+  "strict": {
+    "fullDescriptionCount": 2
+  }
+}

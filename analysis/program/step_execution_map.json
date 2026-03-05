@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1",
+  "items": {
+    "PRG-232": {
+      "commands": [
+        "make m23-validator-expansion-check"
+      ],
+      "note": "Completed via autopilot: executed m23-validator-expansion-check and produced baseline/current expansion plus burndown artifacts for M23-K2."
+    },
+    "PRG-233": {
+      "commands": [
+        "make m23-pipeline-governance-check"
+      ],
+      "appendEvidence": [
+        "scripts/program_autopilot.py",
+        "analysis/program/step_execution_map.json",
+        "Makefile",
+        "docs/USAGE.md"
+      ],
+      "note": "Completed via autopilot: executed m23-pipeline-governance-check with CI/governance synchronization and release evidence updates for M23-K3."
+    },
+    "PRG-241": {
+      "commands": [
+        "make m24-residual-failure-closure-check"
+      ],
+      "note": "Execute deterministic M24 residual validator closure pass to eliminate remaining M23 failure taxonomy and publish baseline/current/burndown artifacts for M24-K1."
+    },
+    "PRG-242": {
+      "commands": [
+        "make m24-descriptor-completion-check"
+      ],
+      "note": "Execute deterministic M24 cultural descriptor completion to raise low-support cultural-context saturation and publish descriptor registry/coverage artifacts for M24-K2."
+    },
+    "PRG-243": {
+      "commands": [
+        "make m24-pipeline-governance-check"
+      ],
+      "note": "Execute deterministic M24 governance gate, synchronize CI/release evidence, and activate final productization queue for M24-K3."
+    },
+    "PRG-251": {
+      "commands": [
+        "make final-rehearsal-check"
+      ],
+      "note": "Execute deterministic final product-readiness rehearsal and publish baseline evidence ledger for M25-K1."
+    },
+    "PRG-252": {
+      "commands": [
+        "make m25-hardening-check"
+      ],
+      "note": "Execute M25 architecture/documentation/testing hardening gate and publish deterministic hardening evidence for M25-K2."
+    },
+    "PRG-253": {
+      "commands": [
+        "make m25-release-governance-check"
+      ],
+      "note": "Execute deterministic M25 final release-governance gate, enforce closeout anti-drift invariants, and publish auditable release-ready evidence for M25-K3."
+    },
+    "PRG-260": {
+      "commands": [
+        "make m26-activation-check"
+      ],
+      "note": "Execute deterministic M26 activation gate after closing M25 and seed post-closeout production-polish queue with CI synchronization."
+    },
+    "PRG-261": {
+      "commands": [
+        "make m26-polish-baseline-check"
+      ],
+      "appendEvidence": [
+        "scripts/m26_polish_baseline.py",
+        "Makefile",
+        "analysis/program/step_execution_map.json",
+        "docs/PROGRAM_PLAN.md",
+        "analysis/program/goal_state.json",
+        "out/m26_polish_baseline_report.json"
+      ],
+      "note": "Completed: generated deterministic M26 production-polish baseline metrics and a priority-ranked cleanup backlog covering repository hygiene, documentation coherence, and handoff governance readiness."
+    },
+    "PRG-262": {
+      "commands": [
+        "make m26-polish-execution-check"
+      ],
+      "appendEvidence": [
+        ".gitignore",
+        "scripts/m26_polish_execution.py",
+        "Makefile",
+        "docs/SUBMISSION.md",
+        "docs/COVERAGE.md",
+        "docs/USAGE.md",
+        "docs/PROGRAM_PLAN.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "out/m26_polish_execution_report.json"
+      ],
+      "note": "Completed: executed M26 prioritized cleanup pass with deterministic evidence by closing documentation coherence gaps, enforcing generated-artifact hygiene boundaries, and publishing polish execution metrics."
+    },
+    "PRG-263": {
+      "commands": [
+        "make m26-governance-handoff-check"
+      ],
+      "appendEvidence": [
+        "scripts/m26_handoff_governance_gate.py",
+        "Makefile",
+        "analysis/program/step_execution_map.json",
+        "docs/PROGRAM_PLAN.md",
+        "docs/SUBMISSION.md",
+        "docs/COVERAGE.md",
+        "docs/USAGE.md",
+        "analysis/program/goal_state.json",
+        "out/final_rehearsal/report.json",
+        "out/m26_handoff_governance_report.json"
+      ],
+      "note": "Completed: adopted deterministic M26 handoff governance with anti-drift CI wiring and published a polished command plus artifact package including explicit residual-risk ledger evidence."
+    }
+  }
+}

@@ -18,6 +18,8 @@ public class MainHelpTest {
     ProcessResult r = runMain("--help");
     assertEquals(0, r.exitCode, "Expected --help to exit 0");
     assertTrue(r.output.contains("Usage:"), "Expected usage output for --help");
+    assertTrue(r.output.contains("ingest-batch"), "Expected ingest-batch command in usage output");
+    assertTrue(r.output.contains("ingest-promote"), "Expected ingest-promote command in usage output");
   }
 
   @Test
@@ -25,6 +27,8 @@ public class MainHelpTest {
     ProcessResult r = runMain("-h");
     assertEquals(0, r.exitCode, "Expected -h to exit 0");
     assertTrue(r.output.contains("Usage:"), "Expected usage output for -h");
+    assertTrue(r.output.contains("ingest-batch"), "Expected ingest-batch command in usage output");
+    assertTrue(r.output.contains("ingest-promote"), "Expected ingest-promote command in usage output");
   }
 
   private static ProcessResult runMain(String arg) throws Exception {

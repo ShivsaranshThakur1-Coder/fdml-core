@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <fdml version="1.2">
   <meta>
-    <title>Abdala (v1.2 minimal 9/16 example)</title>
+    <title>Abdala (v1.2 line semantics example)</title>
     <dance name="Abdala" />
     <origin country="UNKNOWN" />
     <type genre="line" />
@@ -13,12 +13,67 @@
       <formation kind="line" />
       <roles>
         <role id="all" />
+        <role id="d1" />
+        <role id="d2" />
+        <role id="d3" />
+        <role id="d4" />
       </roles>
     </geometry>
   </meta>
 
   <body>
-    <figure id="f-abdala" name="Example">
+    <geometry>
+      <line id="line1">
+        <order>
+          <slot who="d1" />
+          <slot who="d2" />
+          <slot who="d3" />
+          <slot who="d4" />
+        </order>
+      </line>
+    </geometry>
+
+    <figure id="f-abdala" name="Basic phrase">
+      <step who="all" action="walk" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="left" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="left" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="left" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />
+        </geo>
+      </step>
+      <step who="all" action="walk" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="move" frame="dancer" dir="left" amount="1" unit="steps" />
+        </geo>
+      </step>
       <step who="all" action="walk" beats="4" startFoot="R">
         <geo>
           <primitive kind="move" frame="dancer" dir="right" amount="1" unit="steps" />

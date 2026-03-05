@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>M2 Conversion acquired_sources adumu</title>
+    <meter value="4/4"/>
+    <tempo bpm="112"/>
+  </meta>
+  <body>
+    <section type="notes">
+      <p># source_id: adumu # title: Adumu # source_url: https://en.wikipedia.org/w/api.php?action=query&amp;prop=extracts&amp;explaintext=1&amp;format=json&amp;titles=Adumu # license: CC BY-SA 4.0 # attribution: Wikipedia co</p>
+    </section>
+    <figure id="f-ingest" name="Ingested Figure" formation="ingest">
+      <step who="both" action="# source_id: adumu" beats="1" count="1"># source_id: adumu</step>
+      <step who="both" action="Ingest filler step 2" beats="1" count="2">Ingest filler step 2</step>
+      <step who="both" action="Ingest filler step 3" beats="1" count="3">Ingest filler step 3</step>
+      <step who="both" action="Ingest filler step 4" beats="1" count="4">Ingest filler step 4</step>
+    </figure>
+  </body>
+</fdml>

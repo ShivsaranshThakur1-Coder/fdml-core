@@ -1,0 +1,256 @@
+{
+  "version": "1",
+  "description": "M5 expansion candidates: curated, openly licensed sources grouped by target region buckets.",
+  "sources": [
+    {
+      "id": "adumu",
+      "title": "Adumu",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Adumu",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "attan",
+      "title": "Attan",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Attan",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "zaouli",
+      "title": "Zaouli",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Zaouli",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "polonaise",
+      "title": "Polonaise",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Polonaise",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "europe-regional"
+    },
+    {
+      "id": "branle",
+      "title": "Branle",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Branle",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "europe-regional"
+    },
+    {
+      "id": "schottische",
+      "title": "Schottische",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Schottische",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "europe-regional"
+    },
+    {
+      "id": "cueca",
+      "title": "Cueca",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Cueca",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "cumbia",
+      "title": "Cumbia",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Cumbia",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "farandole",
+      "title": "Farandole",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Farandole",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "europe-regional"
+    },
+    {
+      "id": "giddha",
+      "title": "Giddha",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Giddha",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "south-se-asia"
+    },
+    {
+      "id": "huapango",
+      "title": "Huapango",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Huapango",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "joget",
+      "title": "Joget",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Joget",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "south-se-asia"
+    },
+    {
+      "id": "joropo",
+      "title": "Joropo",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Joropo",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "baila",
+      "title": "Baila",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Baila",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "south-se-asia"
+    },
+    {
+      "id": "kochari",
+      "title": "Kochari",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kochari",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "kpanlogo",
+      "title": "Kpanlogo",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kpanlogo",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "kummi",
+      "title": "Kummi",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kummi",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "south-se-asia"
+    },
+    {
+      "id": "mapouka",
+      "title": "Mapouka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Mapouka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "ndombolo",
+      "title": "Ndombolo",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Ndombolo",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "ronggeng",
+      "title": "Ronggeng",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Ronggeng",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "south-se-asia"
+    },
+    {
+      "id": "sardana",
+      "title": "Sardana",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Sardana",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "europe-regional"
+    },
+    {
+      "id": "tamure",
+      "title": "Tamure",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Tamure",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "tamzara",
+      "title": "Tamzara",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Tamzara",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "khorumi",
+      "title": "Khorumi",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Khorumi",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "yarkhushta",
+      "title": "Yarkhushta",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Yarkhushta",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    }
+  ]
+}

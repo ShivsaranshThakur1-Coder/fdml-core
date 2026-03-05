@@ -199,6 +199,8 @@ public class Main {
 
         case "init": { Init.run(args); System.exit(EXIT_OK); }
         case "ingest": { int code = Ingest.run(args); System.exit(code); }
+        case "ingest-batch": { int code = Ingest.runBatch(args); System.exit(code); }
+        case "ingest-promote": { int code = IngestPromote.run(args); System.exit(code); }
         case "doctor": { int code = Doctor.run(args); System.exit(code); }
 
         default: { usage(); System.exit(EXIT_IO_ERR); }
@@ -342,7 +344,9 @@ public class Main {
     System.out.println("  export-json <file-or-dir> [--out out.json]");
     System.out.println("  lint   <path> [...] [--json] [--json-out file] [--strict]");
     System.out.println("  init   <output-file> [--title T] [--dance D] [--meter M/N] [--tempo BPM] [--figure-id f-...] [--figure-name NAME] [--formation FORM] [--profile v1-basic|v12-circle|v12-line|v12-twoLinesFacing|v12-couple]");
-    System.out.println("  ingest --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile v1-basic|v12-circle|v12-line|v12-twoLinesFacing|v12-couple] [--provenance-out file.json]");
+    System.out.println("  ingest --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile v1-basic|v12-circle|v12-line|v12-twoLinesFacing|v12-couple] [--provenance-out file.json] [--enable-enrichment] [--env-file .env] [--enrichment-report file.json]");
+    System.out.println("  ingest-batch --source-dir <dir> --out-dir <dir> [--title-prefix T] [--meter M] [--tempo BPM] [--profile v1-basic|v12-circle|v12-line|v12-twoLinesFacing|v12-couple] [--enable-enrichment] [--env-file .env] [--index-out out.json]");
+    System.out.println("  ingest-promote --index <ingest-batch-index.json> --dest <dir> [--quarantine-dir <dir>] [--quarantine-out quarantine.json]");
     System.out.println("  doctor <path> [...] [--json] [--strict] [--explain]");
   }
 }

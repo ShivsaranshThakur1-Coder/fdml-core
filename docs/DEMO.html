@@ -63,13 +63,17 @@
 
     <h3>3) Render + Explore Search</h3>
     <pre><code>./bin/fdml render out/demo.fdml.xml --out out/demo.html
+make m11-validator-unified-check
 make html
-open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line</code></pre>
+open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategory=africa</code></pre>
 
     <h3>4) Export JSON</h3>
     <pre><code>./bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml \
   --out site/export-json-sample.json</code></pre>
     <p><a href="export-json-sample.json">Generated sample JSON: site/export-json-sample.json</a></p>
+
+    <h3>5) Verify End-to-End Demo Flow</h3>
+    <pre><code>make demo-flow-check</code></pre>
   </div>
 
   <div class="card">
@@ -94,12 +98,37 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line</code></pre>
       <li><a href="cards/example-05-contra.progress.v12.fdml.html">cards/example-05-contra.progress.v12.fdml.html</a></li>
     </ul>
 
+    <h2>M5 Diversity Showcase Cards</h2>
+    <ul>
+      <li><a href="cards/acquired_sources__adumu.fdml.html">cards/acquired_sources__adumu.fdml.html</a> (africa)</li>
+      <li><a href="cards/acquired_sources__attan.fdml.html">cards/acquired_sources__attan.fdml.html</a> (middle-east-caucasus)</li>
+      <li><a href="cards/acquired_sources__giddha.fdml.html">cards/acquired_sources__giddha.fdml.html</a> (south-se-asia)</li>
+      <li><a href="cards/acquired_sources__branle.fdml.html">cards/acquired_sources__branle.fdml.html</a> (europe-regional)</li>
+      <li><a href="cards/acquired_sources__cueca.fdml.html">cards/acquired_sources__cueca.fdml.html</a> (americas-oceania)</li>
+    </ul>
+
+    <h2>Unified Full-Description Showcase Cards</h2>
+    <ul>
+      <li><a href="cards/acquired_sources__kpanlogo.fdml.html">cards/acquired_sources__kpanlogo.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__khorumi.fdml.html">cards/acquired_sources__khorumi.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__joget.fdml.html">cards/acquired_sources__joget.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__farandole.fdml.html">cards/acquired_sources__farandole.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__cumbia.fdml.html">cards/acquired_sources__cumbia.fdml.html</a> (strict full-description)</li>
+    </ul>
+
     <h2>Prefilled Search Links</h2>
     <ul>
       <li><a href="search.html?q=Abdala">search.html?q=Abdala</a></li>
       <li><a href="search.html?meter=9%2F16">search.html?meter=9/16</a></li>
       <li><a href="search.html?genre=line">search.html?genre=line</a></li>
       <li><a href="search.html?q=Mayim&amp;meter=4%2F4&amp;genre=circle">search.html?q=Mayim&amp;meter=4/4&amp;genre=circle</a></li>
+      <li><a href="search.html?sourceCategory=africa">search.html?sourceCategory=africa</a></li>
+      <li><a href="search.html?sourceCategory=middle-east-caucasus">search.html?sourceCategory=middle-east-caucasus</a></li>
+      <li><a href="search.html?sourceCategory=south-se-asia">search.html?sourceCategory=south-se-asia</a></li>
+      <li><a href="search.html?sourceCategory=europe-regional">search.html?sourceCategory=europe-regional</a></li>
+      <li><a href="search.html?sourceCategory=americas-oceania">search.html?sourceCategory=americas-oceania</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict">search.html?fullDescriptionTier=strict</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;sourceCategory=africa">search.html?fullDescriptionTier=strict&amp;sourceCategory=africa</a></li>
     </ul>
   </div>
 </main>

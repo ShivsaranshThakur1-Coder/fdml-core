@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "file": "out/m9_full_description_uplift/run1/acquired_sources__a.fdml.xml"
+    },
+    {
+      "file": "out/m9_full_description_uplift/run1/acquired_sources__b.fdml.xml"
+    },
+    {
+      "file": "corpus/valid/example-01.fdml.xml"
+    },
+    {
+      "file": "out/m9_full_description_uplift/run1/acquired_sources__c.fdml.xml"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1",
+  "label": "fixture-pass-baseline",
+  "total": 4,
+  "blockerCounts": {
+    "missing_formation_kind": 4,
+    "missing_meta_geometry": 4,
+    "missing_step_geo_primitive": 4,
+    "version_not_1_2": 4
+  }
+}

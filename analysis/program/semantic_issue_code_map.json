@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1",
+  "updated": "2026-02-21",
+  "codes": {
+    "bad_formation_for_approach_retreat": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "bad_meter_format": [
+      "docs/TIMING-SPEC.md"
+    ],
+    "bad_step_beats": [
+      "docs/TIMING-SPEC.md"
+    ],
+    "circle_order_changed": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "circle_order_violation": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "circle_travel_ambiguous": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "frame_dir_mismatch": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "geo_exception": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "hold_broken": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "line_order_mismatch": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "line_travel_too_small": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "missing_approach_retreat_pair": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "missing_circle_order_slots": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "missing_formation_kind": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "missing_line_order_slots": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "missing_meter": [
+      "docs/TIMING-SPEC.md"
+    ],
+    "missing_partner_pairing": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "missing_primitive_frame": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "missing_primitive_kind": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "missing_relpos_evidence": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "missing_two_lines_facing": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "not_neighbors": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "not_opposites": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "off_meter": [
+      "docs/TIMING-SPEC.md"
+    ],
+    "off_meter_figure": [
+      "docs/TIMING-SPEC.md"
+    ],
+    "parse_error": [
+      "docs/FDML-SPEC.md"
+    ],
+    "progress_missing_delta": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "relpos_contradiction": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "schematron_failed_assert": [
+      "schematron/fdml.sch",
+      "docs/FDML-SPEC.md"
+    ],
+    "twirl_missing_half": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "two_lines_no_sep_dip": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "two_lines_order_length_mismatch": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "unknown_dancer_in_order": [
+      "docs/TOPOLOGY-SPEC.md"
+    ],
+    "unknown_role": [
+      "docs/GEOMETRY-SPEC.md"
+    ],
+    "xsd_invalid": [
+      "schema/fdml.xsd",
+      "docs/FDML-SPEC.md"
+    ]
+  },
+  "prefixes": {
+    "sch_": [
+      "schematron/fdml.sch",
+      "docs/FDML-SPEC.md"
+    ],
+    "xsd_": [
+      "schema/fdml.xsd",
+      "docs/FDML-SPEC.md"
+    ]
+  }
+}

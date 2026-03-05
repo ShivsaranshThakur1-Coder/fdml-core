@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1",
+  "label": "m10-discovery-pass-fixture",
+  "totals": {
+    "sourceFiles": 3,
+    "processedFiles": 3,
+    "checklistItemsTotal": 30,
+    "checklistMissing": 1,
+    "checklistUncertain": 2
+  },
+  "passes": [
+    {
+      "id": "pass-1",
+      "processedFiles": 3,
+      "growthRatio": 0.22,
+      "newParameterCandidates": 14,
+      "newValidatorCandidates": 8
+    },
+    {
+      "id": "pass-2",
+      "processedFiles": 3,
+      "growthRatio": 0.04,
+      "newParameterCandidates": 2,
+      "newValidatorCandidates": 1
+    },
+    {
+      "id": "pass-3",
+      "processedFiles": 3,
+      "growthRatio": 0.01,
+      "newParameterCandidates": 1,
+      "newValidatorCandidates": 0
+    }
+  ],
+  "saturation": {
+    "thresholdRatio": 0.05,
+    "latestGrowthRatios": [
+      0.04,
+      0.01
+    ],
+    "consecutivePassesUnderThreshold": 2
+  }
+}

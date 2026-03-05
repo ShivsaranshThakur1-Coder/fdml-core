@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>M2 Conversion acquired_sources cumbia</title>
+    <meter value="4/4"/>
+    <tempo bpm="112"/>
+  </meta>
+  <body>
+    <section type="notes">
+      <p># source_id: cumbia # title: Cumbia # source_url: https://en.wikipedia.org/w/api.php?action=query&amp;prop=extracts&amp;explaintext=1&amp;format=json&amp;titles=Cumbia # license: CC BY-SA 4.0 # attribution: Wikipedia</p>
+    </section>
+    <figure id="f-ingest" name="Ingested Figure" formation="ingest">
+      <step who="both" action="Cumbia refers to a number of musical rhythms and" beats="1" count="1">Cumbia refers to a number of musical rhythms and folk dance traditions of Latin America, generally involving musical and cultural elements from American Indigenous peoples, Europeans, and Africans during colonial times.</step>
+      <step who="both" action="Cumbia traditionally uses three drums (tambora, " beats="1" count="2">Cumbia traditionally uses three drums (tambora, tambor alegre and llamador), three flutes (gaita hembra and gaito macho, both forms of Colombian flute, and flauta de millo) and has a 22 or 24 meter.</step>
+      <step who="both" action="The sound of cumbia can be characterized as havi" beats="1" count="3">The sound of cumbia can be characterized as having a simple &quot;chu-chucu-chu&quot; rhythm created by the guacharaca.</step>
+      <step who="both" action="Examples of cumbia include: Colombian cumbia is " beats="1" count="4">Examples of cumbia include: Colombian cumbia is a musical rhythm and traditional folk dance from Colombia.</step>
+      <step who="both" action="The Colombian cumbia is the origin of all the ot" beats="1" count="5">The Colombian cumbia is the origin of all the other variations, including the tradition of dancing it with candles in the dancers&apos; hands.</step>
+      <step who="both" action="Panamanian cumbia, Panamanian folk dance and mus" beats="1" count="6">Panamanian cumbia, Panamanian folk dance and musical genre, developed by enslaved people of African descent during colonial times and later syncretized with American Indigenous and European cultural elements.</step>
+      <step who="both" action="As it enters new regions, musicians incorporate " beats="1" count="7">As it enters new regions, musicians incorporate local instruments, rhythms, and performance practices while retaining the genre&apos;s recognizable percussion structure.</step>
+      <step who="both" action="To be more specific, its dance came from a coast" beats="1" count="8">To be more specific, its dance came from a coastal traditional culture, as cumbia had multiple ethnic influences that originated from this region.</step>
+      <step who="both" action="The influence came from the costeño dance." beats="1" count="9">The influence came from the costeño dance.</step>
+      <step who="both" action="The history of cumbia has evolved throughout the" beats="1" count="10">The history of cumbia has evolved throughout the years, known as a street dance but had a period of transiting into a ballroom dance.</step>
+      <step who="both" action="Cumbia is commonly known for having many subgenr" beats="1" count="11">Cumbia is commonly known for having many subgenres from different countries which contributes to the different dance styles known.</step>
+      <step who="both" action="Cumbia can be referred to as a folk dance while " beats="1" count="12">Cumbia can be referred to as a folk dance while also being known globally as a street dance.</step>
+      <step who="both" action="To better understand what the dances of cumbia r" beats="1" count="13">To better understand what the dances of cumbia resemble it&apos;s better to know the basics of the dance.</step>
+      <step who="both" action="This is crucial since the dance from the Atlanti" beats="1" count="14">This is crucial since the dance from the Atlantic coast has the woman holding a candle in her right hand.</step>
+      <step who="both" action="This serves as two narrative functions; one to l" beats="1" count="15">This serves as two narrative functions; one to light the way for the dancing woman and the latter for a more serious motif.</step>
+      <step who="both" action="The latter can be portrayed in an imaginative se" beats="1" count="16">The latter can be portrayed in an imaginative sentence as a weapon by which the woman defends herself against the advances of her partner.</step>
+      <step who="both" action="Since the 1950s, cumbia has been an art form tha" beats="1" count="17">Since the 1950s, cumbia has been an art form that is stylized, orchestrated and lyricized, contrary to the traditional form.</step>
+      <step who="both" action="The transformation of cumbia in other countries " beats="1" count="18">The transformation of cumbia in other countries to better align with the taste of populations with very different aesthetic traditions from the strongly African-derived coastal culture from which it originally emerged.</step>
+      <step who="both" action="Cumbia is said to have come from funeral traditi" beats="1" count="19">Cumbia is said to have come from funeral traditions in the Afro-Colombian community.</step>
+      <step who="both" action="The genre frequently incorporates brass instrume" beats="1" count="20">The genre frequently incorporates brass instruments and piano.</step>
+      <step who="both" action="In order to properly understand the interlocking" beats="1" count="21">In order to properly understand the interlocking relationship between cumbia&apos;s roots, its Pan-American (and then global) roots, and its subgenres, Colombia&apos;s geocultural complexities must be taken into account.</step>
+      <step who="both" action="It has elements of three different cultures, Ame" beats="1" count="22">It has elements of three different cultures, American Indigenous, African, and Spanish, being the result of the long and intense meeting of these cultures during the Conquest and the Colony.</step>
+      <step who="both" action="Over the 20th century, Cumbia expanded beyond Co" beats="1" count="23">Over the 20th century, Cumbia expanded beyond Colombia through migration, media circulation, and cross border musical exchange.</step>
+      <step who="both" action="In Mexico, Cumbia developed into multiple sub ge" beats="1" count="24">In Mexico, Cumbia developed into multiple sub genres, becoming a cornerstone of both urban popular culture and Mexican American community identity.</step>
+    </figure>
+  </body>
+</fdml>

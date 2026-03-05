@@ -1,0 +1,4 @@
+- Clap once
+- Turn right
+- Step left
+- Hold

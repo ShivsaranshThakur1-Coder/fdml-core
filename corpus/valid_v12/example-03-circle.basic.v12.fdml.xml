@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Example 03 — Circle Basic (v1.2)</title>
+    <dance name="Example Circle Basic" />
+    <origin country="UNKNOWN" />
+    <type genre="circle" />
+    <meter value="4/4" />
+    <tempo bpm="108" />
+    <formation text="circle" />
+
+    <geometry>
+      <formation kind="circle" />
+      <roles>
+        <role id="all" />
+        <role id="d1" />
+        <role id="d2" />
+        <role id="d3" />
+        <role id="d4" />
+      </roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <circle>
+        <order role="all">
+          <slot who="d1" />
+          <slot who="d2" />
+          <slot who="d3" />
+          <slot who="d4" />
+        </order>
+      </circle>
+    </geometry>
+
+    <figure id="f-circle-basic" name="Circle phrase">
+      <step who="all" action="face left" beats="1" startFoot="R">
+        <geo>
+          <primitive kind="face" frame="formation" dir="counterclockwise" />
+        </geo>
+      </step>
+      <step who="all" action="run around" beats="3" startFoot="R">
+        <geo>
+          <primitive kind="move" frame="formation" axis="tangent" dir="counterclockwise" amount="3" unit="steps" preserveOrder="true" />
+        </geo>
+      </step>
+      <step who="all" action="face center" beats="1" startFoot="L">
+        <geo>
+          <primitive kind="face" frame="formation" dir="center" />
+        </geo>
+      </step>
+      <step who="all" action="run around" beats="3" startFoot="L">
+        <geo>
+          <primitive kind="move" frame="formation" axis="tangent" dir="counterclockwise" amount="3" unit="steps" preserveOrder="true" />
+        </geo>
+      </step>
+    </figure>
+  </body>
+</fdml>

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fdml.org/schema/enrichment-report.schema.json",
+  "title": "FDML Enrichment Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "sourcePath",
+    "enabled",
+    "offline",
+    "envFile",
+    "effectiveTextChanged",
+    "suggestedStepsCount",
+    "notes",
+    "providers"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1"
+    },
+    "sourcePath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "offline": {
+      "type": "boolean"
+    },
+    "envFile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effectiveTextChanged": {
+      "type": "boolean"
+    },
+    "suggestedStepsCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "providers": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "configured",
+          "attempted",
+          "applied",
+          "status",
+          "detail"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "groq",
+              "ocr_space",
+              "deepl",
+              "youtube"
+            ]
+          },
+          "configured": {
+            "type": "boolean"
+          },
+          "attempted": {
+            "type": "boolean"
+          },
+          "applied": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "skipped",
+              "ok",
+              "error"
+            ]
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

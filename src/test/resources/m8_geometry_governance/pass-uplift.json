@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1",
+  "totals": {
+    "strictCandidates": 3,
+    "uplifted": 3,
+    "errors": 0,
+    "doctorStrictPassRate": 1.0,
+    "validateGeoPassRate": 1.0,
+    "geometryReadyRate": 1.0
+  },
+  "blockerBurnDown": {
+    "before": {
+      "missing_formation_kind": 3,
+      "missing_meta_geometry": 3,
+      "missing_step_geo_primitive": 3,
+      "version_not_1_2": 3
+    },
+    "after": {
+      "missing_formation_kind": 0,
+      "missing_meta_geometry": 0,
+      "missing_step_geo_primitive": 0,
+      "version_not_1_2": 0
+    },
+    "resolved": {
+      "missing_formation_kind": 3,
+      "missing_meta_geometry": 3,
+      "missing_step_geo_primitive": 3,
+      "version_not_1_2": 3
+    }
+  }
+}

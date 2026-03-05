@@ -71,4 +71,41 @@ public class IngestTest {
     String err = errBuf.toString(StandardCharsets.UTF_8);
     assertTrue(err.contains("source file is empty"), "Expected clear empty source error message");
   }
+
+  @Test
+  public void ingestEnableEnrichmentRespectsOfflineAndStaysDeterministic() throws Exception {
+    Path tmpDir = Files.createTempDirectory("fdml-ingest-enrich-offline");
+    Path out = tmpDir.resolve("ingest-offline.fdml.xml");
+    Path envFile = tmpDir.resolve("offline.env");
+    Files.writeString(
+      envFile,
+      String.join(
+        "\n",
+        "FDML_OFFLINE=1",
+        "GROQ_API_KEY=dummy",
+        "DEEPL_API_KEY=dummy",
+        "OCR_SPACE_API_KEY=dummy",
+        "YOUTUBE_API_KEY=dummy",
+        ""
+      ),
+      StandardCharsets.UTF_8
+    );
+
+    int code = Ingest.run(new String[]{
+      "ingest",
+      "--source", "analysis/gold/ingest/source_minimal.txt",
+      "--out", out.toString(),
+      "--title", "Ingest Minimal",
+      "--meter", "4/4",
+      "--tempo", "112",
+      "--profile", "v1-basic",
+      "--enable-enrichment",
+      "--env-file", envFile.toString()
+    });
+    assertEquals(0, code, "Expected ingest to pass when enrichment is enabled but offline");
+
+    String expected = Files.readString(Path.of("corpus/valid_ingest/ingest-minimal.fdml.xml"), StandardCharsets.UTF_8);
+    String actual = Files.readString(out, StandardCharsets.UTF_8);
+    assertEquals(expected, actual, "Offline enrichment mode should preserve deterministic baseline output");
+  }
 }

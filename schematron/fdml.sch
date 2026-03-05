@@ -136,7 +136,7 @@
       <assert test="count(body/geometry/line/order/slot) &gt;= 2">
         line formation with progress primitives must declare body/geometry/line/order with at least 2 slots
       </assert>
-      <assert test="count(body/geometry/line/order/slot/@who) = count(distinct-values(body/geometry/line/order/slot/@who))">
+      <assert test="count(body/geometry/line/order[count(slot/@who) = count(distinct-values(slot/@who))]) = count(body/geometry/line/order)">
         line order slot list must not contain duplicate who values
       </assert>
       <assert test="count(.//step/geo/primitive[@kind='progress' and not(@delta)]) = 0">

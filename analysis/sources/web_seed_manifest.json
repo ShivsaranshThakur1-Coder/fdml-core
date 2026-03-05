@@ -1,0 +1,546 @@
+{
+  "version": "1",
+  "description": "Curated, openly licensed web seed sources for folk-dance corpus expansion.",
+  "sources": [
+    {
+      "id": "agbadza",
+      "title": "Agbadza",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Agbadza",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "ardah",
+      "title": "Ardah",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Ardah",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "bhangra",
+      "title": "Bhangra (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Bhangra%20%28dance%29",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "bihu-dance",
+      "title": "Bihu dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Bihu%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "capoeira",
+      "title": "Capoeira",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Capoeira",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "carinosa",
+      "title": "Cariñosa",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Cari%C3%B1osa",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "chhau",
+      "title": "Chhau",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Chhau",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "csardas",
+      "title": "Csardas",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Cs%C3%A1rd%C3%A1s",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "dabke",
+      "title": "Dabke",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Dabke",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "dandiya-raas",
+      "title": "Dandiya Raas",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Dandiya%20Raas",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "danza-de-los-viejitos",
+      "title": "Danza de los Viejitos",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Danza%20de%20los%20Viejitos",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "danza-de-los-voladores",
+      "title": "Danza de los Voladores",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Danza%20de%20los%20Voladores",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "eskista",
+      "title": "Eskista",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Eskista",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "fandango",
+      "title": "Fandango",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Fandango",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "flamenco",
+      "title": "Flamenco",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Flamenco",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "forro",
+      "title": "Forró",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Forr%C3%B3",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "frevo",
+      "title": "Frevo",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Frevo",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "garba",
+      "title": "Garba",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Garba",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "ghoomar",
+      "title": "Ghoomar",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Ghoomar",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "gumboot-dance",
+      "title": "Gumboot dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Gumboot%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "haka",
+      "title": "Haka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Haka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "halay",
+      "title": "Halay",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Halay",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "highland-dance",
+      "title": "Highland dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Highland%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "hora-dance",
+      "title": "Hora (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Hora%20(dance)",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "huayno",
+      "title": "Huayno",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Huayno",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "hula",
+      "title": "Hula",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Hula",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "irish-stepdance",
+      "title": "Irish stepdance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Irish%20stepdance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "jaipongan",
+      "title": "Jaipongan",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Jaipongan",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "kalamatianos",
+      "title": "Kalamatianos",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kalamatianos",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "kalbelia",
+      "title": "Kalbelia",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kalbelia",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "kecak",
+      "title": "Kecak",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kecak",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "khigga",
+      "title": "Khigga",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Khigga",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "kolo-dance",
+      "title": "Kolo (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kolo%20(dance)",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "krakowiak",
+      "title": "Krakowiak",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Krakowiak",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "kujawiak",
+      "title": "Kujawiak",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kujawiak",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "lakalaka",
+      "title": "Lakalaka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Lakalaka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "lavani",
+      "title": "Lavani",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Lavani",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "legong",
+      "title": "Legong",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Legong",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "lezginka",
+      "title": "Lezginka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Lezginka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "mayim-mayim",
+      "title": "Mayim Mayim",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Mayim%20Mayim",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "mazurka",
+      "title": "Mazurka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Mazurka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "morris-dance",
+      "title": "Morris dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Morris%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "pendet-dance",
+      "title": "Pendet dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Pendet%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "pentozali",
+      "title": "Pentozali",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Pentozali",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "polka",
+      "title": "Polka",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Polka",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "raqs-sharqi",
+      "title": "Raqs sharqi",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Raqs%20sharqi",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "saman-dance",
+      "title": "Saman (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Saman%20%28dance%29",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "schuhplattler",
+      "title": "Schuhplattler",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Schuhplattler",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "sevillanas",
+      "title": "Sevillanas",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Sevillanas",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "singkil",
+      "title": "Singkil",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Singkil",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "sirtaki",
+      "title": "Sirtaki",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Sirtaki",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "son-jarocho",
+      "title": "Son jarocho",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Son%20jarocho",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "sword-dance",
+      "title": "Sword dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Sword%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "syrtos",
+      "title": "Syrtos",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Syrtos",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "tarantella",
+      "title": "Tarantella",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Tarantella",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "taualuga",
+      "title": "Taualuga",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Taualuga",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "tinikling",
+      "title": "Tinikling",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Tinikling",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "trepak",
+      "title": "Trepak",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Trepak",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "tsamiko",
+      "title": "Tsamiko",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Tsamiko",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    },
+    {
+      "id": "zeybek-dance",
+      "title": "Zeybek (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Zeybek%20%28dance%29",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en"
+    }
+  ]
+}

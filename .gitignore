@@ -44,3 +44,14 @@ fdml_state_pack_2.txt
 fdml_verify_*.txt
 .codex/
 fdml_evidence_pack.txt
+
+# local secrets
+.env
+.env.local
+
+# local symlink to external ops toolkit
+ops
+
+# Python transient artifacts
+__pycache__/
+*.py[cod]

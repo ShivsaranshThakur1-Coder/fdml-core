@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "totals": {
+    "rows": 2
+  },
+  "rows": [
+    {
+      "key": "r1"
+    },
+    {
+      "key": "r2"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1",
+  "label": "m10-validator-pass-fixture",
+  "rows": [
+    {
+      "id": "V-001",
+      "rule": "partner_spacing_consistency",
+      "file": "out/m10_discovery/run1/sample_alpha.fdml.xml",
+      "confidence": 0.91,
+      "evidence": {
+        "text": "pair remains shoulder width apart through the sequence",
+        "span": {
+          "start": 33,
+          "end": 84
+        }
+      }
+    },
+    {
+      "id": "V-002",
+      "rule": "turn_completion_before_progress",
+      "file": "out/m10_discovery/run1/sample_beta.fdml.xml",
+      "confidence": 0.86,
+      "evidence": {
+        "text": "complete one full turn before advancing to next pair",
+        "span": {
+          "start": 96,
+          "end": 149
+        }
+      }
+    },
+    {
+      "id": "V-003",
+      "rule": "meter_phrase_alignment",
+      "file": "out/m10_discovery/run1/sample_gamma.fdml.xml",
+      "confidence": 0.89,
+      "evidence": {
+        "text": "phrase closes exactly on the eighth beat",
+        "span": {
+          "start": 211,
+          "end": 250
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "label": "fixture-fail-placeholder",
+  "rows": [
+    {
+      "file": "corpus/valid/example-01.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 0
+    },
+    {
+      "file": "corpus/valid/example-02.fdml.xml",
+      "strictFullDescription": true,
+      "nonPlaceholderSteps": 10
+    }
+  ],
+  "strict": {
+    "fullDescriptionCount": 2
+  }
+}

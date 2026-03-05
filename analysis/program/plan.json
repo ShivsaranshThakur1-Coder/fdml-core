@@ -1,0 +1,731 @@
+{
+  "version": "1",
+  "updated": "2026-03-05",
+  "activeMilestone": "M26",
+  "constraints": {
+    "maxInProgressItems": 3,
+    "requireMilestoneMapping": true,
+    "requireEvidenceForDone": true
+  },
+  "milestones": [
+    {
+      "id": "M0",
+      "title": "Program Guardrails",
+      "status": "completed",
+      "startDate": "2026-02-21",
+      "targetDate": "2026-02-22",
+      "kpis": [
+        {
+          "id": "M0-K1",
+          "name": "Milestone charter committed",
+          "target": "Program plan doc exists and references milestone/KPI model",
+          "measure": "docs/PROGRAM_PLAN.md"
+        },
+        {
+          "id": "M0-K2",
+          "name": "Machine-readable tracker active",
+          "target": "Plan and work-item files validate",
+          "measure": "scripts/program_gate.py PASS"
+        },
+        {
+          "id": "M0-K3",
+          "name": "CI gate enforced",
+          "target": "program-check wired into make ci",
+          "measure": "make ci includes program-check"
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "title": "Corpus Acquisition Quality",
+      "status": "completed",
+      "kpis": [
+        {
+          "id": "M1-K1",
+          "name": "Legal source growth",
+          "target": ">= 50 sources with explicit license + attribution metadata",
+          "measure": "acquisition index count and metadata completeness"
+        },
+        {
+          "id": "M1-K2",
+          "name": "Review gate quality",
+          "target": ">= 95% review pass rate",
+          "measure": "review.json pass/fail totals"
+        },
+        {
+          "id": "M1-K3",
+          "name": "Policy compliance",
+          "target": "0 sources with disallowed licensing",
+          "measure": "acquire_sources.py errors"
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "title": "FDML Conversion Quality",
+      "status": "completed",
+      "kpis": [
+        {
+          "id": "M2-K1",
+          "name": "Deterministic conversion",
+          "target": ">= 30 new FDML outputs regenerated deterministically",
+          "measure": "gold diff stability"
+        },
+        {
+          "id": "M2-K2",
+          "name": "Strict validity",
+          "target": ">= 90% doctor --strict pass on generated set",
+          "measure": "doctor summary counts"
+        },
+        {
+          "id": "M2-K3",
+          "name": "Traceability",
+          "target": "100% generated files have provenance sidecar",
+          "measure": "provenance schema pass count"
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "title": "Semantic Enrichment Quality",
+      "status": "completed",
+      "kpis": [
+        {
+          "id": "M3-K1",
+          "name": "Enriched dance coverage",
+          "target": ">= 15 files enriched with timing + topology semantics",
+          "measure": "fixture inventory + validator pass"
+        },
+        {
+          "id": "M3-K2",
+          "name": "Issue-rate reduction",
+          "target": "Week-over-week reduction in semantic issues",
+          "measure": "doctor/json issue trend"
+        },
+        {
+          "id": "M3-K3",
+          "name": "Spec alignment",
+          "target": "All added semantics documented in specs",
+          "measure": "spec/doc references for each issue code"
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "title": "Demo Readiness",
+      "status": "completed",
+      "kpis": [
+        {
+          "id": "M4-K1",
+          "name": "Deterministic build green",
+          "target": "make ci && mvn test pass consistently",
+          "measure": "CI job success"
+        },
+        {
+          "id": "M4-K2",
+          "name": "End-to-end demo flow",
+          "target": "init -> doctor --strict -> render/search shown with reproducible commands",
+          "measure": "docs/DEMO.html + site smoke"
+        },
+        {
+          "id": "M4-K3",
+          "name": "Evaluation package",
+          "target": "Coverage + findings + limitations documented",
+          "measure": "docs/COVERAGE.md and report docs updated"
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "title": "Coverage Expansion",
+      "status": "completed",
+      "kpis": [
+        {
+          "id": "M5-K1",
+          "name": "Corpus breadth increase",
+          "target": "Increase curated licensed sources from baseline 65 to at least 90 (+25) with at least 5 new sources each across Africa, Middle East plus Caucasus, South plus Southeast Asia, Europe regional, and Americas plus Oceania; preserve deterministic ingestion evidence",
+          "measure": "acquisition and ingest reports in out/"
+        },
+        {
+          "id": "M5-K2",
+          "name": "Semantic quality retention",
+          "target": "Maintain strict validation and semantic gate quality while expanding coverage",
+          "measure": "make ci and semantic gate outputs"
+        },
+        {
+          "id": "M5-K3",
+          "name": "Demo-visible diversity",
+          "target": "Ensure new dance categories are represented in site cards and searchable metadata",
+          "measure": "site/index.json and demo links"
+        }
+      ]
+    },
+    {
+      "id": "M6",
+      "title": "Full Dance Description Coverage",
+      "status": "completed",
+      "startDate": "2026-02-23",
+      "targetDate": "2026-03-05",
+      "kpis": [
+        {
+          "id": "M6-K1",
+          "name": "Description coverage lift",
+          "target": "Increase full-description coverage in expanded generated corpus from baseline 1/90 (1.11%) to at least 30/90 (33.3%) using deterministic extraction and normalization",
+          "measure": "out/m6_full_description_current.json"
+        },
+        {
+          "id": "M6-K2",
+          "name": "Quality retention on upgraded files",
+          "target": "Keep at least 95% doctor --strict pass on files classified as full-description and ensure zero placeholder-only upgraded files",
+          "measure": "doctor strict reports plus placeholder audit report"
+        },
+        {
+          "id": "M6-K3",
+          "name": "Demo-visible description depth",
+          "target": "Expose full-description facets in site search and demo links so upgraded dance descriptions are discoverable",
+          "measure": "site/index.json facets and docs/DEMO.html links"
+        }
+      ]
+    },
+    {
+      "id": "M7",
+      "title": "Submission and Defense Readiness",
+      "status": "completed",
+      "startDate": "2026-02-23",
+      "targetDate": "2026-03-12",
+      "kpis": [
+        {
+          "id": "M7-K1",
+          "name": "Submission package completeness",
+          "target": "Align submission docs and artifact references with final M6 outcomes and reproducible commands",
+          "measure": "docs/SUBMISSION.md and docs/COVERAGE.md"
+        },
+        {
+          "id": "M7-K2",
+          "name": "Final reproducibility rehearsal",
+          "target": "Run clean end-to-end rehearsal and capture deterministic report artifacts for final handoff",
+          "measure": "out/final_rehearsal/report.json"
+        },
+        {
+          "id": "M7-K3",
+          "name": "Defense narrative readiness",
+          "target": "Produce concise defense brief covering problem, method, results, limitations, and future work",
+          "measure": "docs/FINAL_DEFENSE_BRIEF.md"
+        }
+      ]
+    },
+    {
+      "id": "M8",
+      "title": "Geometry and Logical Constraint Coverage",
+      "status": "completed",
+      "startDate": "2026-02-23",
+      "targetDate": "2026-03-19",
+      "kpis": [
+        {
+          "id": "M8-K1",
+          "name": "Geometry baseline coverage map",
+          "target": "Produce deterministic full-corpus baseline for geometry-readiness with per-file blocker reasons",
+          "measure": "out/m8_geometry_baseline.json"
+        },
+        {
+          "id": "M8-K2",
+          "name": "Constraint-ready depth uplift",
+          "target": "Upgrade strict full-description files to v1.2 geometry-ready structures with no regressions in strict doctor quality",
+          "measure": "out/m8_geometry_uplift_progress.json"
+        },
+        {
+          "id": "M8-K3",
+          "name": "Pipeline-level geometry governance",
+          "target": "Add repeatable gates and documentation proving geometry/logical constraints are enforced across converted corpus workflows",
+          "measure": "Makefile gates and docs/USAGE.md geometry workflow"
+        }
+      ]
+    },
+    {
+      "id": "M9",
+      "title": "Full-Corpus v1.2 Productionization",
+      "status": "completed",
+      "startDate": "2026-02-23",
+      "targetDate": "2026-03-28",
+      "kpis": [
+        {
+          "id": "M9-K1",
+          "name": "Full-corpus geometry-ready outputs",
+          "target": "Produce deterministic promoted corpus with geometry-ready v1.2 outputs for the full converted set and zero unresolved baseline blockers in promoted outputs",
+          "measure": "out/m9_geometry_full_corpus.json"
+        },
+        {
+          "id": "M9-K2",
+          "name": "Strict description depth completion",
+          "target": "Increase strict full-description coverage from 67/90 to at least 85/90 while preserving full-description quality gate thresholds",
+          "measure": "out/m9_full_description_progress.json"
+        },
+        {
+          "id": "M9-K3",
+          "name": "Pipeline adoption and demo integration",
+          "target": "Adopt promoted v1.2 corpus as the default demo/search/CI path with governance checks and reproducible workflow docs",
+          "measure": "Makefile ci and docs/USAGE.md plus docs/DEMO.html references"
+        }
+      ]
+    },
+    {
+      "id": "M10",
+      "title": "Universal Discovery and Unified Validation",
+      "status": "completed",
+      "startDate": "2026-02-24",
+      "targetDate": "2026-04-15",
+      "kpis": [
+        {
+          "id": "M10-K1",
+          "name": "Corpus-wide discovery completeness",
+          "target": "Process 100% of promoted corpus files through multi-pass discovery with per-file checklist resolution",
+          "measure": "out/m10_discovery/run1/discovery_report.json"
+        },
+        {
+          "id": "M10-K2",
+          "name": "Evidence-linked ontology and rule candidates",
+          "target": "All promoted parameter and validator candidates include file reference, evidence span, and confidence in machine-readable outputs",
+          "measure": "out/m10_ontology_candidates.json plus out/m10_validator_candidates.json"
+        },
+        {
+          "id": "M10-K3",
+          "name": "Saturation and governance stop conditions",
+          "target": "Stop discovery only after growth ratio stays below 1% for two consecutive full-corpus passes with unresolved checklist files reduced to zero",
+          "measure": "out/m10_discovery_governance.json"
+        }
+      ]
+    },
+    {
+      "id": "M11",
+      "title": "Unified FDML Contract Promotion",
+      "status": "completed",
+      "startDate": "2026-02-24",
+      "targetDate": "2026-04-30",
+      "kpis": [
+        {
+          "id": "M11-K1",
+          "name": "Promote discovery candidates into unified FDML contract",
+          "target": "Promote accepted ontology candidates into a single extensible FDML meta-structure and document contract decisions with reversal conditions",
+          "measure": "docs/FDML-SPEC.md plus out/m11_contract_promotion.json"
+        },
+        {
+          "id": "M11-K2",
+          "name": "Unify validator coverage across full corpus",
+          "target": "Run one validator stack across all promoted corpus files using promoted rule set and publish per-rule support/failure metrics",
+          "measure": "out/m11_validator_unified_report.json"
+        },
+        {
+          "id": "M11-K3",
+          "name": "Single-pipeline adoption and governance",
+          "target": "Adopt unified FDML + validator workflow as default CI/demo path with deterministic gates and no subset-specific execution branches",
+          "measure": "Makefile ci and out/m11_pipeline_governance.json"
+        }
+      ]
+    },
+    {
+      "id": "M12",
+      "title": "Semantic Depth and Rule Breadth Productization",
+      "status": "completed",
+      "startDate": "2026-02-28",
+      "targetDate": "2026-05-31",
+      "kpis": [
+        {
+          "id": "M12-K1",
+          "name": "Rubric and depth governance gate",
+          "target": "Define explicit folk-dance semantic rubric and enforce depth/rule thresholds with deterministic gate outputs",
+          "measure": "analysis/program/m12_semantic_rubric.json plus out/m12_semantic_depth_report.json"
+        },
+        {
+          "id": "M12-K2",
+          "name": "Corpus-wide semantic dimension uplift",
+          "target": "Raise low-coverage rubric dimensions across the full corpus so per-dimension and per-file richness thresholds pass",
+          "measure": "out/m12_semantic_depth_report.json dimension coverage metrics"
+        },
+        {
+          "id": "M12-K3",
+          "name": "Validator and contract depth expansion",
+          "target": "Increase promoted ontology fields and recognized validator rules to meet rubric rule-depth thresholds under unified pipeline checks",
+          "measure": "out/m11_contract_promotion.json plus out/m11_validator_unified_report.json and out/m12_semantic_depth_report.json"
+        }
+      ]
+    },
+    {
+      "id": "M13",
+      "title": "Full-Vision Unified FDML and Validator Exhaustiveness",
+      "status": "completed",
+      "startDate": "2026-02-28",
+      "targetDate": "2026-06-30",
+      "kpis": [
+        {
+          "id": "M13-K1",
+          "name": "Single-structure FDML expansion from full-corpus evidence",
+          "target": "Run deterministic extraction over 100% promoted files and publish an evidence-linked parameter registry so one general FDML structure captures discovered dance-description dimensions without subset branching",
+          "measure": "out/m13_parameter_registry.json plus out/m13_fdml_fit_report.json"
+        },
+        {
+          "id": "M13-K2",
+          "name": "Unified validator coverage with explicit failure semantics",
+          "target": "Run one validator stack over the same 100% corpus and publish per-rule applicability plus failure taxonomy with zero hidden auto-pass behavior",
+          "measure": "out/m13_validator_expansion_report.json"
+        },
+        {
+          "id": "M13-K3",
+          "name": "Anti-drift governance for full-product pipeline",
+          "target": "Enforce intake to discovery to contract to validation workflow with saturation stop conditions, decision registry, assumption registry, and risk ledger under deterministic gates",
+          "measure": "out/m13_pipeline_governance.json plus docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M14",
+      "title": "Backlog Burn-Down for Full-Product Folk-Dance Coverage",
+      "status": "completed",
+      "startDate": "2026-02-28",
+      "targetDate": "2026-07-31",
+      "kpis": [
+        {
+          "id": "M14-K1",
+          "name": "P0/P1 contract gap remediation across full corpus",
+          "target": "Reduce expressive expansion files from 69 toward <=20 by filling highest-priority movement and formation fields in one unified FDML structure",
+          "measure": "out/m14_contract_uplift_report.json plus out/m13_fdml_fit_report.json"
+        },
+        {
+          "id": "M14-K2",
+          "name": "Unified validator failure burn-down",
+          "target": "Reduce expanded validator failures from 498 by at least 70% while preserving one-stack applicability over 100% of promoted corpus files",
+          "measure": "out/m14_validator_burndown_report.json plus out/m13_validator_expansion_report.json"
+        },
+        {
+          "id": "M14-K3",
+          "name": "Context specificity normalization and governance tightening",
+          "target": "Replace placeholder origin metadata with evidence-linked values for >=90% of files and tighten governance thresholds for context gaps",
+          "measure": "out/m14_context_specificity_report.json plus out/m14_pipeline_governance.json"
+        }
+      ]
+    },
+    {
+      "id": "M15",
+      "title": "Exhaustive Folk-Dance Semantics and Validation",
+      "status": "completed",
+      "startDate": "2026-02-28",
+      "targetDate": "2026-09-30",
+      "kpis": [
+        {
+          "id": "M15-K1",
+          "name": "Corpus-wide exhaustive descriptor extraction",
+          "target": "Run iterative full-corpus discovery to extract high-coverage descriptor dimensions into one evidence-linked FDML contract candidate ledger with saturation tracking",
+          "measure": "out/m15_discovery/run1/discovery_report.json plus out/m15_ontology_candidates.json"
+        },
+        {
+          "id": "M15-K2",
+          "name": "Expanded validator coverage for geometry/logical/physical constraints",
+          "target": "Generate and enforce expanded validator rules from discovered dimensions with explicit applicability and failure taxonomy over 100% of corpus files",
+          "measure": "out/m15_validator_expansion_report.json plus out/m15_validator_burndown_report.json"
+        },
+        {
+          "id": "M15-K3",
+          "name": "Single-pipeline governance and product-grade evidence",
+          "target": "Adopt M15 extraction-to-contract-to-validation workflow in CI/demo with no subset branching and publish governance plus coverage summary outputs",
+          "measure": "out/m15_pipeline_governance.json plus docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M16",
+      "title": "Contract and Validator Deepening for Exhaustive Folk-Dance Coverage",
+      "status": "completed",
+      "startDate": "2026-02-28",
+      "targetDate": "2026-11-30",
+      "kpis": [
+        {
+          "id": "M16-K1",
+          "name": "Promote richer FDML contract dimensions from M15 evidence",
+          "target": "Promote additional ontology dimensions from M15 evidence into the unified FDML contract with explicit decision registry and schema/spec alignment",
+          "measure": "out/m16_contract_promotion.json plus docs/FDML-SPEC.md"
+        },
+        {
+          "id": "M16-K2",
+          "name": "Broaden unified validator families for exhaustive dance constraints",
+          "target": "Expand one-stack validator coverage for movement, geometry, relational, timing, and higher-order constraints over 100% of corpus with measurable failure taxonomy and burn-down",
+          "measure": "out/m16_validator_expansion_report.json plus out/m16_validator_burndown_report.json"
+        },
+        {
+          "id": "M16-K3",
+          "name": "Adopt M16 single-pipeline governance in CI and evidence docs",
+          "target": "Wire M16 extraction-to-contract-to-validation governance into CI and publish machine-readable anti-drift evidence and closeout narrative",
+          "measure": "out/m16_pipeline_governance.json plus docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M17",
+      "title": "Style, Cultural, and Biomechanical Coverage Expansion",
+      "status": "completed",
+      "startDate": "2026-03-01",
+      "targetDate": "2027-01-31",
+      "kpis": [
+        {
+          "id": "M17-K1",
+          "name": "Expand style and cultural descriptor depth in unified FDML structure",
+          "target": "Extract and normalize deeper style, performance, and cultural-context descriptor families across 100% corpus files under one FDML structure with explicit evidence coverage metrics",
+          "measure": "out/m17_descriptor_registry.json plus out/m17_fdml_coverage_report.json"
+        },
+        {
+          "id": "M17-K2",
+          "name": "Expand unified validators with biomechanical and higher-order constraints",
+          "target": "Add one-stack validators for physical plausibility, transition coherence, and performance realism with measurable applicability and baseline-current failure burn-down across full corpus",
+          "measure": "out/m17_validator_expansion_report.json plus out/m17_validator_burndown_report.json"
+        },
+        {
+          "id": "M17-K3",
+          "name": "Adopt M17 governance and CI anti-drift controls",
+          "target": "Enforce M17 descriptor-to-validator workflow in CI with deterministic governance checks and decision/assumption/risk ledgers",
+          "measure": "out/m17_pipeline_governance.json plus docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M18",
+      "title": "Residual Realism and Cultural-Depth Closure",
+      "status": "completed",
+      "startDate": "2026-03-01",
+      "targetDate": "2027-03-31",
+      "kpis": [
+        {
+          "id": "M18-K1",
+          "name": "Resolve remaining biomechanical realism failures under one validator stack",
+          "target": "Reduce remaining M17 realism backlog from 26 files toward zero by uplifting turn-axis and transition-coherence semantics while preserving one-stack applicability and burn-down thresholds",
+          "measure": "out/m18_validator_realism_uplift_report.json plus out/m18_validator_burndown_report.json"
+        },
+        {
+          "id": "M18-K2",
+          "name": "Raise cultural/context depth coverage toward full-corpus completeness",
+          "target": "Increase files with cultural descriptor depth from 69/90 to at least 85/90 with deterministic evidence-linked descriptor normalization over one corpus path",
+          "measure": "out/m18_descriptor_uplift_report.json plus out/m18_fdml_coverage_report.json"
+        },
+        {
+          "id": "M18-K3",
+          "name": "Adopt M18 governance and CI anti-drift controls",
+          "target": "Enforce descriptor-to-validator-to-burndown invariants for M18 in CI with deterministic governance output and closeout-ready decision/assumption/risk ledgers",
+          "measure": "out/m18_pipeline_governance.json plus docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M19",
+      "title": "Global Exhaustiveness and Production Hardening",
+      "status": "completed",
+      "startDate": "2026-03-02",
+      "targetDate": "2027-06-30",
+      "kpis": [
+        {
+          "id": "M19-K1",
+          "name": "Scale corpus breadth and descriptor depth under one FDML structure",
+          "target": "Expand deterministic corpus coverage beyond the current 90-file baseline with region-balanced growth while preserving full-description depth and evidence-linked cultural/style fields across 100% of active corpus files",
+          "measure": "out/m19_corpus_expansion_report.json plus out/m19_fdml_coverage_report.json"
+        },
+        {
+          "id": "M19-K2",
+          "name": "Harden one-stack validators for expanded corpus realism",
+          "target": "Expand unified validator families for movement geometry, sequencing, biomechanical realism, and cultural-context consistency with explicit applicability metrics and measurable baseline-current burn-down over full active corpus",
+          "measure": "out/m19_validator_expansion_report.json plus out/m19_validator_burndown_report.json"
+        },
+        {
+          "id": "M19-K3",
+          "name": "Adopt M19 end-to-end governance and release checks",
+          "target": "Enforce one-pipeline intake-to-validation governance in CI with machine-readable decision/assumption/risk ledgers and release-grade reproducibility checks",
+          "measure": "out/m19_pipeline_governance.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M20",
+      "title": "Global Coverage Scale and Evidence-Grounded Semantics",
+      "status": "completed",
+      "startDate": "2026-03-02",
+      "targetDate": "2027-09-30",
+      "kpis": [
+        {
+          "id": "M20-K1",
+          "name": "Expand corpus scale with regional-balance backlog reduction",
+          "target": "Increase deterministic active corpus beyond 90 files while reducing M19 underrepresented bucket gaps through evidence-linked intake and conversion under one FDML structure",
+          "measure": "out/m20_corpus_expansion_report.json plus out/m20_fdml_coverage_report.json"
+        },
+        {
+          "id": "M20-K2",
+          "name": "Deepen descriptor and validator realism from source-grounded evidence",
+          "target": "Reduce reliance on marker-style descriptor defaults and expand unified validator realism checks with explicit baseline-current burn-down and applicability guarantees across full active corpus",
+          "measure": "out/m20_descriptor_evidence_report.json plus out/m20_validator_expansion_report.json and out/m20_validator_burndown_report.json"
+        },
+        {
+          "id": "M20-K3",
+          "name": "Adopt M20 governance and release hardening in CI",
+          "target": "Enforce M20 intake-to-descriptor-to-validator governance invariants in CI with machine-readable decision/assumption/risk ledgers and updated release evidence references",
+          "measure": "out/m20_pipeline_governance.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M21",
+      "title": "Descriptor Completion and Constraint-Rich Validation at 109-File Scale",
+      "status": "completed",
+      "startDate": "2026-03-04",
+      "targetDate": "2027-12-31",
+      "kpis": [
+        {
+          "id": "M21-K1",
+          "name": "Close descriptor depth gaps across full active corpus",
+          "target": "Increase style, cultural, and combined descriptor depth coverage on the 109-file active corpus while reducing low-support descriptor families through deterministic source-grounded extraction",
+          "measure": "out/m21_descriptor_completion_report.json plus out/m21_fdml_coverage_report.json"
+        },
+        {
+          "id": "M21-K2",
+          "name": "Expand source-grounded validator families for context and structure",
+          "target": "Grow the dedicated source-grounded validator layer beyond the current 8-rule set to include context and structure constraints with explicit applicability and baseline-current burn-down",
+          "measure": "out/m21_validator_expansion_report.json plus out/m21_validator_burndown_report.json"
+        },
+        {
+          "id": "M21-K3",
+          "name": "Adopt M21 governance and release synchronization",
+          "target": "Enforce M21 single-pipeline governance in CI with machine-readable decision, assumption, and risk ledgers plus synchronized program and submission evidence references",
+          "measure": "out/m21_pipeline_governance.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M22",
+      "title": "Descriptor Exhaustiveness and Validator Realism Hardening at 109-File Scale",
+      "status": "completed",
+      "startDate": "2026-03-04",
+      "targetDate": "2028-03-31",
+      "kpis": [
+        {
+          "id": "M22-K1",
+          "name": "Raise low-support descriptor families with source-grounded evidence",
+          "target": "Increase support ratios for low-coverage style/performance/culture descriptor families across the 109-file active corpus while preserving strict doctor and geometry quality gates",
+          "measure": "out/m22_descriptor_uplift_report.json plus out/m22_fdml_coverage_report.json"
+        },
+        {
+          "id": "M22-K2",
+          "name": "Burn down context/structure validator failure taxonomy",
+          "target": "Reduce M21 context and structure failure backlog through deeper descriptor-validator coherence checks with measurable baseline-current reduction and full-rule applicability",
+          "measure": "out/m22_validator_expansion_report.json plus out/m22_validator_burndown_report.json"
+        },
+        {
+          "id": "M22-K3",
+          "name": "Adopt M22 governance and release synchronization",
+          "target": "Enforce M22 descriptor-to-validator governance invariants in CI with machine-readable decision/assumption/risk ledgers and synchronized program plus submission evidence references",
+          "measure": "out/m22_pipeline_governance.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M23",
+      "title": "Residual Taxonomy Closure and Descriptor Support Consolidation at 109-File Scale",
+      "status": "completed",
+      "startDate": "2026-03-04",
+      "targetDate": "2028-06-30",
+      "kpis": [
+        {
+          "id": "M23-K1",
+          "name": "Consolidate residual low-support descriptor families",
+          "target": "Raise remaining low-support descriptor support with deterministic source-grounded extraction so support improvements are broad and not concentrated in a small subset of files",
+          "measure": "out/m23_descriptor_consolidation_report.json plus out/m23_fdml_coverage_report.json"
+        },
+        {
+          "id": "M23-K2",
+          "name": "Close residual context and structure validator taxonomy backlog",
+          "target": "Reduce remaining M22 validator failures and failure-file spread through deeper descriptor-validator alignment and coherence checks while preserving full-rule applicability and mapping integrity",
+          "measure": "out/m23_validator_expansion_report.json plus out/m23_validator_burndown_report.json"
+        },
+        {
+          "id": "M23-K3",
+          "name": "Adopt M23 governance and release synchronization",
+          "target": "Enforce M23 descriptor-to-validator governance invariants in CI with machine-readable decision/assumption/risk ledgers and synchronized program plus submission evidence references",
+          "measure": "out/m23_pipeline_governance.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M24",
+      "title": "Residual Failure Zeroing and Production-Grade Transition at 109-File Scale",
+      "status": "completed",
+      "startDate": "2026-03-04",
+      "targetDate": "2028-09-30",
+      "kpis": [
+        {
+          "id": "M24-K1",
+          "name": "Eliminate residual validator taxonomy failures",
+          "target": "Reduce the remaining M23 context and structure failure backlog to zero with deterministic source-grounded descriptor and validator closure while preserving full-rule applicability and candidate mapping integrity",
+          "measure": "out/m24_validator_expansion_report.json plus out/m24_validator_burndown_report.json"
+        },
+        {
+          "id": "M24-K2",
+          "name": "Saturate residual cultural-context descriptor depth",
+          "target": "Raise residual weak-support cultural-context descriptors on the remaining failure files to source-grounded saturation under one FDML structure without strict quality regression",
+          "measure": "out/m24_descriptor_completion_report.json plus out/m24_fdml_coverage_report.json"
+        },
+        {
+          "id": "M24-K3",
+          "name": "Adopt M24 governance and activate final productization queue",
+          "target": "Enforce M24 descriptor-to-validator governance invariants in CI with machine-readable decision/assumption/risk ledgers and activate the final full-product pipeline queue from a clean closeout state",
+          "measure": "out/m24_pipeline_governance.json plus docs/PROGRAM_PLAN.md and analysis/program/goal_state.json"
+        }
+      ]
+    },
+    {
+      "id": "M25",
+      "title": "Final Productization and Delivery Readiness",
+      "status": "completed",
+      "startDate": "2026-03-04",
+      "targetDate": "2028-12-31",
+      "kpis": [
+        {
+          "id": "M25-K1",
+          "name": "Publish final product-readiness baseline and gap ledger",
+          "target": "Produce a deterministic project-level baseline that summarizes architecture, quality, and reproducibility state across the unified 109-file FDML pipeline with explicit gap inventory",
+          "measure": "out/final_rehearsal/report.json plus docs/PROGRAM_PLAN.md"
+        },
+        {
+          "id": "M25-K2",
+          "name": "Close high-impact architecture, testing, and documentation gaps",
+          "target": "Implement measurable hardening work so the single-pipeline FDML system is cleaner to maintain, better validated, and submission-ready without toy-path regressions",
+          "measure": "make ci plus docs/SUBMISSION.md and docs/COVERAGE.md updates"
+        },
+        {
+          "id": "M25-K3",
+          "name": "Adopt final release governance and close project queue",
+          "target": "Enforce final anti-drift governance invariants and transition from active execution into documented release-ready closeout with auditable evidence",
+          "measure": "analysis/program/goal_state.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M26",
+      "title": "Production Polish and Handoff Packaging",
+      "status": "active",
+      "startDate": "2026-03-05",
+      "targetDate": "2029-03-31",
+      "kpis": [
+        {
+          "id": "M26-K1",
+          "name": "Establish post-closeout polish baseline and backlog",
+          "target": "Define a deterministic baseline for repository hygiene, documentation coherence, and release artifact integrity after M25 closeout, with explicit queued work and measurable acceptance checks",
+          "measure": "out/m26_activation_report.json plus analysis/program/work_items.csv and docs/PROGRAM_PLAN.md"
+        },
+        {
+          "id": "M26-K2",
+          "name": "Implement production polish and consistency pass",
+          "target": "Execute high-impact cleanup across repo structure, docs, and quality checks while preserving deterministic pipeline behavior and CI stability",
+          "measure": "make ci plus docs/SUBMISSION.md and docs/COVERAGE.md plus targeted cleanup evidence"
+        },
+        {
+          "id": "M26-K3",
+          "name": "Adopt M26 governance and handoff packaging",
+          "target": "Add final M26 governance guardrails and produce an auditable handoff package describing architecture, reproducibility commands, evidence artifacts, and residual risks",
+          "measure": "analysis/program/goal_state.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    }
+  ]
+}

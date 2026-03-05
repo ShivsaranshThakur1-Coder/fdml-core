@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdml version="1.2">
+  <meta>
+    <title>Example 10 — Two Lines Opposites (v1.2)</title>
+    <dance name="Example Two Lines" />
+    <origin country="UNKNOWN" />
+    <type genre="line" />
+    <meter value="2/4" />
+    <tempo bpm="118" />
+    <formation text="two lines facing" />
+
+    <geometry>
+      <formation kind="twoLinesFacing" />
+      <roles>
+        <role id="all" />
+        <role id="line_a" />
+        <role id="line_b" />
+        <role id="a1" />
+        <role id="a2" />
+        <role id="b1" />
+        <role id="b2" />
+      </roles>
+    </geometry>
+  </meta>
+
+  <body>
+    <geometry>
+      <twoLines>
+        <line id="line_a" role="line_a">
+          <order>
+            <slot who="a1" />
+            <slot who="a2" />
+          </order>
+        </line>
+        <line id="line_b" role="line_b">
+          <order>
+            <slot who="b1" />
+            <slot who="b2" />
+          </order>
+        </line>
+        <facing a="line_a" b="line_b" />
+      </twoLines>
+    </geometry>
+
+    <figure id="f-twolines" name="Approach and opposite swap">
+      <step who="all" action="approach" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="approach" who="line_a" />
+          <primitive kind="approach" who="line_b" />
+          <primitive kind="swapPlaces" frame="opposite" a="a1" b="b1" />
+        </geo>
+      </step>
+      <step who="all" action="approach" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="approach" who="line_a" />
+          <primitive kind="approach" who="line_b" />
+        </geo>
+      </step>
+      <step who="all" action="retreat" beats="4" startFoot="R">
+        <geo>
+          <primitive kind="retreat" who="line_a" />
+          <primitive kind="retreat" who="line_b" />
+        </geo>
+      </step>
+      <step who="all" action="retreat" beats="4" startFoot="L">
+        <geo>
+          <primitive kind="retreat" who="line_a" />
+          <primitive kind="retreat" who="line_b" />
+        </geo>
+      </step>
+    </figure>
+  </body>
+</fdml>

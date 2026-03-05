@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "description": "Non-Wikipedia public-domain seed sources for folk and historical dance material.",
+  "sources": [
+    {
+      "id": "english-folk-song-and-dance",
+      "title": "English Folk-Song and Dance",
+      "url": "https://www.gutenberg.org/ebooks/64536.txt.utf-8",
+      "parser": "plain_text",
+      "license": "Public Domain",
+      "attribution": "Project Gutenberg contributors; Kidson, Frank; Neal, Mary",
+      "language": "en"
+    },
+    {
+      "id": "morris-book-part-1",
+      "title": "The Morris Book, Part 1",
+      "url": "https://www.gutenberg.org/files/12926/12926-0.txt",
+      "parser": "plain_text",
+      "license": "Public Domain",
+      "attribution": "Project Gutenberg contributors; Sharp, Cecil J.; MacIlwaine, Herbert C.",
+      "language": "en"
+    },
+    {
+      "id": "jamaican-song-and-story",
+      "title": "Jamaican Song and Story",
+      "url": "https://www.gutenberg.org/ebooks/35410.txt.utf-8",
+      "parser": "plain_text",
+      "license": "Public Domain",
+      "attribution": "Project Gutenberg contributors; Walter Jekyll",
+      "language": "en"
+    },
+    {
+      "id": "historic-illustrations-of-dancing",
+      "title": "The Dance (Historic Illustrations of Dancing)",
+      "url": "https://www.gutenberg.org/files/17289/17289-8.txt",
+      "parser": "plain_text",
+      "license": "Public Domain",
+      "attribution": "Project Gutenberg contributors; Anonymous",
+      "language": "en"
+    },
+    {
+      "id": "orchesography-art-of-dancing",
+      "title": "Orchesography, or, the Art of Dancing",
+      "url": "https://www.gutenberg.org/files/9454/9454-0.txt",
+      "parser": "plain_text",
+      "license": "Public Domain",
+      "attribution": "Project Gutenberg contributors; Feuillet, Raoul-Auger",
+      "language": "en"
+    }
+  ]
+}

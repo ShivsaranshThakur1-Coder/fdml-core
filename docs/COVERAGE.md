@@ -23,3 +23,46 @@ This matrix maps core engineering concerns to enforcement layers and evidence in
 2. Update at least one enforcement layer in that row (schema/rules/validator/CLI), and add or adjust tests + fixtures.
 3. Confirm docs in the same row still match implementation.
 4. Run `make coverage` to detect missing matrix cells, then run CI checks (`make ci`, `mvn test`).
+
+## Evaluation Findings (M4 + M6 + M7-K1 Snapshot)
+
+Latest local evaluation snapshot (2026-03-05):
+
+Note: numeric values may change between runs; gate pass/fail status is the authoritative acceptance signal.
+
+| Signal | Command | Evidence | Result |
+| --- | --- | --- | --- |
+| Full quality gate | `make ci` | aggregated gate output | PASS |
+| Final product-readiness baseline | `make final-rehearsal-check` | `out/final_rehearsal/report.json` | PASS (`label=m25-final-product-baseline`, `active=M26`, `rules=20`, `queuedGapCount=3`, `releaseReady=false`) |
+| Unit/integration tests | `mvn test` | Maven Surefire summary | PASS (`Tests run: 55, Failures: 0, Errors: 0`) |
+| End-to-end demo flow | `make demo-flow-check` | `out/demo_flow/demo_flow_report.json` | PASS |
+| M25 architecture/docs hardening | `make m25-hardening-check` | `out/m25_hardening_report.json` | PASS |
+| M25 final release governance | `make m25-release-governance-check` | `out/m25_release_governance.json` | PASS (`m25OpenWorkItems=0`, `releaseReady=true`, `gapCount=0`) |
+| M26 activation gate | `make m26-activation-check` | `out/m26_activation_report.json` | PASS (`activeMilestone=M26`, `m26OpenRows=0`) |
+| M26 polish baseline | `make m26-polish-baseline-check` | `out/m26_polish_baseline_report.json` | PASS (`docGapCount=0`, `cleanupBacklogCount=1`) |
+| M26 polish execution | `make m26-polish-execution-check` | `out/m26_polish_execution_report.json` | PASS (`docGapAfter=0`, `docsMissingM26After=0`, `pycacheDirCountAfter=0`, `baselineBacklogLinkedToPRG263=0`) |
+| M26 governance handoff | `make m26-governance-handoff-check` | `out/m26_handoff_governance_report.json` | PASS (`finalReleaseReady=true`, `finalQueuedGapCount=0`, residual-risk ledger present, hashed handoff artifacts) |
+| Acquisition review quality | `make review-passrate-check` | `out/acquired_sources/review.json`, `out/acquired_sources_nonwiki/review.json` | PASS (`109/109`, `1.0000`) |
+| License policy compliance | `make license-policy-check` | acquisition index files | PASS (`0` disallowed licenses) |
+| Generated FDML strict validity | `make doctor-passrate-check` | `out/m2_conversion/run1/doctor_passrate.json` | PASS (`109/109`, `1.0000`) |
+| Provenance coverage | `make provenance-coverage-check` | `out/m2_conversion/run1/provenance_coverage.json` | PASS (`109/109`, `1.0000`) |
+| Semantic enrichment coverage | `make semantic-enrichment-check` | `out/m3_semantic_inventory.json` | PASS (`15/15`) |
+| Semantic issue trend | `make semantic-issue-trend-check` | `out/m3_issue_current.json` | PASS (`issueTotal=0`, `strictFailFiles=0`) |
+| Semantic spec alignment | `make semantic-spec-alignment-check` | `out/m3_semantic_spec_alignment.json` | PASS (`35/35` mapped codes) |
+| M6 strict full-description coverage | `make full-description-coverage-check` | `out/m6_full_description_baseline.json`, `out/m6_full_description_current.json` | PASS (baseline `1/90` -> current `78/109`) |
+| M6 relaxed full-description coverage | `make full-description-coverage-check` | `out/m6_full_description_current.json` | PASS (`100/109`) |
+| M6 full-description quality | `make full-description-quality-check` | `out/m6_full_description_quality.json` | PASS (strict doctor `78/78`, pass-rate `1.0000`, placeholder-only `0`) |
+| Search/demo strict discoverability | `make demo-flow-check` | `out/demo_flow/demo_flow_report.json` | PASS (`items=129`, `tiers=3`, `strictItems=109`, `sourceCategories=7`) |
+
+Interpretation:
+- The project currently meets implemented gate targets for structure, timing, topology, determinism, ingestion provenance, semantic consistency, and demo reproducibility.
+- M25 baseline/hardening gates remain stable while M26 polish + governance gates enforce deterministic repo/docs cleanup evidence, anti-drift handoff checks, and explicit residual-risk reporting.
+
+## Limitations and Known Gaps
+
+1. Coverage is internal-first: most acceptance checks validate consistency of this repository's schema/rules/corpus, not external benchmark parity.
+2. Dance-domain completeness is limited: current corpus and formation semantics are broad but not a complete model of global folk dance variation.
+3. Stateful/geometry modeling is intentionally simplified: validators use deterministic rule checks rather than full physical or biomechanical simulation.
+4. Rendering verification is primarily smoke/golden based: there is no full visual regression suite across browsers/devices.
+5. Source ingestion quality depends on upstream text quality and licensing constraints; extraction noise can propagate even when gates pass.
+6. Optional enrichment providers are not part of core offline CI guarantees; offline deterministic behavior is prioritized for reproducibility.

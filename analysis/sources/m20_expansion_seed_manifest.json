@@ -1,0 +1,196 @@
+{
+  "version": "1",
+  "description": "Targeted M20 expansion seeds for regional-balance gap reduction.",
+  "sources": [
+    {
+      "id": "agbekor",
+      "title": "Agbekor",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Agbekor",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "amapiano-dance",
+      "title": "Amapiano",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Amapiano",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "armenian-dance",
+      "title": "Armenian dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Armenian%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "assyrian-folk-dance",
+      "title": "Assyrian folk dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Assyrian%20folk%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "azonto",
+      "title": "Azonto",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Azonto",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "bar-dance",
+      "title": "Bar (dance)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Bar%20%28dance%29",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "belly-dance",
+      "title": "Belly dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Belly%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "bikutsi",
+      "title": "Bikutsi",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Bikutsi",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "bomba-puerto-rico",
+      "title": "Bomba (Puerto Rico)",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Bomba%20%28Puerto%20Rico%29",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "horon",
+      "title": "Horon",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Horon",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "isicathamiya",
+      "title": "Isicathamiya",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Isicathamiya",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "kizomba",
+      "title": "Kizomba",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kizomba",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "kurdish-dance",
+      "title": "Kurdish dance",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kurdish%20dance",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "middle-east-caucasus"
+    },
+    {
+      "id": "kwassa-kwassa",
+      "title": "Kwassa kwassa",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Kwassa%20kwassa",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "makossa-dance",
+      "title": "Makossa",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Makossa",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "maloya",
+      "title": "Maloya",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Maloya",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    },
+    {
+      "id": "marinera",
+      "title": "Marinera",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Marinera",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "plena",
+      "title": "Plena",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Plena",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "americas-oceania"
+    },
+    {
+      "id": "sabar",
+      "title": "Sabar",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&titles=Sabar",
+      "parser": "mediawiki_extract",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikipedia contributors",
+      "language": "en",
+      "category": "africa"
+    }
+  ]
+}

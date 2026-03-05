@@ -6,10 +6,31 @@ V12_DEMO_FILES=(
   "corpus/valid_v12/mayim-mayim.v12.fdml.xml"
   "corpus/valid_v12/example-05-contra.progress.v12.fdml.xml"
 )
+UNIFIED_CORPUS_DIR="out/m9_full_description_uplift/run1"
+M5_SHOWCASE_FILES=(
+  "out/m9_full_description_uplift/run1/acquired_sources__adumu.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__attan.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__giddha.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__branle.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__cueca.fdml.xml"
+)
+M6_SHOWCASE_FILES=(
+  "out/m9_full_description_uplift/run1/acquired_sources__kpanlogo.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__khorumi.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__joget.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__farandole.fdml.xml"
+  "out/m9_full_description_uplift/run1/acquired_sources__cumbia.fdml.xml"
+)
 
 # Rebuild cards only; keep site/ stable
 rm -rf site/cards
 mkdir -p site site/cards
+
+if [[ ! -d "$UNIFIED_CORPUS_DIR" ]]; then
+  echo "Missing unified corpus dir: $UNIFIED_CORPUS_DIR" >&2
+  echo "Run: make m11-validator-unified-check" >&2
+  exit 1
+fi
 
 # Ship CSS
 cp -f docs/style.css site/style.css
@@ -20,10 +41,38 @@ cp -f docs/diagram.js site/cards/diagram.js
 # Copy generated cards
 cp -f out/html/*.html site/cards/
 
+# Render unified full-corpus cards directly (default production workflow)
+tmp_promoted_cards="$(mktemp)"
+find "$UNIFIED_CORPUS_DIR" -type f -name '*.fdml.xml' | sort > "$tmp_promoted_cards"
+while IFS= read -r f; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  xsltproc --stringparam cssVersion "$V" xslt/card.xsl "$f" > "site/cards/${stem}.html"
+done < "$tmp_promoted_cards"
+rm -f "$tmp_promoted_cards"
+
 # Render curated v1.2 demo cards directly (deterministic explicit list)
 for f in "${V12_DEMO_FILES[@]}"; do
   if [[ ! -f "$f" ]]; then
     echo "Missing required v1.2 demo file: $f" >&2
+    exit 1
+  fi
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  xsltproc --stringparam cssVersion "$V" xslt/card.xsl "$f" > "site/cards/${stem}.html"
+done
+for f in "${M5_SHOWCASE_FILES[@]}"; do
+  if [[ ! -f "$f" ]]; then
+    echo "Missing required M5 showcase file: $f" >&2
+    exit 1
+  fi
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  xsltproc --stringparam cssVersion "$V" xslt/card.xsl "$f" > "site/cards/${stem}.html"
+done
+for f in "${M6_SHOWCASE_FILES[@]}"; do
+  if [[ ! -f "$f" ]]; then
+    echo "Missing required M6 showcase file: $f" >&2
     exit 1
   fi
   base="$(basename "$f")"
@@ -40,14 +89,32 @@ while IFS= read -r f; do
   bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
 done < "$tmp_cards"
 rm -f "$tmp_cards"
+tmp_promoted_json="$(mktemp)"
+find "$UNIFIED_CORPUS_DIR" -type f -name '*.fdml.xml' | sort > "$tmp_promoted_json"
+while IFS= read -r f; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
+done < "$tmp_promoted_json"
+rm -f "$tmp_promoted_json"
 for f in "${V12_DEMO_FILES[@]}"; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
+done
+for f in "${M5_SHOWCASE_FILES[@]}"; do
+  base="$(basename "$f")"
+  stem="${base%.xml}"
+  bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
+done
+for f in "${M6_SHOWCASE_FILES[@]}"; do
   base="$(basename "$f")"
   stem="${base%.xml}"
   bin/fdml export-json "$f" --out "site/cards/${stem}.json" >/dev/null
 done
 
 # Emit index.json for Search
-bin/fdml index corpus/valid "${V12_DEMO_FILES[@]}" --out site/index.json
+bin/fdml index corpus/valid "${V12_DEMO_FILES[@]}" "$UNIFIED_CORPUS_DIR" --out site/index.json
 
 # Emit export-json sample for demo page
 bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml --out site/export-json-sample.json >/dev/null

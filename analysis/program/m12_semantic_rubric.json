@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1",
+  "label": "m12-folk-dance-semantic-rubric-v1",
+  "description": "Minimum semantic and rule-depth thresholds required before the pipeline is treated as product-grade for folk-dance description coverage.",
+  "dimensions": [
+    {
+      "id": "movement_path_pattern",
+      "minCoverage": 0.95
+    },
+    {
+      "id": "footwork_support_transfer",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "turn_spin_rotation",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "hold_contact_pattern",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "partner_relative_position",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "formation_topology",
+      "minCoverage": 1.0
+    },
+    {
+      "id": "role_assignment",
+      "minCoverage": 1.0
+    },
+    {
+      "id": "direction_orientation",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "progression_order_change",
+      "minCoverage": 0.75
+    },
+    {
+      "id": "timing_phrase_alignment",
+      "minCoverage": 1.0
+    },
+    {
+      "id": "rhythm_accent_grouping",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "gesture_styling_posture",
+      "minCoverage": 0.8
+    },
+    {
+      "id": "performance_dynamics",
+      "minCoverage": 0.7
+    },
+    {
+      "id": "cultural_context_notes",
+      "minCoverage": 0.8
+    }
+  ],
+  "globalThresholds": {
+    "minAverageDimensionCoverage": 0.8,
+    "minPresentDimensionsPerFile": 11,
+    "minFilesMeetingPerFileThresholdRatio": 0.8,
+    "maxZeroCoverageDimensions": 0
+  },
+  "ruleDepthThresholds": {
+    "minOntologyCandidates": 14,
+    "minValidatorCandidates": 10,
+    "minPromotedContractFields": 10,
+    "minRecognizedRules": 10
+  }
+}

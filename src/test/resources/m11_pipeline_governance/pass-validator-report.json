@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1",
+  "ok": true,
+  "inputs": {
+    "corpusDir": "out/m9_full_description_uplift/run1"
+  },
+  "totals": {
+    "processedFiles": 3,
+    "recognizedRules": 2,
+    "ruleFailures": 0
+  }
+}

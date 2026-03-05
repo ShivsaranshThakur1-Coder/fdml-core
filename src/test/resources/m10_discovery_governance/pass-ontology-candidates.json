@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1",
+  "label": "m10-ontology-pass-fixture",
+  "rows": [
+    {
+      "id": "P-001",
+      "field": "lead_follow_role",
+      "file": "out/m10_discovery/run1/sample_alpha.fdml.xml",
+      "confidence": 0.93,
+      "evidence": {
+        "text": "lead dancer initiates turn while partner mirrors on count four",
+        "span": {
+          "start": 42,
+          "end": 108
+        }
+      }
+    },
+    {
+      "id": "P-002",
+      "field": "support_foot_transfer",
+      "file": "out/m10_discovery/run1/sample_beta.fdml.xml",
+      "confidence": 0.88,
+      "evidence": {
+        "text": "weight shifts to left foot before the retreat phrase",
+        "span": {
+          "start": 121,
+          "end": 171
+        }
+      }
+    },
+    {
+      "id": "P-003",
+      "field": "gesture_layer",
+      "file": "out/m10_discovery/run1/sample_gamma.fdml.xml",
+      "confidence": 0.84,
+      "evidence": {
+        "text": "arms stay raised with palms facing inward during circle travel",
+        "span": {
+          "start": 18,
+          "end": 78
+        }
+      }
+    }
+  ]
+}

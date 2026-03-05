@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,21 @@ import java.util.regex.Pattern;
 
 class Ingest {
   private static final int NOTES_PREVIEW_CHARS = 200;
+  private static final int MAX_PROSE_STEPS = 24;
+  private static final int MIN_PROSE_STEP_CHARS = 20;
+  private static final int MAX_PROSE_STEP_CHARS = 220;
   private static final Pattern STEP_LINE = Pattern.compile("^\\s*(?:\\d+\\.\\s+|-\\s+)(.+?)\\s*$", Pattern.MULTILINE);
   private static final Pattern FIRST_NON_EMPTY_LINE = Pattern.compile("^\\s*\\S.*$", Pattern.MULTILINE);
+  private static final Pattern NON_HEADER_NON_EMPTY_LINE = Pattern.compile("(?m)^(?!\\s*#)\\s*\\S.*$");
+  private static final Pattern SENTENCE_PATTERN = Pattern.compile("(?s)([^.!?\\n][^.!?]{10,320}[.!?])");
+  private static final Pattern DANCE_TERMS = Pattern.compile(
+    "\\b(dance|dances|dancer|dancers|dancing|step|steps|jump|jumps|hop|hops|turn|turns|line|circle|formation|rhythm|beat|beats|partner|partners|hold|holds|stomp|stomps|sway|clap|spin|spins|procession|figure|figures|chain|couple|couples|waltz|polka|dabke|folk)\\b",
+    Pattern.CASE_INSENSITIVE
+  );
+  private static final Pattern BOILERPLATE_TERMS = Pattern.compile(
+    "\\b(project gutenberg|ebook|release date|credits|copyright|license|isbn|references|bibliography|external links|all rights reserved|transcriber|proofreading team)\\b",
+    Pattern.CASE_INSENSITIVE
+  );
   private static final List<String> SUPPORTED_PROFILES = List.of(
     "v1-basic",
     "v12-circle",
@@ -39,12 +53,54 @@ class Ingest {
     }
   }
 
+  private static final class SentenceCandidate {
+    final String normalizedText;
+    final String sourceSnippet;
+    final int sourceStart;
+    final int sourceEnd;
+    final int score;
+
+    SentenceCandidate(String normalizedText, String sourceSnippet, int sourceStart, int sourceEnd, int score) {
+      this.normalizedText = normalizedText;
+      this.sourceSnippet = sourceSnippet;
+      this.sourceStart = sourceStart;
+      this.sourceEnd = sourceEnd;
+      this.score = score;
+    }
+  }
+
+  private static final class DoctorStatus {
+    boolean xsdOk;
+    boolean schematronOk;
+    boolean lintOk;
+    boolean timingOk;
+    boolean geometryOk;
+    boolean strictOk;
+  }
+
+  private static final class SchemaStatus {
+    boolean ok;
+    int exitCode;
+  }
+
+  private static final class BatchItem {
+    String sourcePath;
+    String fdmlPath;
+    String provenancePath;
+    String enrichmentReportPath;
+    int ingestExitCode;
+    DoctorStatus doctor = emptyDoctorStatus();
+    SchemaStatus provenanceSchema = emptySchemaStatus();
+    SchemaStatus enrichmentSchema = emptySchemaStatus();
+    final List<String> errors = new ArrayList<>();
+  }
+
   static int run(String[] args) {
     Map<String, String> kv = parseFlags(args, 1);
     String sourceArg = kv.getOrDefault("--source", "").trim();
     String outArg = kv.getOrDefault("--out", "").trim();
     if (sourceArg.isEmpty() || outArg.isEmpty()) {
-      System.err.println("ingest: provide --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile " + String.join("|", SUPPORTED_PROFILES) + "] [--provenance-out file.json]");
+      System.err.println("ingest: provide --source <path.txt> --out <out.fdml.xml> [--title T] [--meter M] [--tempo BPM] [--profile " + String.join("|", SUPPORTED_PROFILES) + "] [--provenance-out file.json] [--enable-enrichment] [--env-file .env] [--enrichment-report file.json]");
       return 4;
     }
 
@@ -72,17 +128,27 @@ class Ingest {
     String meter = kv.getOrDefault("--meter", "4/4");
     String tempo = kv.getOrDefault("--tempo", "112");
     String provenanceOutArg = kv.getOrDefault("--provenance-out", "").trim();
+    String enrichmentReportArg = kv.getOrDefault("--enrichment-report", "").trim();
+    boolean enableEnrichment = kv.containsKey("--enable-enrichment");
+    String envFile = kv.getOrDefault("--env-file", ".env").trim();
 
     List<ExtractedStep> extractedSteps = deriveExtractedSteps(sourceText);
+    Enrichment.Result enrichment = Enrichment.apply(sourceText, envFile, enableEnrichment);
 
     List<String> stepTexts = new ArrayList<>();
-    for (ExtractedStep s : extractedSteps) stepTexts.add(s.normalizedText);
+    List<ExtractedStep> extractionSeed = extractedSteps;
+    if (!enrichment.effectiveText.equals(sourceText)) extractionSeed = deriveExtractedSteps(enrichment.effectiveText);
+    for (ExtractedStep s : extractionSeed) stepTexts.add(s.normalizedText);
+    if (!enrichment.suggestedSteps.isEmpty()) {
+      stepTexts.clear();
+      stepTexts.addAll(enrichment.suggestedSteps);
+    }
     int minSteps = "v12-twoLinesFacing".equals(profile) ? 6 : 1;
     ensureMinSteps(stepTexts, minSteps);
     int barLengthCounts = parseBarLengthCounts(meter);
     if (barLengthCounts > 0) padToBarLength(stepTexts, barLengthCounts);
 
-    String xml = buildXml(title, meter, tempo, profile, sourceText, stepTexts);
+    String xml = buildXml(title, meter, tempo, profile, sourceText, stepTexts, enrichment.notes);
 
     try {
       Path parent = out.getParent();
@@ -92,6 +158,20 @@ class Ingest {
     } catch (Exception e) {
       System.err.println("ingest: failed to write output file: " + out + " (" + e.getMessage() + ")");
       return 4;
+    }
+
+    if (!enrichmentReportArg.isBlank()) {
+      Path enrichmentReportOut = Paths.get(enrichmentReportArg);
+      String enrichmentJson = enrichment.toReportJson(source.toString()) + "\n";
+      try {
+        Path parent = enrichmentReportOut.getParent();
+        if (parent != null) Files.createDirectories(parent);
+        Files.writeString(enrichmentReportOut, enrichmentJson, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        System.out.println("Created: " + enrichmentReportOut);
+      } catch (Exception e) {
+        System.err.println("ingest: failed to write enrichment report file: " + enrichmentReportOut + " (" + e.getMessage() + ")");
+        return 4;
+      }
     }
 
     if (!provenanceOutArg.isBlank()) {
@@ -110,24 +190,173 @@ class Ingest {
     return 0;
   }
 
+  static int runBatch(String[] args) {
+    Map<String, String> kv = parseFlags(args, 1);
+    String sourceDirArg = kv.getOrDefault("--source-dir", "").trim();
+    String outDirArg = kv.getOrDefault("--out-dir", "").trim();
+    if (sourceDirArg.isEmpty() || outDirArg.isEmpty()) {
+      System.err.println("ingest-batch: provide --source-dir <dir> --out-dir <dir> [--title-prefix T] [--meter M] [--tempo BPM] [--profile " + String.join("|", SUPPORTED_PROFILES) + "] [--enable-enrichment] [--env-file .env] [--index-out out.json]");
+      return 4;
+    }
+
+    String profile = kv.getOrDefault("--profile", "v1-basic").trim();
+    if (!SUPPORTED_PROFILES.contains(profile)) {
+      System.err.println("ingest-batch: unsupported --profile '" + profile + "'. Supported: " + String.join(", ", SUPPORTED_PROFILES));
+      return 4;
+    }
+
+    Path sourceDir = Paths.get(sourceDirArg);
+    Path outDir = Paths.get(outDirArg);
+    if (!Files.isDirectory(sourceDir)) {
+      System.err.println("ingest-batch: --source-dir is not a directory: " + sourceDir);
+      return 4;
+    }
+    String titlePrefix = kv.getOrDefault("--title-prefix", "Ingest Batch");
+    String meter = kv.getOrDefault("--meter", "4/4");
+    String tempo = kv.getOrDefault("--tempo", "112");
+    boolean enableEnrichment = kv.containsKey("--enable-enrichment");
+    String envFile = kv.getOrDefault("--env-file", ".env").trim();
+    Path indexOut = Paths.get(kv.getOrDefault("--index-out", outDir.resolve("index.json").toString()).trim());
+
+    List<Path> sourceFiles;
+    try (var stream = Files.list(sourceDir)) {
+      sourceFiles = stream
+        .filter(Files::isRegularFile)
+        .filter(p -> p.getFileName().toString().toLowerCase(java.util.Locale.ROOT).endsWith(".txt"))
+        .sorted(Comparator.comparing(p -> p.getFileName().toString()))
+        .toList();
+    } catch (Exception e) {
+      System.err.println("ingest-batch: failed to list source dir: " + sourceDir + " (" + e.getMessage() + ")");
+      return 4;
+    }
+    if (sourceFiles.isEmpty()) {
+      System.err.println("ingest-batch: no .txt files found in: " + sourceDir);
+      return 4;
+    }
+
+    List<BatchItem> items = new ArrayList<>();
+    int failed = 0;
+    for (Path sourceFile : sourceFiles) {
+      String fileName = sourceFile.getFileName().toString();
+      String stem = fileName.toLowerCase(java.util.Locale.ROOT).endsWith(".txt")
+        ? fileName.substring(0, fileName.length() - 4)
+        : fileName;
+      Path outXml = outDir.resolve(stem + ".fdml.xml");
+      Path outProv = outDir.resolve(stem + ".provenance.json");
+      Path outEnrich = outDir.resolve(stem + ".enrichment-report.json");
+
+      String title = titlePrefix == null || titlePrefix.isBlank() ? stem : titlePrefix + " - " + stem;
+      List<String> one = new ArrayList<>();
+      one.add("ingest");
+      one.add("--source");
+      one.add(sourceFile.toString());
+      one.add("--out");
+      one.add(outXml.toString());
+      one.add("--title");
+      one.add(title);
+      one.add("--meter");
+      one.add(meter);
+      one.add("--tempo");
+      one.add(tempo);
+      one.add("--profile");
+      one.add(profile);
+      one.add("--provenance-out");
+      one.add(outProv.toString());
+      one.add("--enrichment-report");
+      one.add(outEnrich.toString());
+      if (enableEnrichment) one.add("--enable-enrichment");
+      one.add("--env-file");
+      one.add(envFile);
+
+      BatchItem item = new BatchItem();
+      item.sourcePath = sourceFile.toString();
+      item.fdmlPath = outXml.toString();
+      item.provenancePath = outProv.toString();
+      item.enrichmentReportPath = outEnrich.toString();
+
+      int ingestCode = run(one.toArray(new String[0]));
+      item.ingestExitCode = ingestCode;
+      if (ingestCode != 0) {
+        item.errors.add("ingest_failed");
+        failed++;
+        items.add(item);
+        continue;
+      }
+
+      DoctorStatus doctor = doctorStrictStatus(outXml);
+      item.doctor = doctor;
+      if (!doctor.strictOk) item.errors.add("doctor_strict_failed");
+
+      SchemaStatus provSchema = runSchemaValidation(Paths.get("schema/provenance.schema.json"), outProv);
+      item.provenanceSchema = provSchema;
+      if (!provSchema.ok) item.errors.add("provenance_schema_failed");
+
+      SchemaStatus enrichSchema = runSchemaValidation(Paths.get("schema/enrichment-report.schema.json"), outEnrich);
+      item.enrichmentSchema = enrichSchema;
+      if (!enrichSchema.ok) item.errors.add("enrichment_schema_failed");
+
+      if (!item.errors.isEmpty()) failed++;
+      items.add(item);
+    }
+
+    String summary = buildBatchIndexJson(sourceDir, outDir, items);
+    try {
+      Path parent = indexOut.getParent();
+      if (parent != null) Files.createDirectories(parent);
+      Files.writeString(indexOut, summary, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+      System.out.println("Created: " + indexOut);
+      int ok = items.size() - failed;
+      System.out.println("INGEST-BATCH SUMMARY");
+      System.out.println("  total : " + items.size());
+      System.out.println("  ok    : " + ok);
+      System.out.println("  failed: " + failed);
+    } catch (Exception e) {
+      System.err.println("ingest-batch: failed to write index output: " + indexOut + " (" + e.getMessage() + ")");
+      return 4;
+    }
+
+    return failed == 0 ? 0 : 2;
+  }
+
   private static List<ExtractedStep> deriveExtractedSteps(String sourceText) {
     List<ExtractedStep> out = new ArrayList<>();
+    int bodyStart = firstBodyContentOffset(sourceText);
+    String bodyText = sourceText.substring(bodyStart);
 
-    Matcher m = STEP_LINE.matcher(sourceText);
+    Matcher m = STEP_LINE.matcher(bodyText);
     while (m.find()) {
-      int start = m.start(1);
-      int end = m.end(1);
+      int start = bodyStart + m.start(1);
+      int end = bodyStart + m.end(1);
       if (start < 0 || end < start || end > sourceText.length()) continue;
       String snippet = sourceText.substring(start, end);
       String normalized = collapseWhitespace(snippet);
-      if (!normalized.isEmpty()) out.add(new ExtractedStep(normalized, snippet, start, end));
+      if (!normalized.isEmpty() && !looksLikePlaceholderStep(normalized)) {
+        out.add(new ExtractedStep(normalized, snippet, start, end));
+      }
     }
     if (!out.isEmpty()) return out;
 
-    Matcher first = FIRST_NON_EMPTY_LINE.matcher(sourceText);
+    List<SentenceCandidate> sentenceCandidates = extractSentenceCandidates(sourceText, bodyStart);
+    if (!sentenceCandidates.isEmpty()) {
+      // Prefer dance-relevant prose first.
+      for (SentenceCandidate c : sentenceCandidates) {
+        if (c.score <= 0) continue;
+        out.add(new ExtractedStep(c.normalizedText, c.sourceSnippet, c.sourceStart, c.sourceEnd));
+        if (out.size() >= MAX_PROSE_STEPS) return out;
+      }
+      // Backfill with informative non-boilerplate prose if relevance matches are scarce.
+      for (SentenceCandidate c : sentenceCandidates) {
+        if (c.score > 0) continue;
+        out.add(new ExtractedStep(c.normalizedText, c.sourceSnippet, c.sourceStart, c.sourceEnd));
+        if (out.size() >= MAX_PROSE_STEPS) return out;
+      }
+      if (!out.isEmpty()) return out;
+    }
+
+    Matcher first = FIRST_NON_EMPTY_LINE.matcher(bodyText);
     if (first.find()) {
-      int start = first.start();
-      int end = first.end();
+      int start = bodyStart + first.start();
+      int end = bodyStart + first.end();
       String snippet = sourceText.substring(start, end);
       String normalized = collapseWhitespace(snippet);
       if (!normalized.isEmpty()) out.add(new ExtractedStep(normalized, snippet, start, end));
@@ -135,6 +364,70 @@ class Ingest {
 
     if (out.isEmpty()) out.add(new ExtractedStep("Ingested step", "Ingested step", 0, 13));
     return out;
+  }
+
+  private static List<SentenceCandidate> extractSentenceCandidates(String sourceText, int bodyStart) {
+    List<SentenceCandidate> out = new ArrayList<>();
+    String bodyText = sourceText.substring(bodyStart);
+    Matcher m = SENTENCE_PATTERN.matcher(bodyText);
+    java.util.LinkedHashSet<String> seen = new java.util.LinkedHashSet<>();
+    while (m.find()) {
+      int start = bodyStart + m.start(1);
+      int end = bodyStart + m.end(1);
+      if (start < 0 || end <= start || end > sourceText.length()) continue;
+      String snippet = sourceText.substring(start, end);
+      String normalized = collapseWhitespace(snippet.replace('\uFEFF', ' ').trim());
+      if (normalized.length() < MIN_PROSE_STEP_CHARS || normalized.length() > MAX_PROSE_STEP_CHARS) continue;
+      if (!looksLikeInformativeSentence(normalized)) continue;
+      String key = normalized.toLowerCase(java.util.Locale.ROOT);
+      if (!seen.add(key)) continue;
+      out.add(new SentenceCandidate(normalized, snippet, start, end, scoreDanceRelevance(normalized)));
+      if (out.size() >= MAX_PROSE_STEPS * 3) break;
+    }
+    return out;
+  }
+
+  private static int firstBodyContentOffset(String sourceText) {
+    Matcher m = NON_HEADER_NON_EMPTY_LINE.matcher(sourceText);
+    if (m.find()) return m.start();
+    return 0;
+  }
+
+  private static boolean looksLikeInformativeSentence(String sentence) {
+    if (sentence == null || sentence.isBlank()) return false;
+    String s = sentence.trim();
+    if (s.startsWith("==") || s.startsWith("=")) return false;
+    String lower = s.toLowerCase(java.util.Locale.ROOT);
+    if (lower.contains("http://") || lower.contains("https://") || lower.contains("www.")) return false;
+    if (BOILERPLATE_TERMS.matcher(lower).find()) return false;
+    if (!containsLetter(s)) return false;
+    return !looksLikePlaceholderStep(s);
+  }
+
+  private static int scoreDanceRelevance(String sentence) {
+    int score = 0;
+    Matcher m = DANCE_TERMS.matcher(sentence);
+    while (m.find()) score++;
+    String lower = sentence.toLowerCase(java.util.Locale.ROOT);
+    if (lower.contains("traditional")) score++;
+    if (lower.contains("performed")) score++;
+    if (lower.contains("rhythm")) score++;
+    if (lower.contains("formation")) score++;
+    return score;
+  }
+
+  private static boolean containsLetter(String s) {
+    for (int i = 0; i < s.length(); i++) {
+      if (Character.isLetter(s.charAt(i))) return true;
+    }
+    return false;
+  }
+
+  private static boolean looksLikePlaceholderStep(String normalized) {
+    String lower = normalized.toLowerCase(java.util.Locale.ROOT);
+    return lower.startsWith("# source_id:")
+      || lower.startsWith("ingest filler step")
+      || lower.startsWith("m2 conversion");
   }
 
   private static String buildProvenanceJson(String sourcePath, String sourceText, List<ExtractedStep> steps) {
@@ -161,6 +454,124 @@ class Ingest {
     }
     sb.append("]}");
     return sb.toString();
+  }
+
+  private static DoctorStatus doctorStrictStatus(Path fdmlPath) {
+    DoctorStatus s = emptyDoctorStatus();
+    List<Path> targets = List.of(fdmlPath);
+
+    FdmlValidator v = new FdmlValidator(Paths.get("schema/fdml.xsd"));
+    SchematronValidator sch = new SchematronValidator(Paths.get("schematron/fdml-compiled.xsl"));
+    var rX = v.validateCollect(targets);
+    var rS = sch.validateCollect(targets);
+    var rL = Linter.lintCollect(targets);
+    var rT = TimingValidator.validateCollect(targets);
+    var rG = GeometryValidator.validateCollect(targets);
+
+    s.xsdOk = true;
+    for (var r : rX) if (!r.ok) { s.xsdOk = false; break; }
+    s.schematronOk = true;
+    for (var r : rS) if (!r.ok) { s.schematronOk = false; break; }
+    s.lintOk = true;
+    for (var r : rL) if (!r.ok()) { s.lintOk = false; break; }
+    s.timingOk = true;
+    for (var r : rT) if (!r.ok()) { s.timingOk = false; break; }
+    s.geometryOk = true;
+    for (var r : rG) if (!r.ok) { s.geometryOk = false; break; }
+    s.strictOk = s.xsdOk && s.schematronOk && s.lintOk && s.timingOk && s.geometryOk;
+    return s;
+  }
+
+  private static SchemaStatus runSchemaValidation(Path schemaPath, Path instancePath) {
+    SchemaStatus s = emptySchemaStatus();
+    if (!Files.exists(instancePath)) {
+      s.ok = false;
+      s.exitCode = 2;
+      return s;
+    }
+    try {
+      Process p = new ProcessBuilder(
+        List.of("python3", "scripts/validate_json_schema.py", schemaPath.toString(), instancePath.toString())
+      ).redirectErrorStream(true).start();
+      try (var in = p.getInputStream()) {
+        while (in.read() != -1) {
+          // consume output to avoid blocking
+        }
+      }
+      s.exitCode = p.waitFor();
+      s.ok = s.exitCode == 0;
+      return s;
+    } catch (Exception e) {
+      s.ok = false;
+      s.exitCode = 2;
+      return s;
+    }
+  }
+
+  private static String buildBatchIndexJson(Path sourceDir, Path outDir, List<BatchItem> items) {
+    int failed = 0;
+    for (BatchItem item : items) if (!item.errors.isEmpty()) failed++;
+    int ok = items.size() - failed;
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    sb.append("\"sourceDir\":\"").append(jsonEscape(sourceDir.toString())).append("\",");
+    sb.append("\"outDir\":\"").append(jsonEscape(outDir.toString())).append("\",");
+    sb.append("\"total\":").append(items.size()).append(",");
+    sb.append("\"ok\":").append(ok).append(",");
+    sb.append("\"failed\":").append(failed).append(",");
+    sb.append("\"items\":[");
+    for (int i = 0; i < items.size(); i++) {
+      BatchItem item = items.get(i);
+      if (i > 0) sb.append(",");
+      sb.append("{");
+      sb.append("\"source\":\"").append(jsonEscape(item.sourcePath)).append("\",");
+      sb.append("\"outputs\":{");
+      sb.append("\"fdml\":\"").append(jsonEscape(item.fdmlPath)).append("\",");
+      sb.append("\"provenance\":\"").append(jsonEscape(item.provenancePath)).append("\",");
+      sb.append("\"enrichmentReport\":\"").append(jsonEscape(item.enrichmentReportPath)).append("\"");
+      sb.append("},");
+      sb.append("\"ingestExitCode\":").append(item.ingestExitCode).append(",");
+      sb.append("\"doctor\":{");
+      sb.append("\"strictOk\":").append(item.doctor.strictOk).append(",");
+      sb.append("\"xsd\":").append(item.doctor.xsdOk).append(",");
+      sb.append("\"schematron\":").append(item.doctor.schematronOk).append(",");
+      sb.append("\"lint\":").append(item.doctor.lintOk).append(",");
+      sb.append("\"timing\":").append(item.doctor.timingOk).append(",");
+      sb.append("\"geometry\":").append(item.doctor.geometryOk);
+      sb.append("},");
+      sb.append("\"schema\":{");
+      sb.append("\"provenance\":").append(item.provenanceSchema.ok).append(",");
+      sb.append("\"enrichmentReport\":").append(item.enrichmentSchema.ok);
+      sb.append("},");
+      sb.append("\"errors\":[");
+      for (int j = 0; j < item.errors.size(); j++) {
+        if (j > 0) sb.append(",");
+        sb.append("\"").append(jsonEscape(item.errors.get(j))).append("\"");
+      }
+      sb.append("]");
+      sb.append("}");
+    }
+    sb.append("]}");
+    return sb.toString() + "\n";
+  }
+
+  private static DoctorStatus emptyDoctorStatus() {
+    DoctorStatus s = new DoctorStatus();
+    s.xsdOk = false;
+    s.schematronOk = false;
+    s.lintOk = false;
+    s.timingOk = false;
+    s.geometryOk = false;
+    s.strictOk = false;
+    return s;
+  }
+
+  private static SchemaStatus emptySchemaStatus() {
+    SchemaStatus s = new SchemaStatus();
+    s.ok = false;
+    s.exitCode = 2;
+    return s;
   }
 
   private static String sha256Hex(String sourceText) {
@@ -196,7 +607,8 @@ class Ingest {
                                  String tempo,
                                  String profile,
                                  String sourceText,
-                                 List<String> stepTexts) {
+                                 List<String> stepTexts,
+                                 List<String> enrichmentNotes) {
     boolean v12 = profile.startsWith("v12-");
     String formationKind = formationForProfile(profile);
     String who = "v12-couple".equals(profile) ? "man" : "both";
@@ -222,6 +634,11 @@ class Ingest {
     if (v12) appendBodyGeometry(sb, profile);
     sb.append("    <section type=\"notes\">\n");
     sb.append("      <p>").append(escape(notesPreview(sourceText))).append("</p>\n");
+    for (String note : enrichmentNotes) {
+      String safe = truncate(collapseWhitespace(note), 180);
+      if (safe.isBlank()) continue;
+      sb.append("      <p>").append(escape("Enrichment: " + safe)).append("</p>\n");
+    }
     sb.append("    </section>\n");
     sb.append("    <figure id=\"f-ingest\" name=\"Ingested Figure\" formation=\"").append(escape(formationKind)).append("\">\n");
     appendFigureSteps(sb, stepTexts, profile, who);

@@ -29,7 +29,9 @@ public class IndexJsonTest {
     String json = Indexer.buildIndex(List.of(
       Paths.get("corpus/valid/example-03.fdml.xml"),
       Paths.get("corpus/valid/abdala.fdml.xml"),
-      Paths.get("corpus/valid_v12/mayim-mayim.v12.fdml.xml")
+      Paths.get("corpus/valid_v12/mayim-mayim.v12.fdml.xml"),
+      Paths.get("corpus/valid_ingest_auto/acquired_sources__adumu.fdml.xml"),
+      Paths.get("corpus/valid_ingest_auto/acquired_sources__kpanlogo.fdml.xml")
     ));
 
     String ex03 = extractItemObject(json, "corpus/valid/example-03.fdml.xml");
@@ -51,6 +53,21 @@ public class IndexJsonTest {
     assertTrue(v12.contains("\"version\":\"1.2\""));
     assertTrue(v12.contains("\"formationKind\":\"circle\""));
     assertTrue(v12.contains("\"hasGeometry\":true"));
+
+    String m5 = extractItemObject(json, "corpus/valid_ingest_auto/acquired_sources__adumu.fdml.xml");
+    assertNotNull(m5, "Expected item for M5 showcase sample");
+    assertTrue(m5.contains("\"sourceId\":\"adumu\""));
+    assertTrue(m5.contains("\"sourceTitle\":\"Adumu\""));
+    assertTrue(m5.contains("\"sourceCategory\":\"africa\""));
+    assertTrue(m5.contains("\"fullDescriptionTier\":\"basic\""));
+    assertTrue(m5.contains("\"fullDescriptionStrict\":false"));
+
+    String m6 = extractItemObject(json, "corpus/valid_ingest_auto/acquired_sources__kpanlogo.fdml.xml");
+    assertNotNull(m6, "Expected item for M6 showcase sample");
+    assertTrue(m6.contains("\"sourceId\":\"kpanlogo\""));
+    assertTrue(m6.contains("\"fullDescriptionTier\":\"strict\""));
+    assertTrue(m6.contains("\"fullDescriptionStrict\":true"));
+    assertTrue(m6.contains("\"fullDescriptionSteps\":16"));
   }
 
   private static String extractItemObject(String json, String file) {

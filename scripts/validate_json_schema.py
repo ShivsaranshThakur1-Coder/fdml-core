@@ -280,6 +280,96 @@ def _fallback_validate_provenance(instance: Any) -> list[str]:
     return errs
 
 
+def _fallback_validate_enrichment_report(instance: Any) -> list[str]:
+    """Fallback validator for schema/enrichment-report.schema.json when jsonschema is unavailable."""
+    errs: list[str] = []
+
+    def expect_type(path: str, val: Any, kind: type) -> bool:
+      if not isinstance(val, kind):
+        errs.append(f"{path}: expected {kind.__name__}, got {type(val).__name__}")
+        return False
+      return True
+
+    def expect_keys(path: str, obj: dict[str, Any], required: list[str], optional: list[str] | None = None) -> None:
+      optional = optional or []
+      missing = [k for k in required if k not in obj]
+      if missing:
+        errs.append(f"{path}: missing required keys {missing}")
+      allow = set(required + optional)
+      extra = [k for k in obj.keys() if k not in allow]
+      if extra:
+        errs.append(f"{path}: unexpected keys {extra}")
+
+    if not expect_type("/", instance, dict):
+      return errs
+
+    req = [
+      "schemaVersion",
+      "sourcePath",
+      "enabled",
+      "offline",
+      "envFile",
+      "effectiveTextChanged",
+      "suggestedStepsCount",
+      "notes",
+      "providers",
+    ]
+    expect_keys("/", instance, req)
+
+    if "schemaVersion" in instance and instance["schemaVersion"] != "1":
+      errs.append("/schemaVersion: expected \"1\"")
+    for k in ("sourcePath", "envFile"):
+      if k in instance and not isinstance(instance[k], str):
+        errs.append(f"/{k}: expected str")
+    for k in ("enabled", "offline", "effectiveTextChanged"):
+      if k in instance and not isinstance(instance[k], bool):
+        errs.append(f"/{k}: expected bool")
+    if "suggestedStepsCount" in instance:
+      if not isinstance(instance["suggestedStepsCount"], int):
+        errs.append("/suggestedStepsCount: expected int")
+      elif instance["suggestedStepsCount"] < 0:
+        errs.append("/suggestedStepsCount: expected >= 0")
+
+    notes = instance.get("notes")
+    if expect_type("/notes", notes, list):
+      for i, v in enumerate(notes):
+        if not isinstance(v, str):
+          errs.append(f"/notes/{i}: expected str")
+
+    providers = instance.get("providers")
+    if expect_type("/providers", providers, list):
+      if len(providers) < 4:
+        errs.append("/providers: expected >= 4 entries")
+      allowed_names = {"groq", "ocr_space", "deepl", "youtube"}
+      allowed_status = {"disabled", "skipped", "ok", "error"}
+      seen: set[str] = set()
+      for i, p in enumerate(providers):
+        pp = f"/providers/{i}"
+        if not expect_type(pp, p, dict):
+          continue
+        expect_keys(pp, p, ["name", "configured", "attempted", "applied", "status", "detail"])
+        name = p.get("name")
+        if not isinstance(name, str):
+          errs.append(f"{pp}/name: expected str")
+        else:
+          if name not in allowed_names:
+            errs.append(f"{pp}/name: unexpected value {name!r}")
+          if name in seen:
+            errs.append(f"{pp}/name: duplicate provider {name!r}")
+          seen.add(name)
+        for k in ("configured", "attempted", "applied"):
+          if k in p and not isinstance(p[k], bool):
+            errs.append(f"{pp}/{k}: expected bool")
+        if "status" in p:
+          if not isinstance(p["status"], str):
+            errs.append(f"{pp}/status: expected str")
+          elif p["status"] not in allowed_status:
+            errs.append(f"{pp}/status: unexpected value {p['status']!r}")
+        if "detail" in p and not isinstance(p["detail"], str):
+          errs.append(f"{pp}/detail: expected str")
+    return errs
+
+
 def main() -> int:
     if len(sys.argv) != 3:
         print("Usage: validate_json_schema.py <schema.json> <instance.json>")
@@ -311,6 +401,9 @@ def main() -> int:
         elif schema_path.name == "provenance.schema.json":
             errors = _fallback_validate_provenance(instance)
             label = "fallback provenance checks"
+        elif schema_path.name == "enrichment-report.schema.json":
+            errors = _fallback_validate_enrichment_report(instance)
+            label = "fallback enrichment-report checks"
         else:
             errors = [f"unsupported fallback schema: {schema_path.name}"]
             label = "fallback checks"

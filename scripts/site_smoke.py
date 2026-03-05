@@ -14,6 +14,29 @@ V12_DEMO_FILES = [
     "corpus/valid_v12/mayim-mayim.v12.fdml.xml",
     "corpus/valid_v12/example-05-contra.progress.v12.fdml.xml",
 ]
+M5_SHOWCASE_FILES = [
+    "out/m9_full_description_uplift/run1/acquired_sources__adumu.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__attan.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__giddha.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__branle.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__cueca.fdml.xml",
+]
+M6_SHOWCASE_FILES = [
+    "out/m9_full_description_uplift/run1/acquired_sources__kpanlogo.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__khorumi.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__joget.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__farandole.fdml.xml",
+    "out/m9_full_description_uplift/run1/acquired_sources__cumbia.fdml.xml",
+]
+UNIFIED_CORPUS_PREFIX = "out/m9_full_description_uplift/run1/"
+MIN_UNIFIED_CORPUS_ITEMS = 90
+REQUIRED_M5_SOURCE_CATEGORIES = {
+    "africa",
+    "middle-east-caucasus",
+    "south-se-asia",
+    "europe-regional",
+    "americas-oceania",
+}
 
 
 class LinkParser(HTMLParser):
@@ -98,10 +121,60 @@ def main() -> int:
         if not card_json.exists():
             fail(f"missing v1.2 demo card json: {card_json.relative_to(site_dir)}")
 
+    for showcase_file in M5_SHOWCASE_FILES:
+        if showcase_file not in item_files:
+            fail(f"M5 showcase file missing from site/index.json: {showcase_file}")
+        card_name = expected_card_name(showcase_file)
+        card_html = cards_dir / card_name
+        card_json = cards_dir / (card_name[:-5] + ".json")
+        if not card_html.exists():
+            fail(f"missing M5 showcase card html: {card_html.relative_to(site_dir)}")
+        if not card_json.exists():
+            fail(f"missing M5 showcase card json: {card_json.relative_to(site_dir)}")
+
+    for showcase_file in M6_SHOWCASE_FILES:
+        if showcase_file not in item_files:
+            fail(f"M6 showcase file missing from site/index.json: {showcase_file}")
+        card_name = expected_card_name(showcase_file)
+        card_html = cards_dir / card_name
+        card_json = cards_dir / (card_name[:-5] + ".json")
+        if not card_html.exists():
+            fail(f"missing M6 showcase card html: {card_html.relative_to(site_dir)}")
+        if not card_json.exists():
+            fail(f"missing M6 showcase card json: {card_json.relative_to(site_dir)}")
+
     search_html = (site_dir / "search.html").read_text(encoding="utf-8")
-    for required_id in ("meter", "genre", "formationKind"):
+    for required_id in ("meter", "genre", "formationKind", "sourceCategory", "fullDescriptionTier"):
         if f'id="{required_id}"' not in search_html:
             fail(f"search.html missing filter element #{required_id}")
+
+    source_categories = {
+        str(it.get("sourceCategory", "")).strip()
+        for it in items
+        if isinstance(it, dict)
+    } - {""}
+    missing_m5_categories = sorted(REQUIRED_M5_SOURCE_CATEGORIES - source_categories)
+    if missing_m5_categories:
+        fail(
+            "site/index.json missing required sourceCategory values: "
+            + ", ".join(missing_m5_categories)
+        )
+    full_description_tiers = {
+        str(it.get("fullDescriptionTier", "")).strip()
+        for it in items
+        if isinstance(it, dict)
+    } - {""}
+    unified_items = [
+        it for it in items
+        if isinstance(it, dict) and str(it.get("file", "")).startswith(UNIFIED_CORPUS_PREFIX)
+    ]
+    if "strict" not in full_description_tiers:
+        fail("site/index.json missing strict fullDescriptionTier values")
+    if len(unified_items) < MIN_UNIFIED_CORPUS_ITEMS:
+        fail(
+            "site/index.json missing unified corpus coverage: "
+            f"{len(unified_items)} < {MIN_UNIFIED_CORPUS_ITEMS}"
+        )
 
     for card in sorted((site_dir / "cards").glob("*.html")):
         body = card.read_text(encoding="utf-8")

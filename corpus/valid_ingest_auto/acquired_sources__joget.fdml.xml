@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>M2 Conversion acquired_sources joget</title>
+    <meter value="4/4"/>
+    <tempo bpm="112"/>
+  </meta>
+  <body>
+    <section type="notes">
+      <p># source_id: joget # title: Joget # source_url: https://en.wikipedia.org/w/api.php?action=query&amp;prop=extracts&amp;explaintext=1&amp;format=json&amp;titles=Joget # license: CC BY-SA 4.0 # attribution: Wikipedia co</p>
+    </section>
+    <figure id="f-ingest" name="Ingested Figure" formation="ingest">
+      <step who="both" action="Joget (Jawi: جوڬيت) is a traditional Malay dance" beats="1" count="1">Joget (Jawi: جوڬيت) is a traditional Malay dance that originated in Malacca in the colonial era.</step>
+      <step who="both" action="It was influenced by the Portuguese dance of Bra" beats="1" count="2">It was influenced by the Portuguese dance of Branyo which is believed to have been spread to Malacca during the spice trade.</step>
+      <step who="both" action="In Malacca, joget dance is better known as Chaku" beats="1" count="3">In Malacca, joget dance is better known as Chakunchak.</step>
+      <step who="both" action="The dance is one of the most popular folk dances" beats="1" count="4">The dance is one of the most popular folk dances in Malaysia that is normally performed by couples in cultural festivals, weddings and other social functions.</step>
+      <step who="both" action="The dance is of the Portuguese roots and is acco" beats="1" count="5">The dance is of the Portuguese roots and is accompanied by an ensemble consisting of a violin of Western world, a knobbed gong of Asia, a flute (optional), and at least two rebana or gendang of Maritime Southeast Asia.</step>
+      <step who="both" action="The tempo of Joget music is fairly quick, with a" beats="1" count="6">The tempo of Joget music is fairly quick, with a feeling of teasing and playing between the partners.</step>
+      <step who="both" action="The music emphasizes duple- and triple-beat divi" beats="1" count="7">The music emphasizes duple- and triple-beat division, both in alternation and simultaneously, and is sung in the northeast Malaysian style.</step>
+      <step who="both" action="One of the most popular types of Joget is called" beats="1" count="8">One of the most popular types of Joget is called &quot;Joget Lambak&quot; which is usually performed by a large crowd together at social functions.</step>
+      <step who="both" action="In Indonesia, the term &apos;joget&apos; is usually applie" beats="1" count="9">In Indonesia, the term &apos;joget&apos; is usually applied to any form of popular street dance, such as that to dangdut music.</step>
+      <step who="both" action="Joget, an open source workflow software built in" beats="1" count="10">Joget, an open source workflow software built in Malaysia, is named after this dance.</step>
+      <step who="both" action="Joget gained popularity among the Malay communit" beats="1" count="11">Joget gained popularity among the Malay community in Singapore after its introduction in 1942.</step>
+      <step who="both" action="Sri Lankan Kaffiringna music style and Joget has" beats="1" count="12">Sri Lankan Kaffiringna music style and Joget has some related melodic variations.</step>
+      <step who="both" action="Both styles have a Portuguese influence, accordi" beats="1" count="13">Both styles have a Portuguese influence, according to Sri Lankan musicologist Ruwin Dias.</step>
+      <step who="both" action="Ingest filler step 14" beats="1" count="14">Ingest filler step 14</step>
+      <step who="both" action="Ingest filler step 15" beats="1" count="15">Ingest filler step 15</step>
+      <step who="both" action="Ingest filler step 16" beats="1" count="16">Ingest filler step 16</step>
+    </figure>
+  </body>
+</fdml>

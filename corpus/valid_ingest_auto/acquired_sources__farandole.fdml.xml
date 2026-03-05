@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdml version="1.0">
+  <meta>
+    <title>M2 Conversion acquired_sources farandole</title>
+    <meter value="4/4"/>
+    <tempo bpm="112"/>
+  </meta>
+  <body>
+    <section type="notes">
+      <p># source_id: farandole # title: Farandole # source_url: https://en.wikipedia.org/w/api.php?action=query&amp;prop=extracts&amp;explaintext=1&amp;format=json&amp;titles=Farandole # license: CC BY-SA 4.0 # attribution:</p>
+    </section>
+    <figure id="f-ingest" name="Ingested Figure" formation="ingest">
+      <step who="both" action="The farandole (French: [faʁɑ̃dɔl]; Provençal: fa" beats="1" count="1">The farandole (French: [faʁɑ̃dɔl]; Provençal: farandola [faʀanˈdulɔ]) is an open-chain community dance popular in Provence, France.</step>
+      <step who="both" action="A still more unlikely derivation has been sugges" beats="1" count="2">A still more unlikely derivation has been suggested from the Greek fálanx (φάλαγξ, &quot;phalanx&quot;) and doúlos (δούλος, &quot;slave&quot;), because the dancers in the farandole are linked together in a long chain.</step>
+      <step who="both" action="The dance is very probably of Greek origin, and " beats="1" count="3">The dance is very probably of Greek origin, and seems to be a direct descendant of the &quot;Cranes&apos; dance&quot;, the invention of which was acribed to Theseus, who instituted it to celebrate his escape from the Labyrinth.</step>
+      <step who="both" action="This dance is alluded to at the end of the hymn " beats="1" count="4">This dance is alluded to at the end of the hymn to Delos by Callimachus: it is still danced in Greece and the islands of the Aegean, and may well have been introduced into the South of France from Marseilles.</step>
+      <step who="both" action="Many recent websites, older encyclopedias, and s" beats="1" count="5">Many recent websites, older encyclopedias, and some music history books claim that the farandole is a medieval dance, but never provide an actual medieval quote mentioning the farandole.</step>
+      <step who="both" action="Consequently, the medieval dance researcher Robe" beats="1" count="6">Consequently, the medieval dance researcher Robert Mullally concludes that there is no evidence that the modern folk farandole resembles any kind of medieval dance.</step>
+      <step who="both" action="In the village of Belvédère, on the occasion of " beats="1" count="7">In the village of Belvédère, on the occasion of the festival honouring patron Saint Blaise, the most recently married couple leads the dance.</step>
+      <step who="both" action="&quot;Musically, the dance is in 68 time, with a stro" beats="1" count="8">&quot;Musically, the dance is in 68 time, with a strongly accentuated rhythm, moderate to fast tempo, and played by a flute and drum.</step>
+      <step who="both" action="With his left hand the leader holds the hand of " beats="1" count="9">With his left hand the leader holds the hand of his partner, in his right he waves a flag, handkerchief, or ribbon, which serves as a signal for his followers.</step>
+      <step who="both" action="As the Faraudole proceeds through the streets of" beats="1" count="10">As the Faraudole proceeds through the streets of the town the string of dancers is constantly recruited by fresh additions.</step>
+      <step who="both" action="The leader (to quote the poet Mistral) &apos;makes it" beats="1" count="11">The leader (to quote the poet Mistral) &apos;makes it come and go, turn backwards and forwards .</step>
+      <step who="both" action="sometimes he forms it into a ring, sometimes win" beats="1" count="12">sometimes he forms it into a ring, sometimes winds it in a spiral, then he breaks off from his followers and dances in front, then he joins on again, and makes it pass rapidly under the uplifted arms of the last couple.</step>
+      <step who="both" action="In these rituals, music and dance played the lea" beats="1" count="13">In these rituals, music and dance played the leading roles.</step>
+      <step who="both" action="The number of characters and the composition of " beats="1" count="14">The number of characters and the composition of the dance depends on the place of creation.</step>
+      <step who="both" action="Death, most often represented with a musical ins" beats="1" count="15">Death, most often represented with a musical instrument, draws everyone into the dance, not looking at rank, wealth, gender, or age.</step>
+      <step who="both" action="The dancers join hands to form a wandering open " beats="1" count="16">The dancers join hands to form a wandering open chain and mark each beat with jumps.</step>
+      <step who="both" action="The leader guides the chain by drawing a snake s" beats="1" count="17">The leader guides the chain by drawing a snake shape.</step>
+      <step who="both" action="Its role is to articulate the farandole, dance o" beats="1" count="18">Its role is to articulate the farandole, dance of agrarian rites, in its two main themes: that of the spiral (also known as the snail or labyrinth) and that of the passage under the vault (known as the serpent).</step>
+      <step who="both" action="Also in Provence, other dances related to the fa" beats="1" count="19">Also in Provence, other dances related to the farandole were practiced on more free steps: the brandi, the morisca (&quot;Moorish&quot;), the passa-carriera (&quot;street passer&quot;, cf.</step>
+      <step who="both" action="It gave birth to certain medieval dances with re" beats="1" count="20">It gave birth to certain medieval dances with repeated steps, such as the caroles of the 13th and 14th centuries, the branles of the 15th and 16th centuries.</step>
+      <step who="both" action="The dancers form a long line which moves by mean" beats="1" count="21">The dancers form a long line which moves by meandering.</step>
+      <step who="both" action="The twists and turns of this dance in the crèche" beats="1" count="22">The twists and turns of this dance in the crèche must represent a labyrinth.</step>
+      <step who="both" action="The dancers are either dressed in traditional Ar" beats="1" count="23">The dancers are either dressed in traditional Arles, Provençal, or Comtadin clothing, with the different clothing nuances provided by the local santonnier.</step>
+      <step who="both" action="However, the dance is not suited for the purpose" beats="1" count="24">However, the dance is not suited for the purposes of the ballet.</step>
+    </figure>
+  </body>
+</fdml>

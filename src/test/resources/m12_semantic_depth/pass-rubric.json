@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1",
+  "label": "m12-semantic-depth-fixture-rubric",
+  "dimensions": [
+    {
+      "id": "movement_path_pattern",
+      "minCoverage": 0.66
+    },
+    {
+      "id": "formation_topology",
+      "minCoverage": 1.0
+    },
+    {
+      "id": "timing_phrase_alignment",
+      "minCoverage": 1.0
+    }
+  ],
+  "globalThresholds": {
+    "minAverageDimensionCoverage": 0.88,
+    "minPresentDimensionsPerFile": 3,
+    "minFilesMeetingPerFileThresholdRatio": 0.66,
+    "maxZeroCoverageDimensions": 0
+  },
+  "ruleDepthThresholds": {
+    "minOntologyCandidates": 3,
+    "minValidatorCandidates": 2,
+    "minPromotedContractFields": 2,
+    "minRecognizedRules": 2
+  }
+}

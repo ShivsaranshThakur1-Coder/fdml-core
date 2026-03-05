@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1",
+  "totals": {
+    "sourceFiles": 3,
+    "processedFiles": 3
+  },
+  "perFileChecklistResolution": [
+    {
+      "file": "a.fdml.xml",
+      "checklist": [
+        {
+          "dimension": "movement_path_pattern",
+          "status": "present"
+        },
+        {
+          "dimension": "formation_topology",
+          "status": "present"
+        },
+        {
+          "dimension": "timing_phrase_alignment",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "file": "b.fdml.xml",
+      "checklist": [
+        {
+          "dimension": "movement_path_pattern",
+          "status": "present"
+        },
+        {
+          "dimension": "formation_topology",
+          "status": "present"
+        },
+        {
+          "dimension": "timing_phrase_alignment",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "file": "c.fdml.xml",
+      "checklist": [
+        {
+          "dimension": "movement_path_pattern",
+          "status": "absent"
+        },
+        {
+          "dimension": "formation_topology",
+          "status": "present"
+        },
+        {
+          "dimension": "timing_phrase_alignment",
+          "status": "present"
+        }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,8 @@
       <select id="meter" style="padding:8px 10px"><option value="">Any meter</option></select>
       <select id="genre" style="padding:8px 10px"><option value="">Any genre</option></select>
       <select id="formationKind" style="padding:8px 10px"><option value="">Any formation kind</option></select>
+      <select id="sourceCategory" style="padding:8px 10px"><option value="">Any source category</option></select>
+      <select id="fullDescriptionTier" style="padding:8px 10px"><option value="">Any description tier</option></select>
     </div>
     <div id="meta" class="muted" style="margin:8px 0 12px"></div>
     <ul id="results" class="grid"></ul>
@@ -30,12 +32,20 @@
     meter:String(it.meter||"").trim(),
     genre:String(it.genre||"").trim(),
     formationKind:String(it.formationKind||"").trim(),
+    sourceId:String(it.sourceId||"").trim(),
+    sourceTitle:String(it.sourceTitle||"").trim(),
+    sourceCategory:String(it.sourceCategory||"").trim(),
+    fullDescriptionTier:String(it.fullDescriptionTier||"").trim(),
+    fullDescriptionStrict:Boolean(it.fullDescriptionStrict||false),
+    fullDescriptionRelaxed:Boolean(it.fullDescriptionRelaxed||false),
     sections:Array.isArray(it.sections)? it.sections.map(String):[]
   }));
   const Q=document.getElementById("q");
   const FM=document.getElementById("meter");
   const FG=document.getElementById("genre");
   const FK=document.getElementById("formationKind");
+  const FC=document.getElementById("sourceCategory");
+  const FT=document.getElementById("fullDescriptionTier");
   const R=document.getElementById("results");
   const M=document.getElementById("meta");
   const params = new URLSearchParams(window.location.search);
@@ -56,17 +66,23 @@
   loadOptions(FM, uniqSorted(items.map(i=>i.meter)), "Any meter");
   loadOptions(FG, uniqSorted(items.map(i=>i.genre)), "Any genre");
   loadOptions(FK, uniqSorted(items.map(i=>i.formationKind)), "Any formation kind");
+  loadOptions(FC, uniqSorted(items.map(i=>i.sourceCategory)), "Any source category");
+  loadOptions(FT, uniqSorted(items.map(i=>i.fullDescriptionTier)), "Any description tier");
 
   Q.value = params.get("q") || "";
   FM.value = params.get("meter") || "";
   FG.value = params.get("genre") || "";
   FK.value = params.get("formationKind") || "";
+  FC.value = params.get("sourceCategory") || "";
+  FT.value = params.get("fullDescriptionTier") || "";
 
   document.getElementById("clear").onclick = ()=>{
     Q.value = "";
     FM.value = "";
     FG.value = "";
     FK.value = "";
+    FC.value = "";
+    FT.value = "";
     render();
     Q.focus();
   };
@@ -75,7 +91,10 @@
     // corpus/valid/example-01.fdml.xml -> cards/example-01.fdml.html
     let base = String(file)
       .replace(/^corpus\/valid\//,"")
-      .replace(/^corpus\/valid_v12\//,"");
+      .replace(/^corpus\/valid_v12\//,"")
+      .replace(/^corpus\/valid_ingest_auto\//,"")
+      .replace(/^out\/m9_full_description_uplift\/run1\//,"")
+      .replace(/^out\/m9_full_corpus_v12\/run1\//,"");
     base = base.replace(/\.fdml\.xml$/i, ".fdml.html").replace(/\.xml$/i, ".html");
     return "cards/" + base;
   }
@@ -83,6 +102,8 @@
     if(!q) return true;
     q=q.toLowerCase();
     return it.title.toLowerCase().includes(q) ||
+           it.sourceTitle.toLowerCase().includes(q) ||
+           it.sourceId.toLowerCase().includes(q) ||
            it.file.toLowerCase().includes(q) ||
            it.sections.some(s=>s.toLowerCase().includes(q));
   }
@@ -90,6 +111,8 @@
     if (FM.value && it.meter !== FM.value) return false;
     if (FG.value && it.genre !== FG.value) return false;
     if (FK.value && it.formationKind !== FK.value) return false;
+    if (FC.value && it.sourceCategory !== FC.value) return false;
+    if (FT.value && it.fullDescriptionTier !== FT.value) return false;
     return true;
   }
   function syncUrl(){
@@ -98,14 +121,18 @@
     if (FM.value) p.set("meter", FM.value);
     if (FG.value) p.set("genre", FG.value);
     if (FK.value) p.set("formationKind", FK.value);
+    if (FC.value) p.set("sourceCategory", FC.value);
+    if (FT.value) p.set("fullDescriptionTier", FT.value);
     const query = p.toString();
     const next = query ? `?${query}` : window.location.pathname.split("/").pop();
     window.history.replaceState({}, "", next);
   }
   function card(it){
     const href = toHref(it.file);
-    const facets = [it.meter, it.genre, it.formationKind].filter(Boolean).join(" · ");
-    return `<li><a class="card" href="${href}"><strong>${it.title||href}</strong><div class="sub">${href}</div><div class="sub">${facets}</div></a></li>`;
+    const facets = [it.meter, it.genre, it.formationKind, it.sourceCategory, it.fullDescriptionTier].filter(Boolean).join(" · ");
+    const sourceMeta = [it.sourceTitle, it.sourceId].filter(Boolean).join(" · ");
+    const sourceLine = sourceMeta ? `<div class="sub">${sourceMeta}</div>` : "";
+    return `<li><a class="card" href="${href}"><strong>${it.title||href}</strong><div class="sub">${href}</div><div class="sub">${facets}</div>${sourceLine}</a></li>`;
   }
   function render(){
     const q = Q.value.trim();
@@ -125,6 +152,8 @@
   FM.addEventListener("change", render);
   FG.addEventListener("change", render);
   FK.addEventListener("change", render);
+  FC.addEventListener("change", render);
+  FT.addEventListener("change", render);
   render();
 })();
 </script>

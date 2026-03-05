@@ -110,3 +110,72 @@ The specification is complemented by CLI tooling in this project:
 
 This document describes FDML 1.0 as implemented in this repository. Future versions may add richer metadata, more detailed bar-level structure, additional enumerations for formations and roles, and extended Schematron rules.
 Any such changes will be reflected by an updated version attribute, schema and specification document.
+
+## 9. Unified Contract Promotion (M11)
+
+M11 promotes accepted ontology candidates from `out/m10_ontology_candidates.json`
+into one contract structure used across the full promoted corpus.
+
+### 9.1 Canonical promoted fields (v-next draft)
+
+| Contract field | XPath | Type | Cardinality | Promotion status |
+| --- | --- | --- | --- | --- |
+| `meta.meter.value` | `/fdml/meta/meter/@value` | string | `0..1` (quality workflow treats as required) | promoted |
+| `meta.geometry.formation.kind` | `/fdml/meta/geometry/formation/@kind` | enum | `1` for v1.2 profiles | promoted |
+| `meta.geometry.roles.role.id` | `/fdml/meta/geometry/roles/role/@id` | string[] | `0..n` (required when role references are used) | promoted |
+| `step.geo.primitive.kind` | `/fdml/body//figure//step/geo/primitive/@kind` | enum | `1` per primitive | promoted |
+
+Current promoted observed values from M10 evidence:
+- formation kinds: `circle`, `line`, `couple`, `twoLinesFacing`
+- primitive kinds (observed in candidate set): `move`
+
+Contract enum anchors:
+- `GeoFormationKind`: `circle|line|couple|twoLinesFacing`
+- `GeoPrimitiveKind`: `move|face|turn|twirl|approach|retreat|swapPlaces|pass|weave|releaseHold|progress|relpos`
+
+### 9.2 Single-structure extension policy
+
+- One FDML contract is used for all examples; no subset-specific schema branches.
+- New formation or primitive concepts are added through versioned enum expansion in `schema/fdml.xsd`.
+- Candidate promotion requires evidence-backed rows with confidence and support counts.
+- Validators consume the same canonical paths for the full corpus.
+
+### 9.3 Decision registry and reversal conditions
+
+- Formation kind as required v1.2 contract field:
+  - Trade-off: deterministic geometry semantics vs enum governance overhead.
+  - Reversal condition: if repeated unsupported formation families appear, add versioned enum values.
+- Primitive kind as canonical step semantic field:
+  - Trade-off: precise validator behavior vs need for controlled vocabulary growth.
+  - Reversal condition: if unresolved primitives exceed governance threshold, extend enum in next contract revision.
+- Role inventory promotion:
+  - Trade-off: consistent references vs normalization effort on noisy source text.
+  - Reversal condition: if role normalization repeatedly fails, allow provisional namespaces before hard enforcement.
+- Meter value promotion:
+  - Trade-off: deterministic timing checks vs normalization overhead for malformed source timing strings.
+  - Reversal condition: if meter normalization repeatedly fails at scale, downgrade to advisory until correction pass exists.
+
+### 9.4 Machine-readable promotion artifact
+
+`out/m11_contract_promotion.json` is the decision registry source of truth for this promotion step.
+
+## 10. Contract Deepening (M16)
+
+M16 re-runs contract promotion against `out/m15_ontology_candidates.json`
+to deepen the same unified FDML contract without introducing subset branches.
+
+### 10.1 M16 promotion snapshot
+
+- source artifact: `out/m16_contract_promotion.json`
+- accepted ontology rows: `21/21`
+- promoted contract fields: `17`
+- unknown key count: `0`
+
+Newly promoted field relative to earlier M11 snapshot:
+- `meta.geometry.hold.kind` (`/fdml/meta/geometry/hold/@kind`)
+
+### 10.2 M16 contract continuity rules
+
+- M16 uses the same canonical contract field mapping model and decision-registry structure as M11.
+- Promotion remains evidence-linked and requires confidence/support thresholds.
+- Schema/spec alignment is checked against `schema/fdml.xsd` and this document on every M16 promotion run.
