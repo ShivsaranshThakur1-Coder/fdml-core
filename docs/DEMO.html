@@ -77,6 +77,28 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
   </div>
 
   <div class="card">
+    <h2>Live Status Dashboard</h2>
+    <p class="sub">
+      This panel loads generated evidence snapshots from `site/reports/` so the demo shows current pipeline state.
+    </p>
+    <div id="status-dashboard" class="status-grid">
+      <div class="card">
+        <strong>Loading report snapshots...</strong>
+      </div>
+    </div>
+    <h3>Evidence Snapshots Used</h3>
+    <ul>
+      <li><a href="reports/final_rehearsal.report.json">reports/final_rehearsal.report.json</a></li>
+      <li><a href="reports/m26_handoff_governance.report.json">reports/m26_handoff_governance.report.json</a></li>
+      <li><a href="reports/m6_full_description_current.report.json">reports/m6_full_description_current.report.json</a></li>
+      <li><a href="reports/m9_full_description_progress.report.json">reports/m9_full_description_progress.report.json</a></li>
+      <li><a href="reports/doctor_passrate.report.json">reports/doctor_passrate.report.json</a></li>
+      <li><a href="reports/provenance_coverage.report.json">reports/provenance_coverage.report.json</a></li>
+      <li><a href="reports/m3_issue_current.report.json">reports/m3_issue_current.report.json</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
     <h2>Specs</h2>
     <ul>
       <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/FDML-SPEC.md">FDML-SPEC</a></li>
@@ -129,8 +151,121 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
       <li><a href="search.html?sourceCategory=americas-oceania">search.html?sourceCategory=americas-oceania</a></li>
       <li><a href="search.html?fullDescriptionTier=strict">search.html?fullDescriptionTier=strict</a></li>
       <li><a href="search.html?fullDescriptionTier=strict&amp;sourceCategory=africa">search.html?fullDescriptionTier=strict&amp;sourceCategory=africa</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc">search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc</a></li>
+      <li><a href="search.html?sourceCategory=europe-regional&amp;strictOnly=1&amp;sortBy=title-asc">search.html?sourceCategory=europe-regional&amp;strictOnly=1&amp;sortBy=title-asc</a></li>
+      <li><a href="search.html?sourceCategory=africa&amp;hasGeometry=1&amp;sortBy=tier-desc">search.html?sourceCategory=africa&amp;hasGeometry=1&amp;sortBy=tier-desc</a></li>
     </ul>
   </div>
 </main>
+<script>
+(async function () {
+  const panel = document.getElementById("status-dashboard");
+  if (!panel) return;
+
+  async function loadJson(path) {
+    try {
+      const res = await fetch(path, {cache: "no-store"});
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (_err) {
+      return null;
+    }
+  }
+
+  const [
+    finalReport,
+    handoffReport,
+    m6Coverage,
+    m9Progress,
+    doctorPassrate,
+    provenanceCoverage,
+    issueReport
+  ] = await Promise.all([
+    loadJson("reports/final_rehearsal.report.json"),
+    loadJson("reports/m26_handoff_governance.report.json"),
+    loadJson("reports/m6_full_description_current.report.json"),
+    loadJson("reports/m9_full_description_progress.report.json"),
+    loadJson("reports/doctor_passrate.report.json"),
+    loadJson("reports/provenance_coverage.report.json"),
+    loadJson("reports/m3_issue_current.report.json")
+  ]);
+
+  function fmtPercent(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "n/a";
+    return `${(value * 100).toFixed(2)}%`;
+  }
+
+  function getNested(obj, path, fallback) {
+    let cur = obj;
+    for (const key of path) {
+      if (!cur || typeof cur !== "object" || !(key in cur)) return fallback;
+      cur = cur[key];
+    }
+    return cur;
+  }
+
+  const strictCoverageRatio =
+    getNested(m9Progress, ["totals", "strictCoverageAfter"], null) ??
+    getNested(m6Coverage, ["strict", "coverage"], null);
+  const strictCoverageCount =
+    getNested(m9Progress, ["totals", "strictAfter"], null) ??
+    getNested(m6Coverage, ["strict", "fullDescriptionCount"], null);
+  const strictCoverageTotal =
+    getNested(m9Progress, ["totals", "totalSourceFiles"], null) ??
+    getNested(m6Coverage, ["total"], null);
+
+  const issueTotal = getNested(issueReport, ["totals", "issueTotal"], null);
+  const strictFailFiles = getNested(issueReport, ["totals", "strictFailFiles"], null);
+  const releaseReady = getNested(finalReport, ["releaseReady"], null);
+  const queuedGapCount = getNested(finalReport, ["summary", "queuedGapCount"], null);
+  const handoffOk = getNested(handoffReport, ["ok"], null);
+  const handoffArtifacts = getNested(handoffReport, ["metrics", "handoffArtifactCount"], null);
+  const doctorRate = getNested(doctorPassrate, ["passRate"], null);
+  const doctorPassed = getNested(doctorPassrate, ["passed"], null);
+  const doctorTotal = getNested(doctorPassrate, ["total"], null);
+  const provenanceRatio = getNested(provenanceCoverage, ["coverage"], null);
+  const provenanceWithRef = getNested(provenanceCoverage, ["withRef"], null);
+  const provenanceSchemaValid = getNested(provenanceCoverage, ["schemaValid"], null);
+
+  const rows = [
+    {
+      title: "Release Readiness",
+      value: releaseReady === true ? "READY" : (releaseReady === false ? "NOT READY" : "n/a"),
+      detail: `Queued gaps: ${queuedGapCount ?? "n/a"}`
+    },
+    {
+      title: "M26 Handoff Governance",
+      value: handoffOk === true ? "PASS" : (handoffOk === false ? "FAIL" : "n/a"),
+      detail: `Hashed artifacts: ${handoffArtifacts ?? "n/a"}`
+    },
+    {
+      title: "Strict Description Coverage",
+      value: strictCoverageCount != null && strictCoverageTotal != null
+        ? `${strictCoverageCount}/${strictCoverageTotal}`
+        : "n/a",
+      detail: `Coverage ratio: ${fmtPercent(strictCoverageRatio)}`
+    },
+    {
+      title: "Doctor Strict Passrate",
+      value: doctorPassed != null && doctorTotal != null ? `${doctorPassed}/${doctorTotal}` : "n/a",
+      detail: `Passrate: ${fmtPercent(doctorRate)}`
+    },
+    {
+      title: "Provenance Coverage",
+      value: provenanceWithRef != null ? `${provenanceWithRef} with refs` : "n/a",
+      detail: `Coverage: ${fmtPercent(provenanceRatio)} · schema-valid: ${provenanceSchemaValid ?? "n/a"}`
+    },
+    {
+      title: "Semantic Issue Surface",
+      value: issueTotal != null ? `${issueTotal} issues` : "n/a",
+      detail: `Strict-fail files: ${strictFailFiles ?? "n/a"}`
+    }
+  ];
+
+  panel.innerHTML = rows.map((row) => (
+    `<div class="card status-card"><strong>${row.title}</strong><div class="status-value">${row.value}</div><div class="sub">${row.detail}</div></div>`
+  )).join("");
+})();
+</script>
 </body>
 </html>

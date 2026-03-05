@@ -21,10 +21,19 @@ M6_SHOWCASE_FILES=(
   "out/m9_full_description_uplift/run1/acquired_sources__farandole.fdml.xml"
   "out/m9_full_description_uplift/run1/acquired_sources__cumbia.fdml.xml"
 )
+REPORT_SNAPSHOT_MAP=(
+  "out/final_rehearsal/report.json:final_rehearsal.report.json"
+  "out/m26_handoff_governance_report.json:m26_handoff_governance.report.json"
+  "out/m6_full_description_current.json:m6_full_description_current.report.json"
+  "out/m9_full_description_progress.json:m9_full_description_progress.report.json"
+  "out/m2_conversion/run1/doctor_passrate.json:doctor_passrate.report.json"
+  "out/m2_conversion/run1/provenance_coverage.json:provenance_coverage.report.json"
+  "out/m3_issue_current.json:m3_issue_current.report.json"
+)
 
-# Rebuild cards only; keep site/ stable
-rm -rf site/cards
-mkdir -p site site/cards
+# Rebuild generated artifacts; keep site/ stable
+rm -rf site/cards site/reports
+mkdir -p site site/cards site/reports
 
 if [[ ! -d "$UNIFIED_CORPUS_DIR" ]]; then
   echo "Missing unified corpus dir: $UNIFIED_CORPUS_DIR" >&2
@@ -129,6 +138,20 @@ perl -pi -e "s/@@CSSV@@/${V}/g" site/search.html
 # Copy Demo page and thread cache-buster
 cp -f docs/DEMO.html site/demo.html
 perl -pi -e "s/@@CSSV@@/${V}/g" site/demo.html
+
+# Copy report snapshots consumed by demo dashboard.
+# If an upstream report is missing, emit a small placeholder so links stay valid.
+for mapping in "${REPORT_SNAPSHOT_MAP[@]}"; do
+  src="${mapping%%:*}"
+  dst="site/reports/${mapping##*:}"
+  if [[ -f "$src" ]]; then
+    cp -f "$src" "$dst"
+  else
+    cat > "$dst" <<JSON
+{"missing":true,"source":"$src"}
+JSON
+  fi
+done
 
 # Build homepage
 cat > site/index.html <<HTML

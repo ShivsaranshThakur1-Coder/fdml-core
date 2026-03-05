@@ -37,6 +37,26 @@ REQUIRED_M5_SOURCE_CATEGORIES = {
     "europe-regional",
     "americas-oceania",
 }
+REQUIRED_SEARCH_IDS = (
+    "meter",
+    "genre",
+    "formationKind",
+    "sourceCategory",
+    "fullDescriptionTier",
+    "sortBy",
+    "strictOnly",
+    "hasGeometry",
+    "activeFilters",
+)
+REQUIRED_REPORT_SNAPSHOTS = (
+    "reports/final_rehearsal.report.json",
+    "reports/m26_handoff_governance.report.json",
+    "reports/m6_full_description_current.report.json",
+    "reports/m9_full_description_progress.report.json",
+    "reports/doctor_passrate.report.json",
+    "reports/provenance_coverage.report.json",
+    "reports/m3_issue_current.report.json",
+)
 
 
 class LinkParser(HTMLParser):
@@ -144,9 +164,23 @@ def main() -> int:
             fail(f"missing M6 showcase card json: {card_json.relative_to(site_dir)}")
 
     search_html = (site_dir / "search.html").read_text(encoding="utf-8")
-    for required_id in ("meter", "genre", "formationKind", "sourceCategory", "fullDescriptionTier"):
+    for required_id in REQUIRED_SEARCH_IDS:
         if f'id="{required_id}"' not in search_html:
             fail(f"search.html missing filter element #{required_id}")
+    demo_html = (site_dir / "demo.html").read_text(encoding="utf-8")
+    if 'id="status-dashboard"' not in demo_html:
+        fail("demo.html missing #status-dashboard container")
+
+    for rel in REQUIRED_REPORT_SNAPSHOTS:
+        report_path = site_dir / rel
+        if not report_path.exists():
+            fail(f"missing required report snapshot: site/{rel}")
+        try:
+            payload = json.loads(report_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            fail(f"invalid JSON in report snapshot site/{rel}: {exc}")
+        if not isinstance(payload, dict):
+            fail(f"report snapshot is not a JSON object: site/{rel}")
 
     source_categories = {
         str(it.get("sourceCategory", "")).strip()
