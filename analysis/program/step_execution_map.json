@@ -110,6 +110,21 @@
         "out/m26_handoff_governance_report.json"
       ],
       "note": "Completed: adopted deterministic M26 handoff governance with anti-drift CI wiring and published a polished command plus artifact package including explicit residual-risk ledger evidence."
+    },
+    "PRG-264": {
+      "commands": [
+        "make program-check",
+        "make task-approval-check",
+        "make goal-state-check"
+      ],
+      "appendEvidence": [
+        "analysis/program/plan.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "docs/PROGRAM_PLAN.md"
+      ],
+      "note": "Completed: closed M26 and activated M27 with KPI-mapped planned queue entries and refreshed goal-state/approval synchronization."
     }
   }
 }

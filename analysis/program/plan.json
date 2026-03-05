@@ -1,7 +1,7 @@
 {
   "version": "1",
   "updated": "2026-03-05",
-  "activeMilestone": "M26",
+  "activeMilestone": "M27",
   "constraints": {
     "maxInProgressItems": 3,
     "requireMilestoneMapping": true,
@@ -703,7 +703,7 @@
     {
       "id": "M26",
       "title": "Production Polish and Handoff Packaging",
-      "status": "active",
+      "status": "completed",
       "startDate": "2026-03-05",
       "targetDate": "2029-03-31",
       "kpis": [
@@ -724,6 +724,33 @@
           "name": "Adopt M26 governance and handoff packaging",
           "target": "Add final M26 governance guardrails and produce an auditable handoff package describing architecture, reproducibility commands, evidence artifacts, and residual risks",
           "measure": "analysis/program/goal_state.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M27",
+      "title": "Website Productization and Portfolio Packaging",
+      "status": "active",
+      "startDate": "2026-03-05",
+      "targetDate": "2029-06-30",
+      "kpis": [
+        {
+          "id": "M27-K1",
+          "name": "Harden public demo and search storytelling",
+          "target": "Raise demo and search pages to portfolio-grade clarity with live evidence panels, stable filters, and production smoke coverage across desktop and mobile surfaces",
+          "measure": "make site-check plus docs/DEMO.html and docs/search.html"
+        },
+        {
+          "id": "M27-K2",
+          "name": "Define deterministic cloud version-control and release workflow",
+          "target": "Document and enforce a reproducible branch, PR, and release routine so cloud synchronization and reviewer handoff stay auditable and low-friction",
+          "measure": "docs/USAGE.md plus docs/SUBMISSION.md and analysis/program/step_execution_map.json"
+        },
+        {
+          "id": "M27-K3",
+          "name": "Publish portfolio-grade narrative and assessor walkthrough assets",
+          "target": "Package architecture narrative, normal-language system explanation, and an assessor-facing demo flow that maps evidence to outcomes for third-year evaluation",
+          "measure": "docs/PROGRAM_PLAN.md plus docs/SUBMISSION.md and out/final_rehearsal/report.json"
         }
       ]
     }

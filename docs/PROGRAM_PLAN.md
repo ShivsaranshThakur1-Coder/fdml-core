@@ -1,4 +1,4 @@
-# Program Plan (M0-M26)
+# Program Plan (M0-M27)
 
 Date: 2026-03-05
 
@@ -48,6 +48,7 @@ Program-level milestones for controlled delivery:
 25. M24: Residual failure zeroing and final production-grade transition at 109-file scale
 26. M25: Final productization and delivery readiness
 27. M26: Production polish and handoff packaging
+28. M27: Website productization and portfolio packaging
 
 ## Milestones
 
@@ -79,7 +80,8 @@ Program-level milestones for controlled delivery:
 | M23 | COMPLETED | Consolidate residual descriptor support gaps and close remaining context/structure validator taxonomy failures under one governed 109-file pipeline | M23-K1, M23-K2, M23-K3 |
 | M24 | COMPLETED | Eliminate remaining residual validator failures, saturate weak descriptor context coverage, and govern transition into final full-product pipeline queue | M24-K1, M24-K2, M24-K3 |
 | M25 | COMPLETED | Lock final product-readiness baseline, close highest-impact engineering gaps, and enforce release governance for project closeout | M25-K1, M25-K2, M25-K3 |
-| M26 | ACTIVE | Execute post-closeout production polish, repository cleanup, and auditable handoff packaging with anti-drift governance | M26-K1, M26-K2, M26-K3 |
+| M26 | COMPLETED | Execute post-closeout production polish, repository cleanup, and auditable handoff packaging with anti-drift governance | M26-K1, M26-K2, M26-K3 |
+| M27 | ACTIVE | Productize website/demo storytelling, formalize cloud version-control workflow, and package portfolio-grade assessor narrative assets | M27-K1, M27-K2, M27-K3 |
 
 ## M0 Definition of Done
 
@@ -122,7 +124,7 @@ Artifacts:
 
 ## Current Next Step
 
-Active milestone: M26.
+Active milestone: M27.
 
 M13 closeout outcome (PRG-130 to PRG-140):
 - one unified M13 pipeline now exists with deterministic full-corpus parameter registry, expressive fit analysis, expanded validator stack, and anti-drift governance checks.
@@ -590,5 +592,21 @@ M26 execution outcome (PRG-263):
 - `docs/PROGRAM_PLAN.md`, `docs/SUBMISSION.md`, `docs/COVERAGE.md`, and `docs/USAGE.md` now include M26 governance handoff command/artifact references.
 - live PRG-263 governance metrics: `prg263Status=done`, `openM26QueueCount=0`, `goalStateActiveQueueCount=0`, `finalReleaseReady=true`, `finalQueuedGapCount=0`, and governance report status `ok=true`.
 
+M26 closeout outcome (PRG-264):
+- `analysis/program/plan.json` now marks `M26` as completed and activates `M27` as the sole active milestone.
+- `analysis/program/work_items.csv` now records milestone transition completion (`PRG-264`) and seeds M27 queue rows (`PRG-265` to `PRG-267`) as planned.
+- `analysis/program/step_execution_map.json` now includes deterministic replay commands and evidence append paths for `PRG-264`.
+- `analysis/program/goal_state.json` now reflects an active M27 queue with planned KPI-mapped items.
+
+M27 objective:
+- harden website and search storytelling so public-facing demo surfaces clearly expose pipeline evidence and quality signals.
+- define deterministic cloud version-control and release workflow documentation for reproducible branch plus PR plus release operations.
+- publish portfolio-grade narrative assets and assessor-facing walkthrough materials that explain the system in normal language alongside measurable evidence.
+
+M27 active KPI-mapped queue:
+- PRG-265 (`M27-K1`): execute M27 demo and search UX hardening with evidence story polish. (planned)
+- PRG-266 (`M27-K2`): define deterministic cloud version-control and release workflow documentation. (planned)
+- PRG-267 (`M27-K3`): publish portfolio-grade narrative and assessor walkthrough package. (planned)
+
 Next execution step:
-- no queued in-progress/planned items remain in active milestone `M26`; next action requires explicit closeout/milestone transition planning.
+- PRG-265 (`M27-K1`): execute M27 demo and search UX hardening with evidence story polish.
