@@ -76,10 +76,10 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
     <pre><code>make demo-flow-check</code></pre>
   </div>
 
-  <div class="card">
+  <div class="card" id="m28-story">
     <h2>Live Status Dashboard</h2>
     <p class="sub">
-      This panel loads generated evidence snapshots from `site/reports/` so the demo shows current pipeline state.
+      This panel loads generated evidence snapshots from `site/reports/` so the demo shows current pipeline state and active execution queue.
     </p>
     <div id="status-dashboard" class="status-grid">
       <div class="card">
@@ -89,13 +89,28 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
     <h3>Evidence Snapshots Used</h3>
     <ul>
       <li><a href="reports/final_rehearsal.report.json">reports/final_rehearsal.report.json</a></li>
+      <li><a href="reports/m30_governance.report.json">reports/m30_governance.report.json</a></li>
+      <li><a href="reports/m29_governance_freeze.report.json">reports/m29_governance_freeze.report.json</a></li>
+      <li><a href="reports/m28_activation.report.json">reports/m28_activation.report.json</a></li>
+      <li><a href="reports/m28_governance_handoff.report.json">reports/m28_governance_handoff.report.json</a></li>
       <li><a href="reports/m26_handoff_governance.report.json">reports/m26_handoff_governance.report.json</a></li>
       <li><a href="reports/m6_full_description_current.report.json">reports/m6_full_description_current.report.json</a></li>
       <li><a href="reports/m9_full_description_progress.report.json">reports/m9_full_description_progress.report.json</a></li>
       <li><a href="reports/doctor_passrate.report.json">reports/doctor_passrate.report.json</a></li>
       <li><a href="reports/provenance_coverage.report.json">reports/provenance_coverage.report.json</a></li>
       <li><a href="reports/m3_issue_current.report.json">reports/m3_issue_current.report.json</a></li>
+      <li><a href="reports/program_goal_state.report.json">reports/program_goal_state.report.json</a></li>
     </ul>
+  </div>
+
+  <div class="card">
+    <h2>M28 Story Walkthrough</h2>
+    <ol>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc">Open strict + geometry-ready search</a> to inspect highest-depth examples first.</li>
+      <li><a href="search.html?sourceCategory=africa&amp;sortBy=tier-desc">Switch source category filters</a> to compare regions inside one FDML structure.</li>
+      <li>Open any result card and review timeline + geometry panels for execution details and metadata consistency.</li>
+      <li>Return to this dashboard to verify M30 queue state, release readiness, and final handoff-package evidence.</li>
+    </ol>
   </div>
 
   <div class="card">
@@ -174,20 +189,30 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
 
   const [
     finalReport,
+    m30GovernanceReport,
+    m29GovernanceFreezeReport,
+    m28ActivationReport,
+    m28GovernanceReport,
     handoffReport,
     m6Coverage,
     m9Progress,
     doctorPassrate,
     provenanceCoverage,
-    issueReport
+    issueReport,
+    programGoalState
   ] = await Promise.all([
     loadJson("reports/final_rehearsal.report.json"),
+    loadJson("reports/m30_governance.report.json"),
+    loadJson("reports/m29_governance_freeze.report.json"),
+    loadJson("reports/m28_activation.report.json"),
+    loadJson("reports/m28_governance_handoff.report.json"),
     loadJson("reports/m26_handoff_governance.report.json"),
     loadJson("reports/m6_full_description_current.report.json"),
     loadJson("reports/m9_full_description_progress.report.json"),
     loadJson("reports/doctor_passrate.report.json"),
     loadJson("reports/provenance_coverage.report.json"),
-    loadJson("reports/m3_issue_current.report.json")
+    loadJson("reports/m3_issue_current.report.json"),
+    loadJson("reports/program_goal_state.report.json")
   ]);
 
   function fmtPercent(value) {
@@ -204,6 +229,10 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
     return cur;
   }
 
+  function countRows(value) {
+    return Array.isArray(value) ? value.length : null;
+  }
+
   const strictCoverageRatio =
     getNested(m9Progress, ["totals", "strictCoverageAfter"], null) ??
     getNested(m6Coverage, ["strict", "coverage"], null);
@@ -218,6 +247,32 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
   const strictFailFiles = getNested(issueReport, ["totals", "strictFailFiles"], null);
   const releaseReady = getNested(finalReport, ["releaseReady"], null);
   const queuedGapCount = getNested(finalReport, ["summary", "queuedGapCount"], null);
+  const m30GovernanceOk = getNested(m30GovernanceReport, ["ok"], null);
+  const m30GovernanceChecks = getNested(m30GovernanceReport, ["checks"], null);
+  const m30GovernancePassCount = Array.isArray(m30GovernanceChecks)
+    ? m30GovernanceChecks.filter((row) => row && row.ok === true).length
+    : null;
+  const m30GovernanceCheckCount = Array.isArray(m30GovernanceChecks)
+    ? m30GovernanceChecks.length
+    : null;
+  const m30OpenRows = getNested(m30GovernanceReport, ["metrics", "m30OpenRows"], null);
+  const m30HandoffArtifacts = getNested(m30GovernanceReport, ["metrics", "handoffArtifactCount"], null);
+  const m29GovernanceOk = getNested(m29GovernanceFreezeReport, ["ok"], null);
+  const m29GovernanceChecks = getNested(m29GovernanceFreezeReport, ["checks"], null);
+  const m29GovernancePassCount = Array.isArray(m29GovernanceChecks)
+    ? m29GovernanceChecks.filter((row) => row && row.ok === true).length
+    : null;
+  const m29GovernanceCheckCount = Array.isArray(m29GovernanceChecks)
+    ? m29GovernanceChecks.length
+    : null;
+  const m29OpenRows = getNested(m29GovernanceFreezeReport, ["metrics", "m29OpenRows"], null);
+  const m28ActivationOk = getNested(m28ActivationReport, ["ok"], null);
+  const m28OpenRows = getNested(m28ActivationReport, ["metrics", "m28OpenRows"], null);
+  const m28TotalRows = getNested(m28ActivationReport, ["metrics", "m28TotalRows"], null);
+  const m28GovernanceOk = getNested(m28GovernanceReport, ["ok"], null);
+  const m28GovernancePassCount = getNested(m28GovernanceReport, ["summary", "passCount"], null);
+  const m28GovernanceCheckCount = getNested(m28GovernanceReport, ["summary", "checkCount"], null);
+  const m28GovernancePrg273Status = getNested(m28GovernanceReport, ["metrics", "prg273Status"], null);
   const handoffOk = getNested(handoffReport, ["ok"], null);
   const handoffArtifacts = getNested(handoffReport, ["metrics", "handoffArtifactCount"], null);
   const doctorRate = getNested(doctorPassrate, ["passRate"], null);
@@ -226,6 +281,11 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
   const provenanceRatio = getNested(provenanceCoverage, ["coverage"], null);
   const provenanceWithRef = getNested(provenanceCoverage, ["withRef"], null);
   const provenanceSchemaValid = getNested(provenanceCoverage, ["schemaValid"], null);
+  const activeMilestoneId = getNested(programGoalState, ["projectContext", "activeMilestoneId"], null);
+  const activeMilestoneTitle = getNested(programGoalState, ["projectContext", "activeMilestoneTitle"], null);
+  const activeQueueInProgressCount = countRows(getNested(programGoalState, ["executionState", "inProgress"], null));
+  const activeQueuePlannedCount = countRows(getNested(programGoalState, ["executionState", "planned"], null));
+  const nextExecutionHint = getNested(programGoalState, ["nextExecutionHint"], null);
 
   const rows = [
     {
@@ -234,9 +294,34 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
       detail: `Queued gaps: ${queuedGapCount ?? "n/a"}`
     },
     {
-      title: "M26 Handoff Governance",
+      title: "M30 Governance Handoff",
+      value: m30GovernanceOk === true ? "PASS" : (m30GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m30GovernancePassCount ?? "n/a"} / ${m30GovernanceCheckCount ?? "n/a"} · open M30 rows: ${m30OpenRows ?? "n/a"} · package artifacts: ${m30HandoffArtifacts ?? "n/a"}`
+    },
+    {
+      title: "M29 Governance Freeze",
+      value: m29GovernanceOk === true ? "PASS" : (m29GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m29GovernancePassCount ?? "n/a"} / ${m29GovernanceCheckCount ?? "n/a"} · open M29 rows: ${m29OpenRows ?? "n/a"}`
+    },
+    {
+      title: "Program Execution Snapshot",
+      value: activeMilestoneId ? `${activeMilestoneId} active` : "n/a",
+      detail: `${activeMilestoneTitle ?? "Milestone n/a"} · in-progress: ${activeQueueInProgressCount ?? "n/a"} · planned: ${activeQueuePlannedCount ?? "n/a"}`
+    },
+    {
+      title: "M28 Activation Gate",
+      value: m28ActivationOk === true ? "PASS" : (m28ActivationOk === false ? "FAIL" : "n/a"),
+      detail: `Open rows: ${m28OpenRows ?? "n/a"} / total rows: ${m28TotalRows ?? "n/a"}`
+    },
+    {
+      title: "M28 Governance Handoff",
+      value: m28GovernanceOk === true ? "PASS" : (m28GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m28GovernancePassCount ?? "n/a"} / ${m28GovernanceCheckCount ?? "n/a"} · PRG-273: ${m28GovernancePrg273Status ?? "n/a"}`
+    },
+    {
+      title: "Legacy Governance Snapshot",
       value: handoffOk === true ? "PASS" : (handoffOk === false ? "FAIL" : "n/a"),
-      detail: `Hashed artifacts: ${handoffArtifacts ?? "n/a"}`
+      detail: `M26 hashed artifacts: ${handoffArtifacts ?? "n/a"}`
     },
     {
       title: "Strict Description Coverage",
@@ -259,6 +344,11 @@ open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategor
       title: "Semantic Issue Surface",
       value: issueTotal != null ? `${issueTotal} issues` : "n/a",
       detail: `Strict-fail files: ${strictFailFiles ?? "n/a"}`
+    },
+    {
+      title: "Next Execution Hint",
+      value: nextExecutionHint ? "AVAILABLE" : "n/a",
+      detail: nextExecutionHint || "No hint published."
     }
   ];
 

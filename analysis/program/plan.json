@@ -1,7 +1,7 @@
 {
   "version": "1",
-  "updated": "2026-03-05",
-  "activeMilestone": "M27",
+  "updated": "2026-03-07",
+  "activeMilestone": "M31",
   "constraints": {
     "maxInProgressItems": 3,
     "requireMilestoneMapping": true,
@@ -730,7 +730,7 @@
     {
       "id": "M27",
       "title": "Website Productization and Portfolio Packaging",
-      "status": "active",
+      "status": "completed",
       "startDate": "2026-03-05",
       "targetDate": "2029-06-30",
       "kpis": [
@@ -751,6 +751,102 @@
           "name": "Publish portfolio-grade narrative and assessor walkthrough assets",
           "target": "Package architecture narrative, normal-language system explanation, and an assessor-facing demo flow that maps evidence to outcomes for third-year evaluation",
           "measure": "docs/PROGRAM_PLAN.md plus docs/SUBMISSION.md and out/final_rehearsal/report.json"
+        }
+      ]
+    },
+    {
+      "id": "M28",
+      "title": "Website Narrative Closure and Final Showcase Governance",
+      "status": "completed",
+      "startDate": "2026-03-05",
+      "targetDate": "2029-09-30",
+      "kpis": [
+        {
+          "id": "M28-K1",
+          "name": "Baseline website narrative accuracy and showcase coverage gaps",
+          "target": "Create a deterministic baseline report for public-site narrative correctness, evidence linkage, and showcase completeness so high-impact fixes are prioritized from measured gaps",
+          "measure": "out/m28_narrative_baseline_report.json plus docs/PROGRAM_PLAN.md and analysis/program/work_items.csv"
+        },
+        {
+          "id": "M28-K2",
+          "name": "Execute high-impact website narrative and UX correction pass",
+          "target": "Apply prioritized fixes to demo/search/summary surfaces so dance-description claims, evidence values, and walkthrough pathways remain consistent and reviewer-legible",
+          "measure": "make site-check plus docs/DEMO.html and docs/search.html plus docs/SUBMISSION.md"
+        },
+        {
+          "id": "M28-K3",
+          "name": "Adopt M28 governance and final showcase handoff protocol",
+          "target": "Lock M28 anti-drift checks into CI and synchronize release-facing docs and tracker evidence so final showcase delivery remains reproducible",
+          "measure": "make m28-activation-check plus analysis/program/goal_state.json and docs/PROGRAM_PLAN.md"
+        }
+      ]
+    },
+    {
+      "id": "M29",
+      "title": "Release Activation and Delivery Stabilization",
+      "status": "completed",
+      "startDate": "2026-03-05",
+      "targetDate": "2029-12-31",
+      "kpis": [
+        {
+          "id": "M29-K1",
+          "name": "Close M28 and activate deterministic M29 execution queue",
+          "target": "Mark M28 completed, activate M29 as the sole active milestone, and seed KPI-mapped M29 queue items with deterministic activation evidence",
+          "measure": "out/m29_activation_report.json plus analysis/program/work_items.csv and docs/PROGRAM_PLAN.md"
+        },
+        {
+          "id": "M29-K2",
+          "name": "Execute release workflow hardening and repo-delivery cleanup",
+          "target": "Run deterministic release-workflow and repository hygiene execution pass with measurable documentation and evidence synchronization",
+          "measure": "make ci plus docs/USAGE.md and docs/SUBMISSION.md with M29 execution artifacts"
+        },
+        {
+          "id": "M29-K3",
+          "name": "Adopt M29 governance and final delivery freeze protocol",
+          "target": "Add anti-drift governance checks for M29 outputs and lock final handoff reproducibility across tracker, docs, and CI wiring",
+          "measure": "analysis/program/goal_state.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M30",
+      "title": "Repository Cleanup and Product Packaging Activation",
+      "status": "completed",
+      "startDate": "2026-03-06",
+      "targetDate": "2030-03-31",
+      "kpis": [
+        {
+          "id": "M30-K1",
+          "name": "Close M29 and activate deterministic M30 execution queue",
+          "target": "Mark M29 completed, activate M30 as the sole active milestone, and seed KPI-mapped M30 queue items with deterministic activation evidence",
+          "measure": "out/m30_activation_report.json plus analysis/program/work_items.csv and docs/PROGRAM_PLAN.md"
+        },
+        {
+          "id": "M30-K2",
+          "name": "Execute repository structure and release-surface cleanup pass",
+          "target": "Run deterministic repository cleanup and release-surface synchronization with measurable documentation and evidence updates",
+          "measure": "make ci plus docs/USAGE.md and docs/SUBMISSION.md with M30 execution artifacts"
+        },
+        {
+          "id": "M30-K3",
+          "name": "Adopt M30 governance and product packaging handoff protocol",
+          "target": "Add anti-drift governance checks for M30 outputs and lock tracker, docs, and CI synchronization for final product handoff",
+          "measure": "analysis/program/goal_state.json plus docs/PROGRAM_PLAN.md and docs/SUBMISSION.md"
+        }
+      ]
+    },
+    {
+      "id": "M31",
+      "title": "Post-Completion Control and Version Sync",
+      "status": "active",
+      "startDate": "2026-03-07",
+      "targetDate": "2030-06-30",
+      "kpis": [
+        {
+          "id": "M31-K1",
+          "name": "Archive M30 and hold a zero-queue continuation state",
+          "target": "Mark M30 completed, validate archive-safe CI under a later active milestone, and keep the terminal handoff state synchronized across tracker, docs, and version-control readiness",
+          "measure": "out/m30_archive_gate_report.json plus out/m31_activation_report.json plus analysis/program/goal_state.json"
         }
       ]
     }

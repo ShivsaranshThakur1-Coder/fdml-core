@@ -44,6 +44,11 @@
     </div>
 
     <div id="activeFilters" class="active-filters"></div>
+    <div class="search-actions">
+      <button id="copyLink" type="button">Copy search link</button>
+      <span id="copyLinkStatus" class="muted search-action-status" aria-live="polite"></span>
+    </div>
+    <div id="loadError" class="load-error" hidden></div>
     <div id="meta" class="muted search-meta"></div>
     <ul id="results" class="grid"></ul>
   </div>
@@ -71,6 +76,15 @@
     return Number.isFinite(n) ? n : 0;
   }
 
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
   function prettySourceCategory(value) {
     return SOURCE_CATEGORY_LABELS[value] || value || "Unspecified source";
   }
@@ -89,9 +103,28 @@
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  const response = await fetch("index.json");
-  const data = await response.json().catch(() => ({items: []}));
-  const items = (data.items || []).map((it) => ({
+  async function loadIndex() {
+    try {
+      const response = await fetch("index.json", {cache: "no-store"});
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      return {
+        indexError: null,
+        rawItems: Array.isArray(data.items) ? data.items : []
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "unknown error";
+      return {
+        indexError: `Could not load site/index.json (${message}).`,
+        rawItems: []
+      };
+    }
+  }
+
+  const {indexError, rawItems} = await loadIndex();
+  const items = rawItems.map((it) => ({
     file: String(it.file || ""),
     title: String(it.title || "").trim(),
     meter: String(it.meter || "").trim(),
@@ -121,9 +154,22 @@
   const FStrict = document.getElementById("strictOnly");
   const FGeo = document.getElementById("hasGeometry");
   const Active = document.getElementById("activeFilters");
+  const CopyLink = document.getElementById("copyLink");
+  const CopyLinkStatus = document.getElementById("copyLinkStatus");
+  const LoadError = document.getElementById("loadError");
   const Results = document.getElementById("results");
   const Meta = document.getElementById("meta");
   const params = new URLSearchParams(window.location.search);
+
+  if (LoadError) {
+    if (indexError) {
+      LoadError.hidden = false;
+      LoadError.textContent = indexError;
+    } else {
+      LoadError.hidden = true;
+      LoadError.textContent = "";
+    }
+  }
 
   function buildFacetOptions(values) {
     const counts = new Map();
@@ -175,6 +221,25 @@
     render();
     Q.focus();
   };
+
+  let copyStatusTimer = null;
+  function setCopyStatus(message, isError) {
+    if (!CopyLinkStatus) return;
+    CopyLinkStatus.textContent = message || "";
+    CopyLinkStatus.classList.toggle("status-error", Boolean(isError));
+    if (copyStatusTimer) {
+      window.clearTimeout(copyStatusTimer);
+      copyStatusTimer = null;
+    }
+    if (message) {
+      copyStatusTimer = window.setTimeout(() => {
+        if (CopyLinkStatus) {
+          CopyLinkStatus.textContent = "";
+          CopyLinkStatus.classList.remove("status-error");
+        }
+      }, 2200);
+    }
+  }
 
   function toHref(file) {
     let base = String(file)
@@ -230,7 +295,7 @@
     return (a.title || a.file).localeCompare(b.title || b.file);
   }
 
-  function syncUrl() {
+  function buildQueryParams() {
     const p = new URLSearchParams();
     if (Q.value.trim()) p.set("q", Q.value.trim());
     if (FM.value) p.set("meter", FM.value);
@@ -241,9 +306,51 @@
     if (FS.value && FS.value !== "title-asc") p.set("sortBy", FS.value);
     if (FStrict.checked) p.set("strictOnly", "1");
     if (FGeo.checked) p.set("hasGeometry", "1");
+    return p;
+  }
+
+  function syncUrl() {
+    const p = buildQueryParams();
     const query = p.toString();
     const next = query ? `?${query}` : window.location.pathname.split("/").pop();
     window.history.replaceState({}, "", next);
+  }
+
+  function currentShareUrl() {
+    const query = buildQueryParams().toString();
+    const suffix = query ? `?${query}` : "";
+    const path = `${window.location.pathname}${suffix}`;
+    if (window.location.origin && window.location.origin !== "null") {
+      return `${window.location.origin}${path}`;
+    }
+    return `${path}`;
+  }
+
+  async function copyCurrentLink() {
+    const value = currentShareUrl();
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(value);
+        setCopyStatus("Search link copied.", false);
+        return;
+      }
+      throw new Error("clipboard API unavailable");
+    } catch (_err) {
+      const fallback = document.createElement("textarea");
+      fallback.value = value;
+      fallback.setAttribute("readonly", "readonly");
+      fallback.style.position = "absolute";
+      fallback.style.left = "-9999px";
+      document.body.appendChild(fallback);
+      fallback.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(fallback);
+      if (copied) {
+        setCopyStatus("Search link copied.", false);
+      } else {
+        setCopyStatus("Copy failed. Copy URL manually.", true);
+      }
+    }
   }
 
   function renderActiveFilters() {
@@ -262,7 +369,7 @@
       return;
     }
     Active.innerHTML = chips.map((chip) => (
-      `<span class="chip filter-chip">${chip.label} <button type="button" data-clear="${chip.key}" aria-label="Clear ${chip.label}">×</button></span>`
+      `<span class="chip filter-chip">${escapeHtml(chip.label)} <button type="button" data-clear="${chip.key}" aria-label="${escapeHtml(`Clear ${chip.label}`)}">×</button></span>`
     )).join("");
 
     Active.querySelectorAll("button[data-clear]").forEach((button) => {
@@ -283,6 +390,7 @@
 
   function card(item) {
     const href = toHref(item.file);
+    const safeHref = encodeURI(href);
     const facets = [
       item.meter || "Meter n/a",
       prettyGenre(item.genre),
@@ -291,18 +399,32 @@
       prettyTier(item.fullDescriptionTier)
     ].join(" · ");
     const sourceMeta = [item.sourceTitle, item.sourceId].filter(Boolean).join(" · ");
-    const sourceLine = sourceMeta ? `<div class="sub">${sourceMeta}</div>` : "";
+    const sourceLine = sourceMeta ? `<div class="sub">${escapeHtml(sourceMeta)}</div>` : "";
     const geometryBadge = item.hasGeometry ? `<span class="chip">Geometry</span>` : `<span class="chip">No geometry</span>`;
     const depthLine = `${item.fullDescriptionSteps} steps · ${item.fullDescriptionNonPlaceholderSteps} non-placeholder · ${item.fullDescriptionDanceLexemeSteps} dance-lexeme`;
-    return `<li><a class="card" href="${href}"><strong>${item.title || href}</strong><div class="sub">${href}</div><div class="sub">${facets}</div><div class="sub">${depthLine}</div><div class="sub">${geometryBadge}</div>${sourceLine}</a></li>`;
+    return `<li><a class="card" href="${safeHref}"><strong>${escapeHtml(item.title || href)}</strong><div class="sub">${escapeHtml(href)}</div><div class="sub">${escapeHtml(facets)}</div><div class="sub">${escapeHtml(depthLine)}</div><div class="sub">${geometryBadge}</div>${sourceLine}</a></li>`;
   }
 
   function renderMeta(hits) {
+    if (indexError) {
+      Meta.textContent = "Index unavailable. Build site artifacts and reload.";
+      return;
+    }
     const strictCount = hits.filter((i) => i.fullDescriptionTier === "strict").length;
     const relaxedCount = hits.filter((i) => i.fullDescriptionTier === "relaxed").length;
     const basicCount = hits.filter((i) => i.fullDescriptionTier === "basic").length;
     const geometryCount = hits.filter((i) => i.hasGeometry).length;
     Meta.textContent = `${hits.length} of ${items.length} item(s) · strict ${strictCount} · relaxed ${relaxedCount} · basic ${basicCount} · geometry-ready ${geometryCount}`;
+  }
+
+  function renderEmptyState(query) {
+    if (indexError) {
+      return `<li class="card empty-state"><strong>Index load failed</strong><div class="sub">${escapeHtml(indexError)}</div><div class="sub">Run <code>make html</code> and reload this page.</div></li>`;
+    }
+    if (query) {
+      return `<li class="card empty-state"><strong>No results for "${escapeHtml(query)}"</strong><div class="sub">Try removing one filter, or click Clear to reset all filters.</div></li>`;
+    }
+    return `<li class="card empty-state"><strong>No matches for the current filter set.</strong><div class="sub">Try removing strict or geometry filters first.</div></li>`;
   }
 
   function render() {
@@ -316,7 +438,7 @@
     renderMeta(hits);
     Results.innerHTML = hits.length
       ? hits.map(card).join("")
-      : `<li class="card"><div>No matches for the current filter set.</div></li>`;
+      : renderEmptyState(q);
   }
 
   Q.addEventListener("input", render);
@@ -328,6 +450,9 @@
   FS.addEventListener("change", render);
   FStrict.addEventListener("change", render);
   FGeo.addEventListener("change", render);
+  if (CopyLink) {
+    CopyLink.addEventListener("click", copyCurrentLink);
+  }
   render();
 })();
 </script>

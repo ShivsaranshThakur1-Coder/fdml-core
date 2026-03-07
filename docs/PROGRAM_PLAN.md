@@ -1,6 +1,6 @@
-# Program Plan (M0-M27)
+# Program Plan (M0-M30)
 
-Date: 2026-03-05
+Date: 2026-03-06
 
 This plan is the anti-drift control layer for project execution.
 
@@ -49,6 +49,9 @@ Program-level milestones for controlled delivery:
 26. M25: Final productization and delivery readiness
 27. M26: Production polish and handoff packaging
 28. M27: Website productization and portfolio packaging
+29. M28: Website narrative closure and final showcase governance
+30. M29: Release activation and delivery stabilization
+31. M30: Repository cleanup and product packaging activation
 
 ## Milestones
 
@@ -81,7 +84,10 @@ Program-level milestones for controlled delivery:
 | M24 | COMPLETED | Eliminate remaining residual validator failures, saturate weak descriptor context coverage, and govern transition into final full-product pipeline queue | M24-K1, M24-K2, M24-K3 |
 | M25 | COMPLETED | Lock final product-readiness baseline, close highest-impact engineering gaps, and enforce release governance for project closeout | M25-K1, M25-K2, M25-K3 |
 | M26 | COMPLETED | Execute post-closeout production polish, repository cleanup, and auditable handoff packaging with anti-drift governance | M26-K1, M26-K2, M26-K3 |
-| M27 | ACTIVE | Productize website/demo storytelling, formalize cloud version-control workflow, and package portfolio-grade assessor narrative assets | M27-K1, M27-K2, M27-K3 |
+| M27 | COMPLETED | Productize website/demo storytelling, formalize cloud version-control workflow, and package portfolio-grade assessor narrative assets | M27-K1, M27-K2, M27-K3 |
+| M28 | COMPLETED | Close remaining website narrative correctness gaps, execute showcase polish from measured backlog, and enforce final anti-drift governance for delivery | M28-K1, M28-K2, M28-K3 |
+| M29 | COMPLETED | Transition from M28 closeout into deterministic release-stabilization execution with seeded backlog and activation governance | M29-K1, M29-K2, M29-K3 |
+| M30 | ACTIVE | Close M29 freeze state and activate deterministic repository-cleanup execution with CI-stable archive and activation governance | M30-K1, M30-K2, M30-K3 |
 
 ## M0 Definition of Done
 
@@ -124,7 +130,7 @@ Artifacts:
 
 ## Current Next Step
 
-Active milestone: M27.
+Active milestone: M30.
 
 M13 closeout outcome (PRG-130 to PRG-140):
 - one unified M13 pipeline now exists with deterministic full-corpus parameter registry, expressive fit analysis, expanded validator stack, and anti-drift governance checks.
@@ -604,9 +610,197 @@ M27 objective:
 - publish portfolio-grade narrative assets and assessor-facing walkthrough materials that explain the system in normal language alongside measurable evidence.
 
 M27 active KPI-mapped queue:
-- PRG-265 (`M27-K1`): execute M27 demo and search UX hardening with evidence story polish. (planned)
-- PRG-266 (`M27-K2`): define deterministic cloud version-control and release workflow documentation. (planned)
-- PRG-267 (`M27-K3`): publish portfolio-grade narrative and assessor walkthrough package. (planned)
+- PRG-265 (`M27-K1`): execute M27 demo and search UX hardening with evidence story polish. (done)
+- PRG-266 (`M27-K2`): define deterministic cloud version-control and release workflow documentation. (done)
+- PRG-267 (`M27-K3`): publish portfolio-grade narrative and assessor walkthrough package. (done)
 
-Next execution step:
-- PRG-265 (`M27-K1`): execute M27 demo and search UX hardening with evidence story polish.
+M27 execution outcome (PRG-265):
+- `docs/DEMO.html` now includes an M27 walkthrough card plus live program execution snapshot cards driven by report data.
+- `docs/search.html` now includes share-link UX (`Copy search link`), explicit index-load error handling, and richer empty states while preserving deterministic filter behavior.
+- `scripts/build_index.sh` now snapshots `analysis/program/goal_state.json` into `site/reports/program_goal_state.report.json` for demo dashboard consumption.
+- `scripts/site_smoke.py` now enforces new demo/search DOM invariants plus the new `program_goal_state` report snapshot.
+- verification path passed end-to-end: `make html`, `make site-check`, and `make site-manifest-check`.
+
+M27 execution outcome (PRG-266):
+- `scripts/m27_cloud_workflow_check.py` now enforces deterministic M27 cloud workflow documentation invariants across `USAGE`, `SUBMISSION`, `step_execution_map`, and `Makefile` CI wiring.
+- `Makefile` now includes `m27-cloud-workflow-check` as a replayable target and wires it into `ci` to prevent protocol drift.
+- `docs/USAGE.md` now includes a concrete GitHub CLI branch/PR/merge/tag/release protocol with `codex/` branch prefix and required commands.
+- `docs/SUBMISSION.md` now includes the evaluator-facing M27 cloud workflow protocol and artifact reference.
+- verification path passed: `make m27-cloud-workflow-check` (`9/9` checks, report: `out/m27_cloud_workflow_report.json`).
+
+M27 execution outcome (PRG-267):
+- `docs/ASSESSOR_WALKTHROUGH.md` now provides a portfolio-grade assessor script with normal-language system explanation, deterministic command path, and claim-to-artifact mapping.
+- `scripts/m27_assessor_package_check.py` now enforces M27-K3 narrative package invariants across walkthrough sections, submission/program-plan synchronization, final baseline release readiness, step-map mapping, and Makefile/CI wiring.
+- `Makefile` now includes `m27-assessor-package-check` as a replayable target and wires it into `ci` for anti-drift enforcement.
+- `docs/SUBMISSION.md` and `docs/USAGE.md` now include M27-K3 package command and artifact references.
+- verification path passed: `make m27-assessor-package-check` (report: `out/m27_assessor_package_report.json`).
+
+M27 closeout outcome (PRG-270):
+- `analysis/program/plan.json` now marks `M27` as completed and activates `M28` as the sole active milestone.
+- `analysis/program/work_items.csv` now records transition completion (`PRG-270`) and seeds M28 queue rows (`PRG-271` to `PRG-273`) as planned.
+- `scripts/m28_activation_check.py` now validates M28 activation invariants and seeded queue state.
+- `Makefile` now includes `m28-activation-check` and wires it into `ci`.
+- verification path passed: `make program-check`, `make m28-activation-check`, `make task-approval-check`, `make goal-state-check` (report: `out/m28_activation_report.json`).
+
+M28 objective:
+- build a deterministic baseline of website narrative correctness and showcase coverage gaps to prioritize highest-impact fixes.
+- execute targeted correction pass across demo/search/submission storytelling while preserving deterministic site and pipeline checks.
+- lock M28 anti-drift governance in CI and synchronize tracker plus handoff evidence for final showcase delivery.
+
+M28 active KPI-mapped queue:
+- PRG-271 (`M28-K1`): build M28 website narrative baseline and prioritized correction backlog. (done)
+- PRG-272 (`M28-K2`): execute M28 website narrative and showcase correction pass. (done)
+- PRG-273 (`M28-K3`): adopt M28 governance gate and final showcase handoff synchronization. (done)
+- PRG-274 (`M28-K3`): stabilize default CI for post-M26 archive state under active M28. (done)
+
+M28 execution outcome (PRG-271):
+- `scripts/m28_website_narrative_baseline.py` now generates deterministic narrative baseline metrics and prioritized correction backlog at `out/m28_narrative_baseline_report.json`.
+- `Makefile` now includes `m28-narrative-baseline-check` and wires it into `ci` so narrative baseline drift is continuously visible.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the M28 baseline command and artifact references for reviewer reproducibility.
+- `analysis/program/step_execution_map.json` now maps `PRG-271` to `make m28-narrative-baseline-check` with evidence append paths for deterministic replay.
+- live baseline backlog surfaces high-priority narrative mismatches (including stale M27/M26 references and missing M28 activation snapshot wiring in `docs/DEMO.html`/`docs/SUBMISSION.md`).
+- verification path passed: `make m28-narrative-baseline-check` (report: `out/m28_narrative_baseline_report.json`).
+
+M28 execution outcome (PRG-272):
+- `docs/DEMO.html` now adopts M28 narrative labels (`m28-story`, `M28 Story Walkthrough`), includes `reports/m28_activation.report.json` in evidence links, and renders an explicit M28 activation dashboard card.
+- `scripts/build_index.sh` now snapshots `out/m28_activation_report.json` into `site/reports/m28_activation.report.json` for deterministic demo consumption.
+- `scripts/site_smoke.py` now enforces the updated demo anchor id and required M28 activation report snapshot.
+- `docs/SUBMISSION.md` now removes stale `active=M26` snapshot phrasing and includes explicit M28 activation and M28 baseline snapshot lines.
+- `scripts/m28_narrative_execution_check.py` now enforces corrected-state invariants against the PRG-271 baseline backlog, plus step-map/CI/doc synchronization.
+- `Makefile` now includes `m28-narrative-execution-check` and wires it into `ci`.
+- verification path passed: `make m28-narrative-execution-check` (report: `out/m28_narrative_execution_report.json`).
+
+M28 execution outcome (PRG-273):
+- `scripts/m28_governance_handoff_check.py` now enforces the final M28 anti-drift governance chain (activation + baseline + execution reports), queue shape invariants, and tracker/doc synchronization.
+- `Makefile` now includes `m28-governance-handoff-check` and wires it into `ci`; `m28-activation-check` now allows zero open M28 rows so closeout state remains CI-valid.
+- `scripts/build_index.sh` now snapshots `out/m28_governance_handoff_report.json` into `site/reports/m28_governance_handoff.report.json`.
+- `scripts/site_smoke.py` now requires the M28 governance snapshot, and `docs/DEMO.html` now links/fetches it in the dashboard.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include `PRG-273` command and artifact references.
+- verification path passed: `make m28-governance-handoff-check` (report: `out/m28_governance_handoff_report.json`).
+
+M28 execution outcome (PRG-274):
+- `scripts/m26_archive_gate.py` now validates archived M26 closeout invariants (milestone completed, zero open M26 rows, required closeout work done, required artifacts present) under later active milestones.
+- `Makefile` now includes `m26-archive-check` and wires it into `ci` in place of active-milestone M26 checks, keeping default CI reproducible under active `M28`.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now document the archive-safe M26 CI behavior and report artifact.
+- verification path passed: `make m26-archive-check` (report: `out/m26_archive_gate_report.json`).
+
+M28 closeout outcome (PRG-275):
+- `analysis/program/plan.json` now marks `M28` as completed and activates `M29` as the sole active milestone.
+- `analysis/program/work_items.csv` now records transition completion (`PRG-275`) and seeds M29 queue rows (`PRG-276` to `PRG-278`) as planned.
+- `scripts/m29_activation_check.py` now validates M29 activation invariants and seeded queue state.
+- `Makefile` now includes `m29-activation-check`, adds `m28-archive-check`, and wires CI to archive-safe M28 checks under active `M29`.
+- verification path passed: `make program-check`, `make m29-activation-check`, `make task-approval-check`, `make goal-state-check` (report: `out/m29_activation_report.json`).
+
+M29 objective:
+- baseline release-workflow and repository-delivery gaps from the now-closed M28 website and showcase state.
+- execute deterministic stabilization changes across release workflow documentation, repo hygiene, and final delivery artifacts.
+- adopt M29 anti-drift governance and freeze the final delivery package with replayable CI evidence.
+
+M29 active KPI-mapped queue:
+- PRG-276 (`M29-K2`): build M29 release-workflow baseline and prioritized execution backlog. (done)
+- PRG-277 (`M29-K2`): execute M29 delivery stabilization pass across docs and release workflow. (done)
+- PRG-278 (`M29-K3`): adopt M29 governance gate and freeze final delivery package. (done)
+
+M29 execution outcome (PRG-276):
+- `scripts/m29_release_workflow_baseline.py` now generates deterministic M29 release-workflow baseline metrics and prioritized execution backlog at `out/m29_release_baseline_report.json`.
+- `Makefile` now includes `m29-release-baseline-check` and wires it into `ci` so release baseline drift is continuously visible during active M29 execution.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the M29 baseline command and artifact references for reviewer reproducibility.
+- `analysis/program/step_execution_map.json` now maps `PRG-276` to `make m29-release-baseline-check` with evidence append paths for deterministic replay.
+- baseline report now surfaces prioritized M29 delivery backlog across repository hygiene, release-workflow stabilization, governance-freeze readiness, and queue burndown signals.
+- verification path passed: `make m29-release-baseline-check` (report: `out/m29_release_baseline_report.json`).
+
+M29 execution outcome (PRG-277):
+- `scripts/m29_delivery_stabilization_check.py` now validates deterministic M29 delivery-stabilization execution and writes `out/m29_delivery_stabilization_report.json`.
+- `Makefile` now includes `m29-delivery-stabilization-check`, wiring final-rehearsal + tracker synchronization before the M29 execution gate and including the target in `ci`.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the PRG-277 command and report artifact for reproducible evaluation.
+- `analysis/program/step_execution_map.json` now maps `PRG-277` to `make m29-delivery-stabilization-check` with deterministic evidence append paths.
+- execution report now captures backlog-resolution statuses for repository hygiene, release-workflow stabilization, and open-queue burndown while handing governance freeze to `PRG-278`.
+- verification path passed: `make m29-delivery-stabilization-check` (report: `out/m29_delivery_stabilization_report.json`).
+
+M29 execution outcome (PRG-278):
+- `scripts/m29_governance_freeze_check.py` now enforces M29 anti-drift governance freeze invariants, validates queue-closure and report-chain reproducibility, and publishes `out/m29_governance_freeze_report.json` with decision/assumption/risk ledgers plus a hashed freeze artifact manifest.
+- `Makefile` now includes `m29-governance-freeze-check`, wires it into `ci`, and keeps M29 activation/baseline/delivery gates replayable in post-freeze state.
+- `scripts/build_index.sh`, `scripts/site_smoke.py`, and `docs/DEMO.html` now synchronize `reports/m29_governance_freeze.report.json` into the demo evidence dashboard.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include `PRG-278` command and artifact references for deterministic reviewer replay.
+- `analysis/program/step_execution_map.json` now maps `PRG-278` to `make m29-governance-freeze-check` with deterministic evidence append paths.
+- verification path passed: `make m29-governance-freeze-check` (report: `out/m29_governance_freeze_report.json`).
+
+Current execution state:
+- M29 is now completed and archive-governed under `make m29-archive-check`, with `PRG-275` through `PRG-278` all done and `open=0`.
+- M30 is now the sole active milestone under one-active-milestone protocol, with seeded queue items `PRG-280` through `PRG-282`.
+
+M29 closeout outcome (PRG-279):
+- `analysis/program/plan.json` now marks `M29` as completed and activates `M30` as the sole active milestone.
+- `analysis/program/work_items.csv` now records transition completion (`PRG-279`) and seeds M30 queue rows (`PRG-280` to `PRG-282`) as planned.
+- `scripts/m30_activation_check.py` now validates M30 activation invariants and seeded queue state.
+- `Makefile` now adds `m29-archive-check` and `m30-activation-check`, and rewires default CI from active M29 gates to archive-safe M29 + active M30 transition checks.
+- verification path passed: `make m29-archive-check`, `make m30-activation-check`, `make program-check`, `make task-approval-check`, `make goal-state-check` (reports: `out/m29_archive_gate_report.json`, `out/m30_activation_report.json`).
+
+M30 objective:
+- baseline repository cleanup and release-surface quality gaps from the now-closed M29 freeze state.
+- execute deterministic cleanup and synchronization changes across repository structure, release-facing docs, and evidence artifacts.
+- adopt M30 anti-drift governance and package handoff protocol with CI-stable replay commands.
+
+M30 active KPI-mapped queue:
+- PRG-280 (`M30-K2`): build M30 repository hygiene baseline and prioritized execution backlog. (done)
+- PRG-281 (`M30-K2`): execute M30 repository cleanup and release-surface synchronization pass. (done)
+- PRG-282 (`M30-K3`): adopt M30 governance gate and package handoff synchronization. (done)
+
+M30 baseline gate command:
+- `make m30-repo-baseline-check` (report: `out/m30_repo_baseline_report.json`)
+
+M30 execution gate command:
+- `make m30-repo-execution-check` (report: `out/m30_repo_execution_report.json`)
+
+M30 governance gate command:
+- `make m30-governance-check` (report: `out/m30_governance_report.json`)
+
+M30 execution outcome (PRG-280):
+- `scripts/m30_repo_baseline.py` now generates deterministic M30 repository-cleanup baseline metrics and prioritized execution backlog at `out/m30_repo_baseline_report.json`.
+- `Makefile` now includes `m30-repo-baseline-check` and wires it into `ci` so M30 baseline drift is continuously visible during active M30 execution.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the M30 baseline command and artifact references for reviewer reproducibility.
+- `analysis/program/step_execution_map.json` now maps `PRG-280` to `make m30-repo-baseline-check` with evidence append paths for deterministic replay.
+- baseline report now surfaces prioritized M30 cleanup backlog across repository hygiene, readiness stability, governance handoff readiness, and queue burndown signals.
+- verification path passed: `make m30-repo-baseline-check` (report: `out/m30_repo_baseline_report.json`).
+
+M30 execution outcome (PRG-281):
+- `scripts/m30_repo_execution_check.py` now validates deterministic M30 cleanup execution against baseline backlog, queue burndown targets, and release-surface synchronization at `out/m30_repo_execution_report.json`.
+- `Makefile` now includes `m30-repo-execution-check`, wiring baseline + tracker synchronization + final-rehearsal replay before executing the M30 cleanup gate and including the target in `ci`.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the PRG-281 command and report artifact for reproducible evaluation.
+- `analysis/program/step_execution_map.json` now maps `PRG-281` to `make m30-repo-execution-check` with deterministic evidence append paths.
+- execution report now captures M30 backlog-resolution statuses for repository hygiene, release-readiness burndown, and governance handoff deferral to `PRG-282`.
+- verification path passed: `make m30-repo-execution-check` (report: `out/m30_repo_execution_report.json`).
+
+M30 governance outcome (PRG-282):
+- `scripts/m30_governance_check.py` now enforces deterministic M30 anti-drift governance, zero-open-queue handoff state, release-ready final rehearsal, and hashed package replay at `out/m30_governance_report.json`.
+- `Makefile` now includes `m30-governance-check`, wires it into `ci`, and keeps M30 activation/baseline/execution/governance replayable with bootstrap-safe artifact generation.
+- `scripts/build_index.sh`, `scripts/site_smoke.py`, and `docs/DEMO.html` now synchronize `reports/m30_governance.report.json` into the demo evidence dashboard.
+- `docs/USAGE.md` and `docs/SUBMISSION.md` now include the PRG-282 command and report artifact for deterministic reviewer replay.
+- `analysis/program/step_execution_map.json` now maps `PRG-282` to `make m30-governance-check` with deterministic evidence append paths.
+- verification path passed: `make m30-governance-check` (report: `out/m30_governance_report.json`).
+
+Current execution state:
+- M30 is now completed and archive-governed under `make m30-archive-check`, with `PRG-279` through `PRG-282` all done and `open=0`.
+- M31 is now the sole active milestone under one-active-milestone protocol, with zero queued work and the terminal handoff state held under tracker control.
+
+M31 closeout outcome (PRG-283):
+- `analysis/program/plan.json` now marks `M30` as completed and activates `M31` as the sole active milestone.
+- `analysis/program/work_items.csv` now records transition completion (`PRG-283`) as the deterministic handoff step for the post-completion control state.
+- `scripts/m26_archive_gate.py` is now reused via `make m30-archive-check` to validate archived M30 invariants under later active milestones.
+- `scripts/m31_activation_check.py` now validates M31 activation invariants and zero-queue holding-state synchronization.
+- `Makefile` now rewires default CI from active M30 gates to archive-safe `m30-archive-check` plus `m31-activation-check`.
+- verification path passed: `make m30-archive-check`, `make m31-activation-check`, `make program-check`, `make task-approval-check`, `make goal-state-check`.
+
+M31 objective:
+- preserve a valid one-active-milestone state after closing M30 without inventing fake execution queue work.
+- keep terminal handoff evidence, tracker synchronization, and remote-ready repository state reproducible under default CI.
+- provide a minimal continuation lane so future scope can be added cleanly without reopening archived M30 gates.
+
+M31 active KPI-mapped queue:
+- PRG-283 (`M31-K1`): close M30 and activate M31 post-completion control state. (done)
+
+M30 archive gate command:
+- `make m30-archive-check` (report: `out/m30_archive_gate_report.json`)
+
+M31 activation gate command:
+- `make m31-activation-check` (report: `out/m31_activation_report.json`)

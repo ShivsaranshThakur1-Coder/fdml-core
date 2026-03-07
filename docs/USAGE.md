@@ -1277,6 +1277,349 @@ This enforces:
 Current report output:
 - `out/m26_handoff_governance_report.json`
 
+Run M26 archive-safe closeout gate (PRG-274):
+
+```bash
+make m26-archive-check
+```
+
+This enforces:
+- M26 remains completed with zero open M26 queue rows under later active milestones
+- required M26 closeout work items (`PRG-260` through `PRG-264`) stay `done`
+- required M26 closeout artifacts remain present and machine-readable
+- `make ci` stays green under active `M29` by using `m26-archive-check` instead of re-running milestone-active M26 gates
+
+Current report output:
+- `out/m26_archive_gate_report.json`
+
+Run M27 cloud version-control and release workflow gate (PRG-266):
+
+```bash
+make m27-cloud-workflow-check
+```
+
+This enforces:
+- evaluator-facing cloud workflow protocol exists in `USAGE` and `SUBMISSION`
+- deterministic branch + PR + merge flow is documented with concrete commands
+- deterministic tag + release flow is documented with concrete commands
+- tracker execution mapping and CI wiring are synchronized for `PRG-266`
+
+Current report output:
+- `out/m27_cloud_workflow_report.json`
+
+Run M27 assessor narrative + walkthrough package gate (PRG-267):
+
+```bash
+make m27-assessor-package-check
+```
+
+This enforces:
+- assessor walkthrough document exists with plain-language project, FDML storage, validator behavior, live script, evidence map, and limitation sections
+- submission + program plan mention the M27-K3 narrative package and generated report artifact
+- final rehearsal report remains release-ready (`releaseReady=true`, `queuedGapCount=0`)
+- tracker execution mapping and CI wiring are synchronized for `PRG-267`
+
+Current report output:
+- `out/m27_assessor_package_report.json`
+
+Run M28 activation gate (PRG-270):
+
+```bash
+make m28-activation-check
+```
+
+This enforces:
+- plan transition invariants (`M27=completed`, `M28=active`)
+- queue activation invariants (`PRG-270=done`, `PRG-271` seeded, M28 active queue present)
+- goal-state synchronization for active milestone and queue
+- Makefile target plus CI wiring for `m28-activation-check`
+- program-plan references for `M28`, `PRG-270`, `PRG-271`, and `out/m28_activation_report.json`
+
+Current report output:
+- `out/m28_activation_report.json`
+
+Run M28 website narrative baseline gate (PRG-271):
+
+```bash
+make m28-narrative-baseline-check
+```
+
+This enforces:
+- M28 milestone and queue synchronization across goal state, step map, and Makefile wiring
+- deterministic baseline report generation for demo/search/submission narrative consistency
+- prioritized correction backlog publication for the next execution pass (`PRG-272`)
+- prioritized backlog output (which can reduce to `0` after correction closure) for repeatable progress tracking
+
+Current report output:
+- `out/m28_narrative_baseline_report.json`
+
+Run M28 website narrative execution gate (PRG-272):
+
+```bash
+make m28-narrative-execution-check
+```
+
+This enforces:
+- `site-check` passes after applying M28 correction edits
+- high-priority baseline mismatch set is resolved in `DEMO` and `SUBMISSION`
+- stale M27/M26 narrative labels are removed from corrected surfaces
+- tracker mapping and CI wiring are synchronized for handoff to `PRG-273`
+
+Current report output:
+- `out/m28_narrative_execution_report.json`
+
+Run M28 governance and final showcase handoff gate (PRG-273):
+
+```bash
+make m28-governance-handoff-check
+```
+
+This enforces:
+- M28 activation + baseline + execution gate chain remains PASS with zero narrative backlog
+- demo/build-index/site-smoke synchronization for `reports/m28_governance_handoff.report.json`
+- tracker + step-map + CI wiring are synchronized for `PRG-273`
+- release-facing docs (`PROGRAM_PLAN`, `SUBMISSION`, `USAGE`) reference one command and one report artifact
+
+Current report output:
+- `out/m28_governance_handoff_report.json`
+
+Run M28 archive-safe closeout gate:
+
+```bash
+make m28-archive-check
+```
+
+This enforces:
+- M28 remains completed with zero open M28 queue rows under later active milestones
+- required M28 closeout work items (`PRG-270` through `PRG-274`) stay `done`
+- required M28 closeout artifacts remain present and machine-readable
+- `make ci` stays green under active `M29` by using `m28-archive-check` instead of re-running milestone-active M28 gates
+
+Current report output:
+- `out/m28_archive_gate_report.json`
+
+Run M29 activation gate (PRG-275):
+
+```bash
+make m29-activation-check
+```
+
+This enforces:
+- plan transition invariants (`M28=completed`, `M29=active`)
+- queue activation invariants (`PRG-275=done`, `PRG-276` seeded, and M29 queue shape remains valid for active and frozen states)
+- goal-state synchronization for active milestone and queue
+- Makefile target plus CI wiring for `m29-activation-check`
+- program-plan references for `M29`, `PRG-275`, `PRG-276`, and `out/m29_activation_report.json`
+
+Current report output:
+- `out/m29_activation_report.json`
+
+Run M29 release-workflow baseline gate (PRG-276):
+
+```bash
+make m29-release-baseline-check
+```
+
+This enforces:
+- active M29 transition invariants remain valid (`M28=completed`, `M29=active`, activation report PASS)
+- tracker + step-map + CI wiring are synchronized for `PRG-276` handoff to `PRG-277`
+- release-facing docs (`PROGRAM_PLAN`, `SUBMISSION`, `USAGE`) reference one command and one artifact path
+- deterministic prioritized M29 execution backlog is generated from release-readiness, repo-hygiene, and queue signals (including post-freeze replay mode)
+
+Current report output:
+- `out/m29_release_baseline_report.json`
+
+Run M29 delivery-stabilization execution gate (PRG-277):
+
+```bash
+make m29-delivery-stabilization-check
+```
+
+This enforces:
+- `PRG-277` is executed with deterministic tracker, step-map, and CI wiring
+- M29 release backlog closure signals are captured in one execution artifact
+- queued final-rehearsal gaps are constrained to target range
+- open M29 queue size is constrained to the expected post-baseline shape (handoff or fully frozen)
+
+Current report output:
+- `out/m29_delivery_stabilization_report.json`
+
+Run M29 governance freeze gate (PRG-278):
+
+```bash
+make m29-governance-freeze-check
+```
+
+This enforces:
+- `PRG-278` is done and M29 open queue rows are zero (frozen delivery state)
+- baseline + delivery + final-rehearsal evidence chain remains PASS and synchronized
+- release-facing docs (`PROGRAM_PLAN`, `SUBMISSION`, `USAGE`) include one freeze command and one report path
+- demo/build-index/site-smoke all include `reports/m29_governance_freeze.report.json`
+- a machine-readable freeze package with hashed artifact manifest is published
+
+Current report output:
+- `out/m29_governance_freeze_report.json`
+
+Run M29 archive-safe closeout gate:
+
+```bash
+make m29-archive-check
+```
+
+This enforces:
+- M29 remains completed with zero open M29 queue rows under later active milestones
+- required M29 closeout work items (`PRG-275` through `PRG-278`) stay `done`
+- required M29 closeout artifacts remain present and machine-readable
+- `make ci` stays green under active `M31` by using `m29-archive-check` instead of rerunning milestone-active M29 gates
+
+Current report output:
+- `out/m29_archive_gate_report.json`
+
+Historical M30 active-state gates (`PRG-279` through `PRG-282`) are preserved below for artifact provenance.
+After `PRG-283`, the current closeout replay path is `make m30-archive-check` plus `make m31-activation-check`.
+
+Run M30 activation gate (PRG-279):
+
+```bash
+make m30-activation-check
+```
+
+This enforces:
+- plan transition invariants (`M29=completed`, `M30=active`)
+- queue activation invariants (`PRG-279=done`, `PRG-280` seeded, and M30 queue shape remains valid)
+- goal-state synchronization for active milestone and queue
+- Makefile target plus CI wiring for `m30-activation-check`
+- program-plan references for `M30`, `PRG-279`, `PRG-280`, and `out/m30_activation_report.json`
+
+Current report output:
+- `out/m30_activation_report.json`
+
+Run M30 repository hygiene baseline gate (PRG-280):
+
+```bash
+make m30-repo-baseline-check
+```
+
+This enforces:
+- active M30 transition invariants remain valid (`M29=completed`, `M30=active`, activation report PASS)
+- tracker + step-map + CI wiring are synchronized for `PRG-280` handoff to `PRG-281`
+- release-facing docs (`PROGRAM_PLAN`, `SUBMISSION`, `USAGE`) reference one command and one artifact path
+- deterministic prioritized M30 cleanup backlog is generated from repository-hygiene, doc-synchronization, readiness, governance, and queue signals
+
+Current report output:
+- `out/m30_repo_baseline_report.json`
+
+Run M30 repository cleanup execution gate (PRG-281):
+
+```bash
+make m30-repo-execution-check
+```
+
+This enforces:
+- `PRG-281` is executed with deterministic tracker, step-map, and CI wiring
+- baseline backlog resolution is recorded for M30 repository hygiene, release-readiness, and queue-burndown signals
+- final rehearsal queued-gap and open-queue targets are reduced to the expected post-PRG-281 state
+- release-facing docs (`PROGRAM_PLAN`, `SUBMISSION`, `USAGE`) reference one command and one artifact path for handoff to `PRG-282`
+
+Current report output:
+- `out/m30_repo_execution_report.json`
+
+Run M30 governance and package handoff gate (PRG-282):
+
+```bash
+make m30-governance-check
+```
+
+This enforces:
+- `PRG-282` is completed with deterministic tracker, step-map, docs, and CI wiring
+- M30 active queue is frozen closed (`open M30 rows = 0`) while preserving the one-active-milestone protocol
+- final rehearsal reaches `releaseReady=true` with `queuedGapCount=0`
+- demo/build-index/site-smoke all synchronize on `reports/m30_governance.report.json` for final package replay
+
+Current report output:
+- `out/m30_governance_report.json`
+
+Run M30 archive-safe closeout gate:
+
+```bash
+make m30-archive-check
+```
+
+This enforces:
+- M30 remains completed with zero open M30 queue rows under later active milestones
+- required M30 closeout work items (`PRG-279` through `PRG-282`) stay `done`
+- required M30 closeout artifacts remain present and machine-readable
+- `make ci` stays green under active `M31` by using `m30-archive-check` instead of rerunning milestone-active M30 gates
+
+Current report output:
+- `out/m30_archive_gate_report.json`
+
+Run M31 activation gate (PRG-283):
+
+```bash
+make m31-activation-check
+```
+
+This enforces:
+- plan transition invariants (`M30=completed`, `M31=active`)
+- `PRG-283` is recorded as done in the tracker for the post-completion control state
+- goal-state synchronization for active milestone and zero-queue holding state
+- Makefile target plus CI wiring for `m31-activation-check`
+- program-plan references for `M31`, `PRG-283`, `m30-archive-check`, and `out/m31_activation_report.json`
+
+Current report output:
+- `out/m31_activation_report.json`
+
+Deterministic cloud version-control + release protocol (GitHub CLI):
+
+1) Authenticate and sync the base branch:
+
+```bash
+gh auth status
+git fetch origin
+git checkout main
+git pull --ff-only origin main
+```
+
+2) Create a feature branch using the required `codex/` prefix:
+
+```bash
+git checkout -b codex/m27-cloud-workflow
+```
+
+3) Execute the workflow gate and commit only scoped changes:
+
+```bash
+make m27-cloud-workflow-check
+git add Makefile scripts/m27_cloud_workflow_check.py docs/USAGE.md docs/SUBMISSION.md analysis/program/step_execution_map.json
+git commit -m "docs: add deterministic M27 cloud workflow protocol"
+```
+
+4) Push and open a PR to `main`:
+
+```bash
+git push -u origin codex/m27-cloud-workflow
+gh pr create --base main --head codex/m27-cloud-workflow --fill
+gh pr view --web
+```
+
+5) Merge with squash and delete branch:
+
+```bash
+gh pr merge --squash --delete-branch
+git checkout main
+git pull --ff-only origin main
+```
+
+6) Tag and publish a release (replace version before running):
+
+```bash
+REL_TAG="vX.Y.Z"
+git tag -a "$REL_TAG" -m "FDML release $REL_TAG"
+git push origin "$REL_TAG"
+gh release create "$REL_TAG" --title "$REL_TAG" --notes-file docs/SUBMISSION.md
+```
+
 Make shortcuts:
 
 ```bash

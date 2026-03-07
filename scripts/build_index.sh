@@ -23,12 +23,17 @@ M6_SHOWCASE_FILES=(
 )
 REPORT_SNAPSHOT_MAP=(
   "out/final_rehearsal/report.json:final_rehearsal.report.json"
+  "out/m30_governance_report.json:m30_governance.report.json"
+  "out/m29_governance_freeze_report.json:m29_governance_freeze.report.json"
+  "out/m28_activation_report.json:m28_activation.report.json"
+  "out/m28_governance_handoff_report.json:m28_governance_handoff.report.json"
   "out/m26_handoff_governance_report.json:m26_handoff_governance.report.json"
   "out/m6_full_description_current.json:m6_full_description_current.report.json"
   "out/m9_full_description_progress.json:m9_full_description_progress.report.json"
   "out/m2_conversion/run1/doctor_passrate.json:doctor_passrate.report.json"
   "out/m2_conversion/run1/provenance_coverage.json:provenance_coverage.report.json"
   "out/m3_issue_current.json:m3_issue_current.report.json"
+  "analysis/program/goal_state.json:program_goal_state.report.json"
 )
 
 # Rebuild generated artifacts; keep site/ stable

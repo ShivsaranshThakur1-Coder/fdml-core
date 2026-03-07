@@ -1,4 +1,4 @@
-.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check provenance-check enrichment-report-check ingest-batch-check ingest-promote-check conversion-batch-check full-description-coverage-check full-description-quality-check m8-geometry-baseline-check m8-geometry-uplift-check m8-geometry-governance-check m9-geometry-full-corpus-check m9-full-description-uplift-check m10-discovery-run m10-discovery-governance-check m11-contract-promotion-check m11-validator-unified-check m11-pipeline-governance-check m12-semantic-depth-check m13-parameter-registry-check m13-validator-expansion-check m13-pipeline-governance-check m14-contract-uplift-check m14-context-specificity-check m14-validator-burndown-check m15-discovery-run m15-validator-expansion-check m15-pipeline-governance-check m16-contract-promotion-check m16-validator-expansion-check m16-pipeline-governance-check m17-descriptor-registry-check m17-validator-expansion-check m17-pipeline-governance-check m18-realism-uplift-check m18-descriptor-uplift-check m18-pipeline-governance-check m19-corpus-expansion-baseline-check m19-descriptor-validator-expansion-check m19-pipeline-governance-check m20-corpus-expansion-check m20-descriptor-validator-expansion-check m20-pipeline-governance-check m21-descriptor-completion-check m21-validator-expansion-check m21-pipeline-governance-check m22-descriptor-uplift-check m22-validator-expansion-check m22-pipeline-governance-check m23-descriptor-consolidation-check m23-validator-expansion-check m23-pipeline-governance-check m24-residual-failure-closure-check m24-descriptor-completion-check m24-pipeline-governance-check m25-hardening-check m25-release-governance-check m26-activation-check m26-polish-baseline-check m26-polish-execution-check m26-governance-handoff-check doctor-passrate-check provenance-coverage-check semantic-enrichment-check semantic-issue-trend-check semantic-spec-alignment-check demo-flow-check final-rehearsal-check review-passrate-check license-policy-check site-manifest-check coverage api-check merge-acquire-manifests acquire-sources acquire-sources-nonwiki review-sources goal-state-update goal-state-check program-check task-approval-check program-autopilot program-autopilot-dry-run site-check ci clean
+.PHONY: html validate-valid validate-invalid json schematron check-schematron export-json-check ingest-check provenance-check enrichment-report-check ingest-batch-check ingest-promote-check conversion-batch-check full-description-coverage-check full-description-quality-check m8-geometry-baseline-check m8-geometry-uplift-check m8-geometry-governance-check m9-geometry-full-corpus-check m9-full-description-uplift-check m10-discovery-run m10-discovery-governance-check m11-contract-promotion-check m11-validator-unified-check m11-pipeline-governance-check m12-semantic-depth-check m13-parameter-registry-check m13-validator-expansion-check m13-pipeline-governance-check m14-contract-uplift-check m14-context-specificity-check m14-validator-burndown-check m15-discovery-run m15-validator-expansion-check m15-pipeline-governance-check m16-contract-promotion-check m16-validator-expansion-check m16-pipeline-governance-check m17-descriptor-registry-check m17-validator-expansion-check m17-pipeline-governance-check m18-realism-uplift-check m18-descriptor-uplift-check m18-pipeline-governance-check m19-corpus-expansion-baseline-check m19-descriptor-validator-expansion-check m19-pipeline-governance-check m20-corpus-expansion-check m20-descriptor-validator-expansion-check m20-pipeline-governance-check m21-descriptor-completion-check m21-validator-expansion-check m21-pipeline-governance-check m22-descriptor-uplift-check m22-validator-expansion-check m22-pipeline-governance-check m23-descriptor-consolidation-check m23-validator-expansion-check m23-pipeline-governance-check m24-residual-failure-closure-check m24-descriptor-completion-check m24-pipeline-governance-check m25-hardening-check m25-release-governance-check m26-activation-check m26-polish-baseline-check m26-polish-execution-check m26-governance-handoff-check m26-archive-check m27-cloud-workflow-check m27-assessor-package-check m27-archive-check m28-activation-check m28-narrative-baseline-check m28-narrative-execution-check m28-governance-handoff-check m28-archive-check m29-activation-check m29-release-baseline-check m29-delivery-stabilization-check m29-governance-freeze-check m29-archive-check m30-activation-check m30-repo-baseline-check m30-repo-execution-check m30-governance-check m30-archive-check m31-activation-check doctor-passrate-check provenance-coverage-check semantic-enrichment-check semantic-issue-trend-check semantic-spec-alignment-check demo-flow-check final-rehearsal-check review-passrate-check license-policy-check site-manifest-check coverage api-check merge-acquire-manifests acquire-sources acquire-sources-nonwiki review-sources goal-state-update goal-state-check program-check task-approval-check program-autopilot program-autopilot-dry-run site-check ci clean
 
 html:
 	@set -e; \
@@ -703,6 +703,149 @@ m26-governance-handoff-check:
 	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
 	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null
 
+m26-archive-check:
+	@set -e; \
+	python3 scripts/m26_archive_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --makefile Makefile --report-out out/m26_archive_gate_report.json --required-milestone-id M26 --required-work-id PRG-260 --required-work-id PRG-261 --required-work-id PRG-262 --required-work-id PRG-263 --required-work-id PRG-264 --required-artifact out/m26_activation_report.json --required-artifact out/m26_polish_baseline_report.json --required-artifact out/m26_polish_execution_report.json --required-artifact out/m26_handoff_governance_report.json --required-ci-target m26-archive-check
+
+m27-cloud-workflow-check:
+	@set -e; \
+	python3 scripts/m27_cloud_workflow_check.py --usage-doc docs/USAGE.md --submission-doc docs/SUBMISSION.md --step-map analysis/program/step_execution_map.json --makefile Makefile --report-out out/m27_cloud_workflow_report.json --required-work-id PRG-266 --required-next-work-id PRG-267 --required-ci-target m27-cloud-workflow-check
+
+m27-assessor-package-check:
+	@set -e; \
+	python3 scripts/m27_assessor_package_check.py --walkthrough-doc docs/ASSESSOR_WALKTHROUGH.md --submission-doc docs/SUBMISSION.md --program-plan-doc docs/PROGRAM_PLAN.md --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --makefile Makefile --report-out out/m27_assessor_package_report.json --required-work-id PRG-267 --required-ci-target m27-assessor-package-check
+
+m27-archive-check:
+	@set -e; \
+	python3 scripts/m26_archive_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --makefile Makefile --report-out out/m27_archive_gate_report.json --required-milestone-id M27 --required-work-id PRG-265 --required-work-id PRG-266 --required-work-id PRG-267 --required-artifact out/m27_cloud_workflow_report.json --required-artifact out/m27_assessor_package_report.json --required-ci-target m27-archive-check
+
+m28-activation-check:
+	@set -e; \
+	python3 scripts/m28_activation_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m28_activation_report.json --required-active-milestone M28 --required-previous-milestone M27 --required-activation-work-id PRG-270 --required-next-work-id PRG-271 --min-active-queue 0
+
+m28-narrative-baseline-check:
+	@set -e; \
+	python3 scripts/m28_website_narrative_baseline.py --demo-doc docs/DEMO.html --search-doc docs/search.html --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --program-plan-doc docs/PROGRAM_PLAN.md --goal-state analysis/program/goal_state.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --makefile Makefile --report-out out/m28_narrative_baseline_report.json --required-work-id PRG-271 --required-next-work-id PRG-272 --required-ci-target m28-narrative-baseline-check --min-backlog-items 0 --min-active-queue-count 0
+
+m28-narrative-execution-check:
+	@set -e; \
+	$(MAKE) site-check > /dev/null; \
+	python3 scripts/m28_narrative_execution_check.py --demo-doc docs/DEMO.html --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --program-plan-doc docs/PROGRAM_PLAN.md --baseline-report out/m28_narrative_baseline_report.json --step-map analysis/program/step_execution_map.json --makefile Makefile --report-out out/m28_narrative_execution_report.json --required-work-id PRG-272 --required-next-work-id PRG-273 --required-ci-target m28-narrative-execution-check
+
+m28-governance-handoff-check:
+	@set -e; \
+	python3 scripts/m28_governance_handoff_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --activation-report out/m28_activation_report.json --baseline-report out/m28_narrative_baseline_report.json --execution-report out/m28_narrative_execution_report.json --demo-doc docs/DEMO.html --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --program-plan-doc docs/PROGRAM_PLAN.md --step-map analysis/program/step_execution_map.json --makefile Makefile --build-index-script scripts/build_index.sh --site-smoke-script scripts/site_smoke.py --report-out out/m28_governance_handoff_report.json --required-active-milestone M28 --required-previous-work-id PRG-272 --required-work-id PRG-273 --required-ci-target m28-governance-handoff-check; \
+	$(MAKE) site-check > /dev/null
+
+m28-archive-check:
+	@set -e; \
+	python3 scripts/m26_archive_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --makefile Makefile --report-out out/m28_archive_gate_report.json --required-milestone-id M28 --required-work-id PRG-270 --required-work-id PRG-271 --required-work-id PRG-272 --required-work-id PRG-273 --required-work-id PRG-274 --required-artifact out/m28_activation_report.json --required-artifact out/m28_narrative_baseline_report.json --required-artifact out/m28_narrative_execution_report.json --required-artifact out/m28_governance_handoff_report.json --required-ci-target m28-archive-check
+
+m29-archive-check:
+	@set -e; \
+	python3 scripts/m26_archive_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --makefile Makefile --report-out out/m29_archive_gate_report.json --required-milestone-id M29 --required-work-id PRG-275 --required-work-id PRG-276 --required-work-id PRG-277 --required-work-id PRG-278 --required-artifact out/m29_activation_report.json --required-artifact out/m29_release_baseline_report.json --required-artifact out/m29_delivery_stabilization_report.json --required-artifact out/m29_governance_freeze_report.json --required-ci-target m29-archive-check
+
+m30-activation-check:
+	@set -e; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/m30_activation_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m30_activation_report.json --required-active-milestone M30 --required-previous-milestone M29 --required-activation-work-id PRG-279 --required-next-work-id PRG-280 --min-active-queue 0
+
+m30-repo-baseline-check:
+	@set -e; \
+	mkdir -p out; \
+	if [ ! -f out/m30_repo_execution_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m30-repo-execution-bootstrap","ok":false}\n' > out/m30_repo_execution_report.json; \
+	fi; \
+	if [ ! -f out/m30_governance_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m30-governance-bootstrap","ok":false}\n' > out/m30_governance_report.json; \
+	fi; \
+	$(MAKE) m30-activation-check > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null; \
+	python3 scripts/m30_repo_baseline.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --activation-report out/m30_activation_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --usage-doc docs/USAGE.md --submission-doc docs/SUBMISSION.md --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m30_repo_baseline_report.json --required-active-milestone M30 --required-previous-milestone M29 --required-work-id PRG-280 --required-next-work-id PRG-281 --required-governance-work-id PRG-282 --required-ci-target m30-repo-baseline-check --min-backlog-items 1
+
+m30-repo-execution-check:
+	@set -e; \
+	mkdir -p out; \
+	if [ ! -f out/m30_repo_execution_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m30-repo-execution-bootstrap","ok":false}\n' > out/m30_repo_execution_report.json; \
+	fi; \
+	if [ ! -f out/m30_governance_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m30-governance-bootstrap","ok":false}\n' > out/m30_governance_report.json; \
+	fi; \
+	$(MAKE) m30-repo-baseline-check > /dev/null; \
+	python3 scripts/program_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null; \
+	python3 scripts/m30_repo_execution_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --baseline-report out/m30_repo_baseline_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --makefile Makefile --gitignore .gitignore --report-out out/m30_repo_execution_report.json --required-active-milestone M30 --required-work-id PRG-281 --required-next-work-id PRG-282 --required-baseline-label m30-repo-baseline-live --required-final-label m25-final-product-baseline --required-ci-target m30-repo-execution-check --max-queued-gap-after 2 --max-open-queue-after 1 --max-dirty-delta 6; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null
+
+m30-governance-check:
+	@set -e; \
+	mkdir -p out; \
+	if [ ! -f out/m30_governance_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m30-governance-bootstrap","ok":false}\n' > out/m30_governance_report.json; \
+	fi; \
+	$(MAKE) m30-repo-execution-check > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null; \
+	python3 scripts/m30_governance_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --activation-report out/m30_activation_report.json --baseline-report out/m30_repo_baseline_report.json --execution-report out/m30_repo_execution_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --demo-doc docs/DEMO.html --makefile Makefile --build-index-script scripts/build_index.sh --site-smoke-script scripts/site_smoke.py --report-out out/m30_governance_report.json --required-active-milestone M30 --required-previous-work-id PRG-281 --required-work-id PRG-282 --required-baseline-label m30-repo-baseline-live --required-execution-label m30-repo-execution-live --required-final-label m25-final-product-baseline --required-ci-target m30-governance-check --min-decision-count 5 --min-assumption-count 5 --min-risk-count 5; \
+	$(MAKE) site-check > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null
+
+m30-archive-check:
+	@set -e; \
+	python3 scripts/m26_archive_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --makefile Makefile --report-out out/m30_archive_gate_report.json --required-milestone-id M30 --required-work-id PRG-279 --required-work-id PRG-280 --required-work-id PRG-281 --required-work-id PRG-282 --required-artifact out/m30_activation_report.json --required-artifact out/m30_repo_baseline_report.json --required-artifact out/m30_repo_execution_report.json --required-artifact out/m30_governance_report.json --required-ci-target m30-archive-check
+
+m31-activation-check:
+	@set -e; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/m31_activation_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m31_activation_report.json --required-active-milestone M31 --required-previous-milestone M30 --required-activation-work-id PRG-283 --min-active-queue 0
+
+m29-activation-check:
+	@set -e; \
+	python3 scripts/m29_activation_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m29_activation_report.json --required-active-milestone M29 --required-previous-milestone M28 --required-activation-work-id PRG-275 --required-next-work-id PRG-276 --min-active-queue 0
+
+m29-release-baseline-check:
+	@set -e; \
+	python3 scripts/m29_release_workflow_baseline.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --activation-report out/m29_activation_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --usage-doc docs/USAGE.md --submission-doc docs/SUBMISSION.md --program-plan-doc docs/PROGRAM_PLAN.md --makefile Makefile --report-out out/m29_release_baseline_report.json --required-active-milestone M29 --required-previous-milestone M28 --required-work-id PRG-276 --required-next-work-id PRG-277 --required-governance-work-id PRG-278 --required-ci-target m29-release-baseline-check --min-backlog-items 0
+
+m29-delivery-stabilization-check:
+	@set -e; \
+	$(MAKE) m29-release-baseline-check > /dev/null; \
+	python3 scripts/program_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/m29_delivery_stabilization_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --baseline-report out/m29_release_baseline_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --makefile Makefile --gitignore .gitignore --report-out out/m29_delivery_stabilization_report.json --required-active-milestone M29 --required-work-id PRG-277 --required-next-work-id PRG-278 --required-baseline-label m29-release-workflow-baseline-live --required-final-label m25-final-product-baseline --required-ci-target m29-delivery-stabilization-check --max-queued-gap-after 3 --max-open-queue-after 1 > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null; \
+	python3 scripts/m29_delivery_stabilization_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --baseline-report out/m29_release_baseline_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --makefile Makefile --gitignore .gitignore --report-out out/m29_delivery_stabilization_report.json --required-active-milestone M29 --required-work-id PRG-277 --required-next-work-id PRG-278 --required-baseline-label m29-release-workflow-baseline-live --required-final-label m25-final-product-baseline --required-ci-target m29-delivery-stabilization-check --max-queued-gap-after 2 --max-open-queue-after 1; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null
+
+m29-governance-freeze-check:
+	@set -e; \
+	mkdir -p out; \
+	if [ ! -f out/m29_governance_freeze_report.json ]; then \
+		printf '{"schemaVersion":"1","label":"m29-governance-freeze-bootstrap","ok":false}\n' > out/m29_governance_freeze_report.json; \
+	fi; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null; \
+	$(MAKE) m29-release-baseline-check > /dev/null; \
+	python3 scripts/m29_delivery_stabilization_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --baseline-report out/m29_release_baseline_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --makefile Makefile --gitignore .gitignore --report-out out/m29_delivery_stabilization_report.json --required-active-milestone M29 --required-work-id PRG-277 --required-next-work-id PRG-278 --required-baseline-label m29-release-workflow-baseline-live --required-final-label m25-final-product-baseline --required-ci-target m29-delivery-stabilization-check --max-queued-gap-after 2 --max-open-queue-after 1 > /dev/null; \
+	python3 scripts/m29_governance_freeze_check.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --goal-state analysis/program/goal_state.json --activation-report out/m29_activation_report.json --baseline-report out/m29_release_baseline_report.json --execution-report out/m29_delivery_stabilization_report.json --final-report out/final_rehearsal/report.json --step-map analysis/program/step_execution_map.json --program-plan-doc docs/PROGRAM_PLAN.md --submission-doc docs/SUBMISSION.md --usage-doc docs/USAGE.md --demo-doc docs/DEMO.html --makefile Makefile --build-index-script scripts/build_index.sh --site-smoke-script scripts/site_smoke.py --report-out out/m29_governance_freeze_report.json --required-active-milestone M29 --required-previous-work-id PRG-277 --required-work-id PRG-278 --required-baseline-label m29-release-workflow-baseline-live --required-execution-label m29-delivery-stabilization-live --required-final-label m25-final-product-baseline --required-ci-target m29-governance-freeze-check --min-decision-count 5 --min-assumption-count 5 --min-risk-count 5; \
+	$(MAKE) site-check > /dev/null; \
+	python3 scripts/task_approval_gate.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --report analysis/program/approval_report.json > /dev/null; \
+	python3 scripts/update_goal_state.py --plan analysis/program/plan.json --work analysis/program/work_items.csv --approval analysis/program/approval_report.json --out analysis/program/goal_state.json > /dev/null; \
+	python3 scripts/final_rehearsal_check.py --report-out out/final_rehearsal/report.json > /dev/null
+
 site-manifest-check:
 	@set -e; \
 	$(MAKE) html; \
@@ -801,7 +944,7 @@ site-check:
 	@$(MAKE) html
 	@python3 scripts/site_smoke.py
 
-ci: program-check task-approval-check goal-state-check review-passrate-check license-policy-check doctor-passrate-check provenance-coverage-check full-description-quality-check m8-geometry-governance-check m9-full-description-uplift-check m10-discovery-governance-check m11-pipeline-governance-check m13-pipeline-governance-check m15-pipeline-governance-check m16-pipeline-governance-check m17-pipeline-governance-check m18-pipeline-governance-check m19-pipeline-governance-check m20-pipeline-governance-check m21-pipeline-governance-check m22-pipeline-governance-check m23-pipeline-governance-check m24-pipeline-governance-check m25-hardening-check m26-activation-check m26-polish-baseline-check m26-polish-execution-check m26-governance-handoff-check semantic-enrichment-check semantic-issue-trend-check semantic-spec-alignment-check check-schematron validate-valid validate-invalid export-json-check ingest-check provenance-check site-manifest-check site-check
+ci: program-check task-approval-check goal-state-check review-passrate-check license-policy-check doctor-passrate-check provenance-coverage-check full-description-quality-check m8-geometry-governance-check m9-full-description-uplift-check m10-discovery-governance-check m11-pipeline-governance-check m13-pipeline-governance-check m15-pipeline-governance-check m16-pipeline-governance-check m17-pipeline-governance-check m18-pipeline-governance-check m19-pipeline-governance-check m20-pipeline-governance-check m21-pipeline-governance-check m22-pipeline-governance-check m23-pipeline-governance-check m24-pipeline-governance-check m25-hardening-check m26-archive-check m27-cloud-workflow-check m27-archive-check m28-archive-check m29-archive-check m30-archive-check m31-activation-check semantic-enrichment-check semantic-issue-trend-check semantic-spec-alignment-check check-schematron validate-valid validate-invalid export-json-check ingest-check provenance-check site-manifest-check site-check
 
 clean:
 	rm -rf out site

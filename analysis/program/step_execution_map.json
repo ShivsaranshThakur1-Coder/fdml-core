@@ -125,6 +125,315 @@
         "docs/PROGRAM_PLAN.md"
       ],
       "note": "Completed: closed M26 and activated M27 with KPI-mapped planned queue entries and refreshed goal-state/approval synchronization."
+    },
+    "PRG-265": {
+      "commands": [
+        "make site-check",
+        "make site-manifest-check"
+      ],
+      "appendEvidence": [
+        "docs/DEMO.html",
+        "docs/search.html",
+        "docs/style.css",
+        "scripts/build_index.sh",
+        "scripts/site_smoke.py",
+        "docs/manifest.expected.json",
+        "analysis/program/step_execution_map.json",
+        "docs/PROGRAM_PLAN.md"
+      ],
+      "note": "Completed: hardened M27 demo/search UX and evidence storytelling with execution-state dashboard signals, shareable search link UX, and goal-state snapshot wiring enforced by site smoke and manifest checks."
+    },
+    "PRG-266": {
+      "commands": [
+        "make m27-cloud-workflow-check"
+      ],
+      "appendEvidence": [
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "scripts/m27_cloud_workflow_check.py",
+        "Makefile",
+        "analysis/program/step_execution_map.json",
+        "docs/PROGRAM_PLAN.md",
+        "out/m27_cloud_workflow_report.json"
+      ],
+      "note": "Completed: documented deterministic cloud branch/PR/release protocol with GitHub CLI commands, added M27 documentation gate + CI wiring, and prepared queue handoff to PRG-267."
+    },
+    "PRG-267": {
+      "commands": [
+        "make m27-assessor-package-check"
+      ],
+      "appendEvidence": [
+        "docs/ASSESSOR_WALKTHROUGH.md",
+        "docs/SUBMISSION.md",
+        "docs/USAGE.md",
+        "docs/PROGRAM_PLAN.md",
+        "scripts/m27_assessor_package_check.py",
+        "Makefile",
+        "analysis/program/step_execution_map.json",
+        "out/m27_assessor_package_report.json"
+      ],
+      "note": "Completed: published portfolio-grade assessor walkthrough package with deterministic narrative gate and CI wiring aligned to final rehearsal evidence."
+    },
+    "PRG-270": {
+      "commands": [
+        "make program-check",
+        "make m28-activation-check",
+        "make task-approval-check",
+        "make goal-state-check"
+      ],
+      "appendEvidence": [
+        "analysis/program/plan.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "docs/PROGRAM_PLAN.md",
+        "Makefile",
+        "scripts/m28_activation_check.py",
+        "out/m28_activation_report.json"
+      ],
+      "note": "Completed: closed M27 and activated M28 with deterministic activation checks, CI wiring, and seeded KPI-mapped queue entries for PRG-271 to PRG-273."
+    },
+    "PRG-271": {
+      "commands": [
+        "make m28-narrative-baseline-check"
+      ],
+      "appendEvidence": [
+        "scripts/m28_website_narrative_baseline.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m28_narrative_baseline_report.json"
+      ],
+      "note": "Completed: generated deterministic M28 website narrative baseline with priority-ranked correction backlog and synchronized command/artifact references, preparing execution handoff to PRG-272."
+    },
+    "PRG-272": {
+      "commands": [
+        "make m28-narrative-execution-check"
+      ],
+      "appendEvidence": [
+        "docs/DEMO.html",
+        "docs/SUBMISSION.md",
+        "scripts/build_index.sh",
+        "scripts/site_smoke.py",
+        "scripts/m28_narrative_execution_check.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m28_narrative_execution_report.json",
+        "out/m28_narrative_baseline_report.json"
+      ],
+      "note": "Completed: executed M28 narrative correction pass over demo and submission surfaces, resolved high-priority baseline mismatches, and enforced corrected-state replay with site smoke plus execution gate before PRG-273 handoff."
+    },
+    "PRG-273": {
+      "commands": [
+        "make m28-governance-handoff-check"
+      ],
+      "appendEvidence": [
+        "scripts/m28_governance_handoff_check.py",
+        "Makefile",
+        "scripts/build_index.sh",
+        "scripts/site_smoke.py",
+        "docs/DEMO.html",
+        "docs/SUBMISSION.md",
+        "docs/USAGE.md",
+        "docs/PROGRAM_PLAN.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m28_governance_handoff_report.json"
+      ],
+      "note": "Completed: adopted deterministic M28 anti-drift governance gate with CI wiring and synchronized final showcase handoff evidence across demo/report snapshots, tracker mapping, and release-facing docs."
+    },
+    "PRG-274": {
+      "commands": [
+        "make m26-archive-check"
+      ],
+      "appendEvidence": [
+        "scripts/m26_archive_gate.py",
+        "Makefile",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "docs/PROGRAM_PLAN.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m26_archive_gate_report.json"
+      ],
+      "note": "Completed: replaced active-milestone M26 checks in default CI with archive-safe M26 closeout gate so make ci remains green under active M28 while preserving M26 artifact integrity checks."
+    },
+    "PRG-275": {
+      "commands": [
+        "make m29-activation-check",
+        "make program-check",
+        "make task-approval-check",
+        "make goal-state-check"
+      ],
+      "appendEvidence": [
+        "analysis/program/plan.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "docs/PROGRAM_PLAN.md",
+        "scripts/m29_activation_check.py",
+        "Makefile",
+        "out/m29_activation_report.json"
+      ],
+      "note": "Completed: closed M28 and activated M29 with deterministic activation checks and seeded KPI-mapped M29 queue entries for PRG-276 to PRG-278."
+    },
+    "PRG-276": {
+      "commands": [
+        "make m29-release-baseline-check"
+      ],
+      "appendEvidence": [
+        "scripts/m29_release_workflow_baseline.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m29_release_baseline_report.json"
+      ],
+      "note": "Completed: generated deterministic M29 release-workflow baseline with prioritized execution backlog and synchronized command/artifact wiring for PRG-277 handoff."
+    },
+    "PRG-277": {
+      "commands": [
+        "make m29-delivery-stabilization-check"
+      ],
+      "appendEvidence": [
+        "scripts/m29_delivery_stabilization_check.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m29_delivery_stabilization_report.json"
+      ],
+      "note": "Completed: executed M29 delivery-stabilization pass with deterministic backlog-resolution evidence, final-rehearsal queued-gap/open-queue target checks, and synchronized handoff to PRG-278."
+    },
+    "PRG-278": {
+      "commands": [
+        "make m29-governance-freeze-check"
+      ],
+      "appendEvidence": [
+        "scripts/m29_governance_freeze_check.py",
+        "scripts/m29_delivery_stabilization_check.py",
+        "Makefile",
+        "scripts/build_index.sh",
+        "scripts/site_smoke.py",
+        "docs/DEMO.html",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/goal_state.json",
+        "out/m29_governance_freeze_report.json"
+      ],
+      "note": "Completed: adopted deterministic M29 anti-drift governance freeze with CI wiring, queue-closure enforcement, demo snapshot synchronization, and a hashed final-delivery freeze package."
+    },
+    "PRG-279": {
+      "commands": [
+        "make m29-archive-check",
+        "make m30-activation-check",
+        "make program-check",
+        "make task-approval-check",
+        "make goal-state-check"
+      ],
+      "appendEvidence": [
+        "analysis/program/plan.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "scripts/m26_archive_gate.py",
+        "scripts/m30_activation_check.py",
+        "Makefile",
+        "out/m29_archive_gate_report.json",
+        "out/m30_activation_report.json"
+      ],
+      "note": "Completed: closed M29 and activated M30 with deterministic archive plus activation gates and seeded KPI-mapped queue entries for PRG-280 to PRG-282."
+    },
+    "PRG-280": {
+      "commands": [
+        "make m30-repo-baseline-check"
+      ],
+      "note": "Completed: generated deterministic M30 repository-cleanup baseline with prioritized execution backlog and synchronized command/artifact wiring for PRG-281 handoff.",
+      "appendEvidence": [
+        "scripts/m30_repo_baseline.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m30_repo_baseline_report.json"
+      ]
+    },
+    "PRG-281": {
+      "commands": [
+        "make m30-repo-execution-check"
+      ],
+      "appendEvidence": [
+        "scripts/m30_repo_execution_check.py",
+        "Makefile",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "out/m30_repo_execution_report.json"
+      ],
+      "note": "Completed: executed deterministic M30 repository-cleanup pass with backlog-resolution evidence and synchronized CI plus release-surface command/artifact wiring for PRG-282 handoff."
+    },
+    "PRG-282": {
+      "commands": [
+        "make m30-governance-check"
+      ],
+      "appendEvidence": [
+        "scripts/m30_governance_check.py",
+        "Makefile",
+        "scripts/build_index.sh",
+        "scripts/site_smoke.py",
+        "docs/DEMO.html",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/goal_state.json",
+        "out/m30_governance_report.json"
+      ],
+      "note": "Completed: adopted deterministic M30 governance handoff with CI wiring, queue-closure enforcement, demo snapshot synchronization, and a hashed final-package replay manifest."
+    },
+    "PRG-283": {
+      "commands": [
+        "make m30-archive-check",
+        "make m31-activation-check",
+        "make program-check",
+        "make task-approval-check",
+        "make goal-state-check"
+      ],
+      "appendEvidence": [
+        "analysis/program/plan.json",
+        "analysis/program/work_items.csv",
+        "analysis/program/step_execution_map.json",
+        "analysis/program/goal_state.json",
+        "docs/PROGRAM_PLAN.md",
+        "docs/USAGE.md",
+        "docs/SUBMISSION.md",
+        "scripts/m31_activation_check.py",
+        "Makefile",
+        "out/m30_archive_gate_report.json",
+        "out/m31_activation_report.json"
+      ],
+      "note": "Completed: closed M30 under archive-safe CI and activated M31 as a zero-queue post-completion control milestone while preserving deterministic tracker, documentation, and handoff synchronization."
     }
   }
 }

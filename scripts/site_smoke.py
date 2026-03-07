@@ -38,6 +38,8 @@ REQUIRED_M5_SOURCE_CATEGORIES = {
     "americas-oceania",
 }
 REQUIRED_SEARCH_IDS = (
+    "q",
+    "clear",
     "meter",
     "genre",
     "formationKind",
@@ -47,15 +49,27 @@ REQUIRED_SEARCH_IDS = (
     "strictOnly",
     "hasGeometry",
     "activeFilters",
+    "copyLink",
+    "copyLinkStatus",
+    "loadError",
+)
+REQUIRED_DEMO_IDS = (
+    "status-dashboard",
+    "m28-story",
 )
 REQUIRED_REPORT_SNAPSHOTS = (
     "reports/final_rehearsal.report.json",
+    "reports/m30_governance.report.json",
+    "reports/m29_governance_freeze.report.json",
+    "reports/m28_activation.report.json",
+    "reports/m28_governance_handoff.report.json",
     "reports/m26_handoff_governance.report.json",
     "reports/m6_full_description_current.report.json",
     "reports/m9_full_description_progress.report.json",
     "reports/doctor_passrate.report.json",
     "reports/provenance_coverage.report.json",
     "reports/m3_issue_current.report.json",
+    "reports/program_goal_state.report.json",
 )
 
 
@@ -168,8 +182,9 @@ def main() -> int:
         if f'id="{required_id}"' not in search_html:
             fail(f"search.html missing filter element #{required_id}")
     demo_html = (site_dir / "demo.html").read_text(encoding="utf-8")
-    if 'id="status-dashboard"' not in demo_html:
-        fail("demo.html missing #status-dashboard container")
+    for required_id in REQUIRED_DEMO_IDS:
+        if f'id="{required_id}"' not in demo_html:
+            fail(f"demo.html missing required element #{required_id}")
 
     for rel in REQUIRED_REPORT_SNAPSHOTS:
         report_path = site_dir / rel
