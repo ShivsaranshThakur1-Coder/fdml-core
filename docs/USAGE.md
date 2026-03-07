@@ -935,6 +935,8 @@ If site output changed intentionally, regenerate the expected manifest:
 ```bash
 make html
 python3 scripts/site_manifest.py site --out docs/manifest.expected.json
+make pages-sync
+make pages-check
 ```
 
 ## Web source acquisition (licensed)

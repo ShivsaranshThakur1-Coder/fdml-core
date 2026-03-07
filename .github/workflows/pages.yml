@@ -20,26 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install site build deps
+      - name: Validate tracked Pages snapshot
         run: |
-          sudo apt-get update
-          sudo apt-get install -y xsltproc
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
-      - name: Build shaded jar (skip tests)
-        run: mvn -q -DskipTests package
-
-      - name: Build site
-        run: make html
+          python3 scripts/site_smoke.py --site-dir pages
+          python3 scripts/site_manifest.py pages --out out/pages_manifest.json
+          diff -u docs/manifest.expected.json out/pages_manifest.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: pages
 
   deploy:
     environment:

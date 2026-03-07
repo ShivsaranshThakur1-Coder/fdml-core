@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FDML Demo</title>
+  <link rel="stylesheet" href="style.css?v=@@CSSV@@"/>
+</head>
+<body>
+<header class="site-head">
+  <div class="container">
+    <a class="brand" href="./index.html">FDML</a>
+    <nav class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./search.html">Search</a>
+      <a class="muted" href="https://github.com/ShivsaranshThakur1-Coder/fdml-core">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  <div class="hero">
+    <h1>FDML Demo</h1>
+    <p class="sub">
+      FDML (Folk Dance Markup Language) is a structured format and toolchain for modeling dance metadata, figures,
+      timing, and geometry, then validating and publishing that content through a reproducible CLI + site pipeline.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>3-Step Demo</h2>
+
+    <h3>1) Init</h3>
+    <pre><code>./bin/fdml init out/demo.fdml.xml \
+  --title "Demo Dance" \
+  --meter 3/4 \
+  --tempo 96 \
+  --figure-id f-demo \
+  --figure-name "Basic"</code></pre>
+
+    <p class="sub">v1.2 profile example:</p>
+    <pre><code>./bin/fdml init out/demo.v12.fdml.xml \
+  --title "Demo Two Lines" \
+  --profile v12-twoLinesFacing</code></pre>
+
+    <p class="sub">Ingest scaffold from notes text:</p>
+    <pre><code>./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --title "Ingest Minimal" \
+  --meter 4/4 \
+  --tempo 112 \
+  --profile v1-basic</code></pre>
+    <p class="sub">With provenance sidecar:</p>
+    <pre><code>./bin/fdml ingest \
+  --source analysis/gold/ingest/source_minimal.txt \
+  --out out/ingest-minimal.fdml.xml \
+  --provenance-out out/provenance_minimal.json</code></pre>
+
+    <h3>2) Validate With Strict Doctor</h3>
+    <pre><code>./bin/fdml doctor out/demo.fdml.xml --strict</code></pre>
+    <p class="sub">Need actionable guidance on failures?</p>
+    <pre><code>./bin/fdml doctor out/demo.fdml.xml --explain</code></pre>
+
+    <h3>3) Render + Explore Search</h3>
+    <pre><code>./bin/fdml render out/demo.fdml.xml --out out/demo.html
+make m11-validator-unified-check
+make html
+open site/search.html?q=Abdala&amp;meter=9%2F16&amp;genre=line&amp;sourceCategory=africa</code></pre>
+
+    <h3>4) Export JSON</h3>
+    <pre><code>./bin/fdml export-json corpus/valid_v12/haire-mamougeh.opposites.v12.fdml.xml \
+  --out site/export-json-sample.json</code></pre>
+    <p><a href="export-json-sample.json">Generated sample JSON: site/export-json-sample.json</a></p>
+
+    <h3>5) Verify End-to-End Demo Flow</h3>
+    <pre><code>make demo-flow-check</code></pre>
+  </div>
+
+  <div class="card" id="m28-story">
+    <h2>Live Status Dashboard</h2>
+    <p class="sub">
+      This panel loads generated evidence snapshots from `site/reports/` so the demo shows current pipeline state and active execution queue.
+    </p>
+    <div id="status-dashboard" class="status-grid">
+      <div class="card">
+        <strong>Loading report snapshots...</strong>
+      </div>
+    </div>
+    <h3>Evidence Snapshots Used</h3>
+    <ul>
+      <li><a href="reports/final_rehearsal.report.json">reports/final_rehearsal.report.json</a></li>
+      <li><a href="reports/m30_governance.report.json">reports/m30_governance.report.json</a></li>
+      <li><a href="reports/m29_governance_freeze.report.json">reports/m29_governance_freeze.report.json</a></li>
+      <li><a href="reports/m28_activation.report.json">reports/m28_activation.report.json</a></li>
+      <li><a href="reports/m28_governance_handoff.report.json">reports/m28_governance_handoff.report.json</a></li>
+      <li><a href="reports/m26_handoff_governance.report.json">reports/m26_handoff_governance.report.json</a></li>
+      <li><a href="reports/m6_full_description_current.report.json">reports/m6_full_description_current.report.json</a></li>
+      <li><a href="reports/m9_full_description_progress.report.json">reports/m9_full_description_progress.report.json</a></li>
+      <li><a href="reports/doctor_passrate.report.json">reports/doctor_passrate.report.json</a></li>
+      <li><a href="reports/provenance_coverage.report.json">reports/provenance_coverage.report.json</a></li>
+      <li><a href="reports/m3_issue_current.report.json">reports/m3_issue_current.report.json</a></li>
+      <li><a href="reports/program_goal_state.report.json">reports/program_goal_state.report.json</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>M28 Story Walkthrough</h2>
+    <ol>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc">Open strict + geometry-ready search</a> to inspect highest-depth examples first.</li>
+      <li><a href="search.html?sourceCategory=africa&amp;sortBy=tier-desc">Switch source category filters</a> to compare regions inside one FDML structure.</li>
+      <li>Open any result card and review timeline + geometry panels for execution details and metadata consistency.</li>
+      <li>Return to this dashboard to verify M30 queue state, release readiness, and final handoff-package evidence.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Specs</h2>
+    <ul>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/FDML-SPEC.md">FDML-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/GEOMETRY-SPEC.md">GEOMETRY-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/TIMING-SPEC.md">TIMING-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/TOPOLOGY-SPEC.md">TOPOLOGY-SPEC</a></li>
+      <li><a href="https://github.com/ShivsaranshThakur1-Coder/fdml-core/blob/main/docs/COVERAGE.md">COVERAGE</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Example Cards</h2>
+    <ul>
+      <li><a href="cards/example-03.fdml.html">cards/example-03.fdml.html</a></li>
+      <li><a href="cards/abdala.fdml.html">cards/abdala.fdml.html</a></li>
+      <li><a href="cards/mayim-mayim.fdml.html">cards/mayim-mayim.fdml.html</a></li>
+      <li><a href="cards/haire-mamougeh.opposites.v12.fdml.html">cards/haire-mamougeh.opposites.v12.fdml.html</a></li>
+      <li><a href="cards/mayim-mayim.v12.fdml.html">cards/mayim-mayim.v12.fdml.html</a></li>
+      <li><a href="cards/example-05-contra.progress.v12.fdml.html">cards/example-05-contra.progress.v12.fdml.html</a></li>
+    </ul>
+
+    <h2>M5 Diversity Showcase Cards</h2>
+    <ul>
+      <li><a href="cards/acquired_sources__adumu.fdml.html">cards/acquired_sources__adumu.fdml.html</a> (africa)</li>
+      <li><a href="cards/acquired_sources__attan.fdml.html">cards/acquired_sources__attan.fdml.html</a> (middle-east-caucasus)</li>
+      <li><a href="cards/acquired_sources__giddha.fdml.html">cards/acquired_sources__giddha.fdml.html</a> (south-se-asia)</li>
+      <li><a href="cards/acquired_sources__branle.fdml.html">cards/acquired_sources__branle.fdml.html</a> (europe-regional)</li>
+      <li><a href="cards/acquired_sources__cueca.fdml.html">cards/acquired_sources__cueca.fdml.html</a> (americas-oceania)</li>
+    </ul>
+
+    <h2>Unified Full-Description Showcase Cards</h2>
+    <ul>
+      <li><a href="cards/acquired_sources__kpanlogo.fdml.html">cards/acquired_sources__kpanlogo.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__khorumi.fdml.html">cards/acquired_sources__khorumi.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__joget.fdml.html">cards/acquired_sources__joget.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__farandole.fdml.html">cards/acquired_sources__farandole.fdml.html</a> (strict full-description)</li>
+      <li><a href="cards/acquired_sources__cumbia.fdml.html">cards/acquired_sources__cumbia.fdml.html</a> (strict full-description)</li>
+    </ul>
+
+    <h2>Prefilled Search Links</h2>
+    <ul>
+      <li><a href="search.html?q=Abdala">search.html?q=Abdala</a></li>
+      <li><a href="search.html?meter=9%2F16">search.html?meter=9/16</a></li>
+      <li><a href="search.html?genre=line">search.html?genre=line</a></li>
+      <li><a href="search.html?q=Mayim&amp;meter=4%2F4&amp;genre=circle">search.html?q=Mayim&amp;meter=4/4&amp;genre=circle</a></li>
+      <li><a href="search.html?sourceCategory=africa">search.html?sourceCategory=africa</a></li>
+      <li><a href="search.html?sourceCategory=middle-east-caucasus">search.html?sourceCategory=middle-east-caucasus</a></li>
+      <li><a href="search.html?sourceCategory=south-se-asia">search.html?sourceCategory=south-se-asia</a></li>
+      <li><a href="search.html?sourceCategory=europe-regional">search.html?sourceCategory=europe-regional</a></li>
+      <li><a href="search.html?sourceCategory=americas-oceania">search.html?sourceCategory=americas-oceania</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict">search.html?fullDescriptionTier=strict</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;sourceCategory=africa">search.html?fullDescriptionTier=strict&amp;sourceCategory=africa</a></li>
+      <li><a href="search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc">search.html?fullDescriptionTier=strict&amp;hasGeometry=1&amp;sortBy=steps-desc</a></li>
+      <li><a href="search.html?sourceCategory=europe-regional&amp;strictOnly=1&amp;sortBy=title-asc">search.html?sourceCategory=europe-regional&amp;strictOnly=1&amp;sortBy=title-asc</a></li>
+      <li><a href="search.html?sourceCategory=africa&amp;hasGeometry=1&amp;sortBy=tier-desc">search.html?sourceCategory=africa&amp;hasGeometry=1&amp;sortBy=tier-desc</a></li>
+    </ul>
+  </div>
+</main>
+<script>
+(async function () {
+  const panel = document.getElementById("status-dashboard");
+  if (!panel) return;
+
+  async function loadJson(path) {
+    try {
+      const res = await fetch(path, {cache: "no-store"});
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (_err) {
+      return null;
+    }
+  }
+
+  const [
+    finalReport,
+    m30GovernanceReport,
+    m29GovernanceFreezeReport,
+    m28ActivationReport,
+    m28GovernanceReport,
+    handoffReport,
+    m6Coverage,
+    m9Progress,
+    doctorPassrate,
+    provenanceCoverage,
+    issueReport,
+    programGoalState
+  ] = await Promise.all([
+    loadJson("reports/final_rehearsal.report.json"),
+    loadJson("reports/m30_governance.report.json"),
+    loadJson("reports/m29_governance_freeze.report.json"),
+    loadJson("reports/m28_activation.report.json"),
+    loadJson("reports/m28_governance_handoff.report.json"),
+    loadJson("reports/m26_handoff_governance.report.json"),
+    loadJson("reports/m6_full_description_current.report.json"),
+    loadJson("reports/m9_full_description_progress.report.json"),
+    loadJson("reports/doctor_passrate.report.json"),
+    loadJson("reports/provenance_coverage.report.json"),
+    loadJson("reports/m3_issue_current.report.json"),
+    loadJson("reports/program_goal_state.report.json")
+  ]);
+
+  function fmtPercent(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "n/a";
+    return `${(value * 100).toFixed(2)}%`;
+  }
+
+  function getNested(obj, path, fallback) {
+    let cur = obj;
+    for (const key of path) {
+      if (!cur || typeof cur !== "object" || !(key in cur)) return fallback;
+      cur = cur[key];
+    }
+    return cur;
+  }
+
+  function countRows(value) {
+    return Array.isArray(value) ? value.length : null;
+  }
+
+  const strictCoverageRatio =
+    getNested(m9Progress, ["totals", "strictCoverageAfter"], null) ??
+    getNested(m6Coverage, ["strict", "coverage"], null);
+  const strictCoverageCount =
+    getNested(m9Progress, ["totals", "strictAfter"], null) ??
+    getNested(m6Coverage, ["strict", "fullDescriptionCount"], null);
+  const strictCoverageTotal =
+    getNested(m9Progress, ["totals", "totalSourceFiles"], null) ??
+    getNested(m6Coverage, ["total"], null);
+
+  const issueTotal = getNested(issueReport, ["totals", "issueTotal"], null);
+  const strictFailFiles = getNested(issueReport, ["totals", "strictFailFiles"], null);
+  const releaseReady = getNested(finalReport, ["releaseReady"], null);
+  const queuedGapCount = getNested(finalReport, ["summary", "queuedGapCount"], null);
+  const m30GovernanceOk = getNested(m30GovernanceReport, ["ok"], null);
+  const m30GovernanceChecks = getNested(m30GovernanceReport, ["checks"], null);
+  const m30GovernancePassCount = Array.isArray(m30GovernanceChecks)
+    ? m30GovernanceChecks.filter((row) => row && row.ok === true).length
+    : null;
+  const m30GovernanceCheckCount = Array.isArray(m30GovernanceChecks)
+    ? m30GovernanceChecks.length
+    : null;
+  const m30OpenRows = getNested(m30GovernanceReport, ["metrics", "m30OpenRows"], null);
+  const m30HandoffArtifacts = getNested(m30GovernanceReport, ["metrics", "handoffArtifactCount"], null);
+  const m29GovernanceOk = getNested(m29GovernanceFreezeReport, ["ok"], null);
+  const m29GovernanceChecks = getNested(m29GovernanceFreezeReport, ["checks"], null);
+  const m29GovernancePassCount = Array.isArray(m29GovernanceChecks)
+    ? m29GovernanceChecks.filter((row) => row && row.ok === true).length
+    : null;
+  const m29GovernanceCheckCount = Array.isArray(m29GovernanceChecks)
+    ? m29GovernanceChecks.length
+    : null;
+  const m29OpenRows = getNested(m29GovernanceFreezeReport, ["metrics", "m29OpenRows"], null);
+  const m28ActivationOk = getNested(m28ActivationReport, ["ok"], null);
+  const m28OpenRows = getNested(m28ActivationReport, ["metrics", "m28OpenRows"], null);
+  const m28TotalRows = getNested(m28ActivationReport, ["metrics", "m28TotalRows"], null);
+  const m28GovernanceOk = getNested(m28GovernanceReport, ["ok"], null);
+  const m28GovernancePassCount = getNested(m28GovernanceReport, ["summary", "passCount"], null);
+  const m28GovernanceCheckCount = getNested(m28GovernanceReport, ["summary", "checkCount"], null);
+  const m28GovernancePrg273Status = getNested(m28GovernanceReport, ["metrics", "prg273Status"], null);
+  const handoffOk = getNested(handoffReport, ["ok"], null);
+  const handoffArtifacts = getNested(handoffReport, ["metrics", "handoffArtifactCount"], null);
+  const doctorRate = getNested(doctorPassrate, ["passRate"], null);
+  const doctorPassed = getNested(doctorPassrate, ["passed"], null);
+  const doctorTotal = getNested(doctorPassrate, ["total"], null);
+  const provenanceRatio = getNested(provenanceCoverage, ["coverage"], null);
+  const provenanceWithRef = getNested(provenanceCoverage, ["withRef"], null);
+  const provenanceSchemaValid = getNested(provenanceCoverage, ["schemaValid"], null);
+  const activeMilestoneId = getNested(programGoalState, ["projectContext", "activeMilestoneId"], null);
+  const activeMilestoneTitle = getNested(programGoalState, ["projectContext", "activeMilestoneTitle"], null);
+  const activeQueueInProgressCount = countRows(getNested(programGoalState, ["executionState", "inProgress"], null));
+  const activeQueuePlannedCount = countRows(getNested(programGoalState, ["executionState", "planned"], null));
+  const nextExecutionHint = getNested(programGoalState, ["nextExecutionHint"], null);
+
+  const rows = [
+    {
+      title: "Release Readiness",
+      value: releaseReady === true ? "READY" : (releaseReady === false ? "NOT READY" : "n/a"),
+      detail: `Queued gaps: ${queuedGapCount ?? "n/a"}`
+    },
+    {
+      title: "M30 Governance Handoff",
+      value: m30GovernanceOk === true ? "PASS" : (m30GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m30GovernancePassCount ?? "n/a"} / ${m30GovernanceCheckCount ?? "n/a"} · open M30 rows: ${m30OpenRows ?? "n/a"} · package artifacts: ${m30HandoffArtifacts ?? "n/a"}`
+    },
+    {
+      title: "M29 Governance Freeze",
+      value: m29GovernanceOk === true ? "PASS" : (m29GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m29GovernancePassCount ?? "n/a"} / ${m29GovernanceCheckCount ?? "n/a"} · open M29 rows: ${m29OpenRows ?? "n/a"}`
+    },
+    {
+      title: "Program Execution Snapshot",
+      value: activeMilestoneId ? `${activeMilestoneId} active` : "n/a",
+      detail: `${activeMilestoneTitle ?? "Milestone n/a"} · in-progress: ${activeQueueInProgressCount ?? "n/a"} · planned: ${activeQueuePlannedCount ?? "n/a"}`
+    },
+    {
+      title: "M28 Activation Gate",
+      value: m28ActivationOk === true ? "PASS" : (m28ActivationOk === false ? "FAIL" : "n/a"),
+      detail: `Open rows: ${m28OpenRows ?? "n/a"} / total rows: ${m28TotalRows ?? "n/a"}`
+    },
+    {
+      title: "M28 Governance Handoff",
+      value: m28GovernanceOk === true ? "PASS" : (m28GovernanceOk === false ? "FAIL" : "n/a"),
+      detail: `Checks: ${m28GovernancePassCount ?? "n/a"} / ${m28GovernanceCheckCount ?? "n/a"} · PRG-273: ${m28GovernancePrg273Status ?? "n/a"}`
+    },
+    {
+      title: "Legacy Governance Snapshot",
+      value: handoffOk === true ? "PASS" : (handoffOk === false ? "FAIL" : "n/a"),
+      detail: `M26 hashed artifacts: ${handoffArtifacts ?? "n/a"}`
+    },
+    {
+      title: "Strict Description Coverage",
+      value: strictCoverageCount != null && strictCoverageTotal != null
+        ? `${strictCoverageCount}/${strictCoverageTotal}`
+        : "n/a",
+      detail: `Coverage ratio: ${fmtPercent(strictCoverageRatio)}`
+    },
+    {
+      title: "Doctor Strict Passrate",
+      value: doctorPassed != null && doctorTotal != null ? `${doctorPassed}/${doctorTotal}` : "n/a",
+      detail: `Passrate: ${fmtPercent(doctorRate)}`
+    },
+    {
+      title: "Provenance Coverage",
+      value: provenanceWithRef != null ? `${provenanceWithRef} with refs` : "n/a",
+      detail: `Coverage: ${fmtPercent(provenanceRatio)} · schema-valid: ${provenanceSchemaValid ?? "n/a"}`
+    },
+    {
+      title: "Semantic Issue Surface",
+      value: issueTotal != null ? `${issueTotal} issues` : "n/a",
+      detail: `Strict-fail files: ${strictFailFiles ?? "n/a"}`
+    },
+    {
+      title: "Next Execution Hint",
+      value: nextExecutionHint ? "AVAILABLE" : "n/a",
+      detail: nextExecutionHint || "No hint published."
+    }
+  ];
+
+  panel.innerHTML = rows.map((row) => (
+    `<div class="card status-card"><strong>${row.title}</strong><div class="status-value">${row.value}</div><div class="sub">${row.detail}</div></div>`
+  )).join("");
+})();
+</script>
+</body>
+</html>

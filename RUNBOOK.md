@@ -125,6 +125,14 @@ What it does (per `Makefile` and `scripts/build_index.sh`):
   - `site/search.html` (with cache-busted CSS parameter)
   - `site/index.json` (via `bin/fdml index corpus/valid --out site/index.json`)
 
+Publish the tracked GitHub Pages snapshot:
+```bash
+make pages-sync
+make pages-check
+```
+
+This copies the generated local site into `pages/`, which is the Git-tracked deployment artifact consumed by the GitHub Pages workflow.
+
 Serve locally:
 ```bash
 make serve
@@ -148,6 +156,7 @@ Site manifest regeneration when changes are intentional:
 ```bash
 make html
 python3 scripts/site_manifest.py site --out docs/manifest.expected.json
+make pages-sync
 ```
 
 Note: `make validate-*` uses `fdml` in PATH (not `./bin/fdml`).

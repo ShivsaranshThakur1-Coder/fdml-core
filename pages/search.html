@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FDML - Search</title>
+<link rel="stylesheet" href="style.css?v=@@CSSV@@"/>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav"><a class="cta" href="index.html">← Home</a></div>
+    <h1>Search</h1>
+    <p class="sub">Filter by structure, source region, and description depth. Results are generated from `site/index.json`.</p>
+
+    <div class="searchbar">
+      <input id="q" type="search" placeholder="Search title, source, file, or section id...">
+      <button id="clear" type="button">Clear</button>
+    </div>
+
+    <div class="search-filters">
+      <select id="meter"><option value="">Any meter</option></select>
+      <select id="genre"><option value="">Any genre</option></select>
+      <select id="formationKind"><option value="">Any formation kind</option></select>
+      <select id="sourceCategory"><option value="">Any source category</option></select>
+      <select id="fullDescriptionTier"><option value="">Any description tier</option></select>
+      <select id="sortBy">
+        <option value="title-asc">Sort: Title A-Z</option>
+        <option value="title-desc">Sort: Title Z-A</option>
+        <option value="tier-desc">Sort: Description depth</option>
+        <option value="steps-desc">Sort: Description steps</option>
+        <option value="source-asc">Sort: Source category</option>
+      </select>
+    </div>
+
+    <div class="search-toggles">
+      <label class="toggle">
+        <input id="strictOnly" type="checkbox">
+        <span>Strict descriptions only</span>
+      </label>
+      <label class="toggle">
+        <input id="hasGeometry" type="checkbox">
+        <span>Geometry-ready only</span>
+      </label>
+    </div>
+
+    <div id="activeFilters" class="active-filters"></div>
+    <div class="search-actions">
+      <button id="copyLink" type="button">Copy search link</button>
+      <span id="copyLinkStatus" class="muted search-action-status" aria-live="polite"></span>
+    </div>
+    <div id="loadError" class="load-error" hidden></div>
+    <div id="meta" class="muted search-meta"></div>
+    <ul id="results" class="grid"></ul>
+  </div>
+
+<script>
+(async function () {
+  const SOURCE_CATEGORY_LABELS = {
+    "africa": "Africa",
+    "middle-east-caucasus": "Middle East + Caucasus",
+    "south-se-asia": "South + Southeast Asia",
+    "europe-regional": "Europe (Regional)",
+    "americas-oceania": "Americas + Oceania",
+    "nonwiki-public-domain": "Public-Domain Texts",
+    "seed": "Seed Corpus"
+  };
+  const TIER_LABELS = {
+    "strict": "Strict",
+    "relaxed": "Relaxed",
+    "basic": "Basic"
+  };
+  const TIER_RANK = {"strict": 3, "relaxed": 2, "basic": 1};
+
+  function toInt(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function prettySourceCategory(value) {
+    return SOURCE_CATEGORY_LABELS[value] || value || "Unspecified source";
+  }
+
+  function prettyTier(value) {
+    return TIER_LABELS[value] || value || "Basic";
+  }
+
+  function prettyFormation(value) {
+    if (!value) return "Unspecified formation";
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  function prettyGenre(value) {
+    if (!value) return "Unspecified genre";
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  async function loadIndex() {
+    try {
+      const response = await fetch("index.json", {cache: "no-store"});
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      return {
+        indexError: null,
+        rawItems: Array.isArray(data.items) ? data.items : []
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "unknown error";
+      return {
+        indexError: `Could not load site/index.json (${message}).`,
+        rawItems: []
+      };
+    }
+  }
+
+  const {indexError, rawItems} = await loadIndex();
+  const items = rawItems.map((it) => ({
+    file: String(it.file || ""),
+    title: String(it.title || "").trim(),
+    meter: String(it.meter || "").trim(),
+    genre: String(it.genre || "").trim(),
+    formationKind: String(it.formationKind || "").trim(),
+    sourceId: String(it.sourceId || "").trim(),
+    sourceTitle: String(it.sourceTitle || "").trim(),
+    sourceCategory: String(it.sourceCategory || "").trim(),
+    fullDescriptionTier: String(it.fullDescriptionTier || "").trim(),
+    fullDescriptionStrict: Boolean(it.fullDescriptionStrict || false),
+    fullDescriptionRelaxed: Boolean(it.fullDescriptionRelaxed || false),
+    fullDescriptionSteps: toInt(it.fullDescriptionSteps),
+    fullDescriptionNonPlaceholderSteps: toInt(it.fullDescriptionNonPlaceholderSteps),
+    fullDescriptionDanceLexemeSteps: toInt(it.fullDescriptionDanceLexemeSteps),
+    fullDescriptionUniqueNonPlaceholderSteps: toInt(it.fullDescriptionUniqueNonPlaceholderSteps),
+    hasGeometry: Boolean(it.hasGeometry || false),
+    sections: Array.isArray(it.sections) ? it.sections.map(String) : []
+  }));
+
+  const Q = document.getElementById("q");
+  const FM = document.getElementById("meter");
+  const FG = document.getElementById("genre");
+  const FK = document.getElementById("formationKind");
+  const FC = document.getElementById("sourceCategory");
+  const FT = document.getElementById("fullDescriptionTier");
+  const FS = document.getElementById("sortBy");
+  const FStrict = document.getElementById("strictOnly");
+  const FGeo = document.getElementById("hasGeometry");
+  const Active = document.getElementById("activeFilters");
+  const CopyLink = document.getElementById("copyLink");
+  const CopyLinkStatus = document.getElementById("copyLinkStatus");
+  const LoadError = document.getElementById("loadError");
+  const Results = document.getElementById("results");
+  const Meta = document.getElementById("meta");
+  const params = new URLSearchParams(window.location.search);
+
+  if (LoadError) {
+    if (indexError) {
+      LoadError.hidden = false;
+      LoadError.textContent = indexError;
+    } else {
+      LoadError.hidden = true;
+      LoadError.textContent = "";
+    }
+  }
+
+  function buildFacetOptions(values) {
+    const counts = new Map();
+    values.forEach((v) => {
+      if (!v) return;
+      counts.set(v, (counts.get(v) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([value, count]) => ({value, count}));
+  }
+
+  function loadOptions(el, entries, label, formatter) {
+    el.innerHTML = `<option value="">${label}</option>`;
+    entries.forEach((entry) => {
+      const option = document.createElement("option");
+      option.value = entry.value;
+      option.textContent = `${formatter(entry.value)} (${entry.count})`;
+      el.appendChild(option);
+    });
+  }
+
+  loadOptions(FM, buildFacetOptions(items.map((i) => i.meter)), "Any meter", (v) => v);
+  loadOptions(FG, buildFacetOptions(items.map((i) => i.genre)), "Any genre", prettyGenre);
+  loadOptions(FK, buildFacetOptions(items.map((i) => i.formationKind)), "Any formation kind", prettyFormation);
+  loadOptions(FC, buildFacetOptions(items.map((i) => i.sourceCategory)), "Any source category", prettySourceCategory);
+  loadOptions(FT, buildFacetOptions(items.map((i) => i.fullDescriptionTier)), "Any description tier", prettyTier);
+
+  Q.value = params.get("q") || "";
+  FM.value = params.get("meter") || "";
+  FG.value = params.get("genre") || "";
+  FK.value = params.get("formationKind") || "";
+  FC.value = params.get("sourceCategory") || "";
+  FT.value = params.get("fullDescriptionTier") || "";
+  FS.value = params.get("sortBy") || "title-asc";
+  FStrict.checked = params.get("strictOnly") === "1";
+  FGeo.checked = params.get("hasGeometry") === "1";
+
+  document.getElementById("clear").onclick = () => {
+    Q.value = "";
+    FM.value = "";
+    FG.value = "";
+    FK.value = "";
+    FC.value = "";
+    FT.value = "";
+    FS.value = "title-asc";
+    FStrict.checked = false;
+    FGeo.checked = false;
+    render();
+    Q.focus();
+  };
+
+  let copyStatusTimer = null;
+  function setCopyStatus(message, isError) {
+    if (!CopyLinkStatus) return;
+    CopyLinkStatus.textContent = message || "";
+    CopyLinkStatus.classList.toggle("status-error", Boolean(isError));
+    if (copyStatusTimer) {
+      window.clearTimeout(copyStatusTimer);
+      copyStatusTimer = null;
+    }
+    if (message) {
+      copyStatusTimer = window.setTimeout(() => {
+        if (CopyLinkStatus) {
+          CopyLinkStatus.textContent = "";
+          CopyLinkStatus.classList.remove("status-error");
+        }
+      }, 2200);
+    }
+  }
+
+  function toHref(file) {
+    let base = String(file)
+      .replace(/^corpus\/valid\//, "")
+      .replace(/^corpus\/valid_v12\//, "")
+      .replace(/^corpus\/valid_ingest_auto\//, "")
+      .replace(/^out\/m9_full_description_uplift\/run1\//, "")
+      .replace(/^out\/m9_full_corpus_v12\/run1\//, "");
+    base = base.replace(/\.fdml\.xml$/i, ".fdml.html").replace(/\.xml$/i, ".html");
+    return `cards/${base}`;
+  }
+
+  function matchText(item, query) {
+    if (!query) return true;
+    const q = query.toLowerCase();
+    return item.title.toLowerCase().includes(q) ||
+      item.sourceTitle.toLowerCase().includes(q) ||
+      item.sourceId.toLowerCase().includes(q) ||
+      item.file.toLowerCase().includes(q) ||
+      item.sections.some((s) => s.toLowerCase().includes(q));
+  }
+
+  function matchesFilters(item) {
+    if (FM.value && item.meter !== FM.value) return false;
+    if (FG.value && item.genre !== FG.value) return false;
+    if (FK.value && item.formationKind !== FK.value) return false;
+    if (FC.value && item.sourceCategory !== FC.value) return false;
+    if (FT.value && item.fullDescriptionTier !== FT.value) return false;
+    if (FStrict.checked && !item.fullDescriptionStrict) return false;
+    if (FGeo.checked && !item.hasGeometry) return false;
+    return true;
+  }
+
+  function compareItems(a, b) {
+    if (FS.value === "title-desc") {
+      return (b.title || b.file).localeCompare(a.title || a.file);
+    }
+    if (FS.value === "tier-desc") {
+      const tierDiff = (TIER_RANK[b.fullDescriptionTier] || 0) - (TIER_RANK[a.fullDescriptionTier] || 0);
+      if (tierDiff !== 0) return tierDiff;
+      return b.fullDescriptionSteps - a.fullDescriptionSteps;
+    }
+    if (FS.value === "steps-desc") {
+      const stepDiff = b.fullDescriptionSteps - a.fullDescriptionSteps;
+      if (stepDiff !== 0) return stepDiff;
+      return (a.title || a.file).localeCompare(b.title || b.file);
+    }
+    if (FS.value === "source-asc") {
+      const srcDiff = prettySourceCategory(a.sourceCategory).localeCompare(prettySourceCategory(b.sourceCategory));
+      if (srcDiff !== 0) return srcDiff;
+      return (a.title || a.file).localeCompare(b.title || b.file);
+    }
+    return (a.title || a.file).localeCompare(b.title || b.file);
+  }
+
+  function buildQueryParams() {
+    const p = new URLSearchParams();
+    if (Q.value.trim()) p.set("q", Q.value.trim());
+    if (FM.value) p.set("meter", FM.value);
+    if (FG.value) p.set("genre", FG.value);
+    if (FK.value) p.set("formationKind", FK.value);
+    if (FC.value) p.set("sourceCategory", FC.value);
+    if (FT.value) p.set("fullDescriptionTier", FT.value);
+    if (FS.value && FS.value !== "title-asc") p.set("sortBy", FS.value);
+    if (FStrict.checked) p.set("strictOnly", "1");
+    if (FGeo.checked) p.set("hasGeometry", "1");
+    return p;
+  }
+
+  function syncUrl() {
+    const p = buildQueryParams();
+    const query = p.toString();
+    const next = query ? `?${query}` : window.location.pathname.split("/").pop();
+    window.history.replaceState({}, "", next);
+  }
+
+  function currentShareUrl() {
+    const query = buildQueryParams().toString();
+    const suffix = query ? `?${query}` : "";
+    const path = `${window.location.pathname}${suffix}`;
+    if (window.location.origin && window.location.origin !== "null") {
+      return `${window.location.origin}${path}`;
+    }
+    return `${path}`;
+  }
+
+  async function copyCurrentLink() {
+    const value = currentShareUrl();
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(value);
+        setCopyStatus("Search link copied.", false);
+        return;
+      }
+      throw new Error("clipboard API unavailable");
+    } catch (_err) {
+      const fallback = document.createElement("textarea");
+      fallback.value = value;
+      fallback.setAttribute("readonly", "readonly");
+      fallback.style.position = "absolute";
+      fallback.style.left = "-9999px";
+      document.body.appendChild(fallback);
+      fallback.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(fallback);
+      if (copied) {
+        setCopyStatus("Search link copied.", false);
+      } else {
+        setCopyStatus("Copy failed. Copy URL manually.", true);
+      }
+    }
+  }
+
+  function renderActiveFilters() {
+    const chips = [];
+    if (Q.value.trim()) chips.push({key: "q", label: `Query: ${Q.value.trim()}`});
+    if (FM.value) chips.push({key: "meter", label: `Meter: ${FM.value}`});
+    if (FG.value) chips.push({key: "genre", label: `Genre: ${prettyGenre(FG.value)}`});
+    if (FK.value) chips.push({key: "formationKind", label: `Formation: ${prettyFormation(FK.value)}`});
+    if (FC.value) chips.push({key: "sourceCategory", label: `Source: ${prettySourceCategory(FC.value)}`});
+    if (FT.value) chips.push({key: "fullDescriptionTier", label: `Tier: ${prettyTier(FT.value)}`});
+    if (FStrict.checked) chips.push({key: "strictOnly", label: "Strict only"});
+    if (FGeo.checked) chips.push({key: "hasGeometry", label: "Geometry-ready only"});
+
+    if (chips.length === 0) {
+      Active.innerHTML = "";
+      return;
+    }
+    Active.innerHTML = chips.map((chip) => (
+      `<span class="chip filter-chip">${escapeHtml(chip.label)} <button type="button" data-clear="${chip.key}" aria-label="${escapeHtml(`Clear ${chip.label}`)}">×</button></span>`
+    )).join("");
+
+    Active.querySelectorAll("button[data-clear]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const key = button.getAttribute("data-clear");
+        if (key === "q") Q.value = "";
+        if (key === "meter") FM.value = "";
+        if (key === "genre") FG.value = "";
+        if (key === "formationKind") FK.value = "";
+        if (key === "sourceCategory") FC.value = "";
+        if (key === "fullDescriptionTier") FT.value = "";
+        if (key === "strictOnly") FStrict.checked = false;
+        if (key === "hasGeometry") FGeo.checked = false;
+        render();
+      });
+    });
+  }
+
+  function card(item) {
+    const href = toHref(item.file);
+    const safeHref = encodeURI(href);
+    const facets = [
+      item.meter || "Meter n/a",
+      prettyGenre(item.genre),
+      prettyFormation(item.formationKind),
+      prettySourceCategory(item.sourceCategory),
+      prettyTier(item.fullDescriptionTier)
+    ].join(" · ");
+    const sourceMeta = [item.sourceTitle, item.sourceId].filter(Boolean).join(" · ");
+    const sourceLine = sourceMeta ? `<div class="sub">${escapeHtml(sourceMeta)}</div>` : "";
+    const geometryBadge = item.hasGeometry ? `<span class="chip">Geometry</span>` : `<span class="chip">No geometry</span>`;
+    const depthLine = `${item.fullDescriptionSteps} steps · ${item.fullDescriptionNonPlaceholderSteps} non-placeholder · ${item.fullDescriptionDanceLexemeSteps} dance-lexeme`;
+    return `<li><a class="card" href="${safeHref}"><strong>${escapeHtml(item.title || href)}</strong><div class="sub">${escapeHtml(href)}</div><div class="sub">${escapeHtml(facets)}</div><div class="sub">${escapeHtml(depthLine)}</div><div class="sub">${geometryBadge}</div>${sourceLine}</a></li>`;
+  }
+
+  function renderMeta(hits) {
+    if (indexError) {
+      Meta.textContent = "Index unavailable. Build site artifacts and reload.";
+      return;
+    }
+    const strictCount = hits.filter((i) => i.fullDescriptionTier === "strict").length;
+    const relaxedCount = hits.filter((i) => i.fullDescriptionTier === "relaxed").length;
+    const basicCount = hits.filter((i) => i.fullDescriptionTier === "basic").length;
+    const geometryCount = hits.filter((i) => i.hasGeometry).length;
+    Meta.textContent = `${hits.length} of ${items.length} item(s) · strict ${strictCount} · relaxed ${relaxedCount} · basic ${basicCount} · geometry-ready ${geometryCount}`;
+  }
+
+  function renderEmptyState(query) {
+    if (indexError) {
+      return `<li class="card empty-state"><strong>Index load failed</strong><div class="sub">${escapeHtml(indexError)}</div><div class="sub">Run <code>make html</code> and reload this page.</div></li>`;
+    }
+    if (query) {
+      return `<li class="card empty-state"><strong>No results for "${escapeHtml(query)}"</strong><div class="sub">Try removing one filter, or click Clear to reset all filters.</div></li>`;
+    }
+    return `<li class="card empty-state"><strong>No matches for the current filter set.</strong><div class="sub">Try removing strict or geometry filters first.</div></li>`;
+  }
+
+  function render() {
+    const q = Q.value.trim();
+    const hits = items
+      .filter((it) => matchText(it, q))
+      .filter(matchesFilters)
+      .sort(compareItems);
+    syncUrl();
+    renderActiveFilters();
+    renderMeta(hits);
+    Results.innerHTML = hits.length
+      ? hits.map(card).join("")
+      : renderEmptyState(q);
+  }
+
+  Q.addEventListener("input", render);
+  FM.addEventListener("change", render);
+  FG.addEventListener("change", render);
+  FK.addEventListener("change", render);
+  FC.addEventListener("change", render);
+  FT.addEventListener("change", render);
+  FS.addEventListener("change", render);
+  FStrict.addEventListener("change", render);
+  FGeo.addEventListener("change", render);
+  if (CopyLink) {
+    CopyLink.addEventListener("click", copyCurrentLink);
+  }
+  render();
+})();
+</script>
+</body>
+</html>

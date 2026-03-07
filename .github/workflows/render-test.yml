@@ -5,17 +5,15 @@ on:
   pull_request:
 jobs:
   render:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: Homebrew/actions/setup-homebrew@master
-      - run: brew update-reset
-      - run: brew tap ShivsaranshThakur1-Coder/homebrew-fdml
-      - run: brew install fdml libxslt
-      - run: make html
-      - name: Archive HTML
-        run: tar -czf out-html.tgz -C out/html .
+      - run: python3 scripts/site_smoke.py --site-dir pages
+      - run: python3 scripts/site_manifest.py pages --out out/pages_manifest.json
+      - run: diff -u docs/manifest.expected.json out/pages_manifest.json
+      - name: Archive tracked Pages snapshot
+        run: tar -czf pages.tgz -C pages .
       - uses: actions/upload-artifact@v4
         with:
-          name: html-cards
-          path: out-html.tgz
+          name: pages-snapshot
+          path: pages.tgz

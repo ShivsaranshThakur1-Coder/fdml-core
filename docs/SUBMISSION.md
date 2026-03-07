@@ -4,6 +4,7 @@ This project ships as:
 - a CLI (`./bin/fdml`)
 - validators (XSD + Schematron + Geometry + Timing + Lint)
 - a generated static demo site (`site/`)
+- a Git-tracked Pages deployment snapshot (`pages/`)
 
 ## A) Offline / no-hosting demo (submission-safe)
 
@@ -41,6 +42,11 @@ GitHub Pages can publish either:
 
 If you enable Pages for this repo, set:
 Settings → Pages → Source = GitHub Actions (recommended).
+
+Deployment model used here:
+- generate locally with `make html`
+- sync tracked deploy snapshot with `make pages-sync`
+- push `main`; `.github/workflows/pages.yml` publishes `pages/`
 
 Note: Pages is public by default, so do not use it for sensitive content.
 

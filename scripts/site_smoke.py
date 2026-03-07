@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from html.parser import HTMLParser
@@ -120,12 +121,24 @@ def fail(msg: str) -> None:
     raise SystemExit(1)
 
 
+def parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser(description="Run smoke checks against a generated site directory.")
+    ap.add_argument(
+        "--site-dir",
+        default="site",
+        help="site directory to validate (default: site)",
+    )
+    return ap.parse_args()
+
+
 def main() -> int:
-    site_dir = Path("site").resolve()
+    args = parse_args()
+    site_dir = Path(args.site_dir).resolve()
+    site_label = args.site_dir.rstrip("/") or "site"
     required = ["index.html", "demo.html", "search.html", "index.json", "style.css"]
     for rel in required:
         if not (site_dir / rel).exists():
-            fail(f"missing required file: site/{rel}")
+            fail(f"missing required file: {site_label}/{rel}")
 
     index_data = json.loads((site_dir / "index.json").read_text(encoding="utf-8"))
     items = index_data.get("items", [])
@@ -141,7 +154,10 @@ def main() -> int:
             continue
         expected = cards_dir / expected_card_name(file_value)
         if not expected.exists():
-            fail(f"index.json item file={file_value} does not map to existing card {expected.relative_to(site_dir)}")
+            fail(
+                f"index.json item file={file_value} does not map to existing card "
+                f"{expected.relative_to(site_dir)}"
+            )
 
     item_files = {str(it.get("file", "")) for it in items if isinstance(it, dict)}
     for demo_file in V12_DEMO_FILES:
@@ -189,13 +205,13 @@ def main() -> int:
     for rel in REQUIRED_REPORT_SNAPSHOTS:
         report_path = site_dir / rel
         if not report_path.exists():
-            fail(f"missing required report snapshot: site/{rel}")
+            fail(f"missing required report snapshot: {site_label}/{rel}")
         try:
             payload = json.loads(report_path.read_text(encoding="utf-8"))
         except Exception as exc:
-            fail(f"invalid JSON in report snapshot site/{rel}: {exc}")
+            fail(f"invalid JSON in report snapshot {site_label}/{rel}: {exc}")
         if not isinstance(payload, dict):
-            fail(f"report snapshot is not a JSON object: site/{rel}")
+            fail(f"report snapshot is not a JSON object: {site_label}/{rel}")
 
     source_categories = {
         str(it.get("sourceCategory", "")).strip()
@@ -257,7 +273,10 @@ def main() -> int:
     if broken:
         fail("broken relative links found:\n  " + "\n  ".join(broken))
 
-    print(f"PASS: site smoke checks ok ({len(items)} index items, {len(list(site_dir.rglob('*.html')))} html files)")
+    print(
+        f"PASS: site smoke checks ok for {site_label} "
+        f"({len(items)} index items, {len(list(site_dir.rglob('*.html')))} html files)"
+    )
     return 0
 
 
